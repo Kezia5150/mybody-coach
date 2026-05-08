@@ -6,6 +6,7 @@
 <title>MyBody Coach</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23850e35'/><text y='72' x='50' text-anchor='middle' font-size='60'>🌸</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
   --bordeaux: #850e35;
@@ -165,6 +166,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .drive-desc { font-size: 12px; color: var(--gris); margin: 0 0 10px; line-height: 1.5; }
 .drive-btn { padding: 9px 18px; background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 .api-note { font-size: 11px; color: var(--gris); background: var(--creme); padding: 10px; border-radius: var(--radius-sm); margin-top: 10px; line-height: 1.5; }
+.drive-status { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 10px; font-size: 13px; }
+.drive-status.connected { background: #e8f5e9; color: #2e7d32; border: 0.5px solid #a5d6a7; }
+.drive-status.disconnected { background: var(--creme); color: var(--gris); border: 0.5px solid var(--rose-pale); }
+.drive-status i { font-size: 18px; }
+.gdrive-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px; background: white; color: #444; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 10px; }
+.gdrive-btn:hover { background: #f5f5f5; }
+.gdrive-btn img { width: 18px; height: 18px; }
 </style>
 </head>
 <body>
@@ -433,14 +441,29 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 
   <div class="card">
     <p class="card-title">Google Drive</p>
-    <div class="drive-section">
-      <p class="drive-title">Exporter mes données</p>
-      <p class="drive-desc">Télécharge un fichier JSON de toutes tes données. Tu peux le sauvegarder dans ton Google Drive et le partager avec ton coach ici.</p>
-      <button class="drive-btn" onclick="exportData()">⬇ Télécharger mes données</button>
+    <div id="drive-status-bar" class="drive-status disconnected">
+      <i class="ti ti-cloud-off" aria-hidden="true"></i>
+      <span id="drive-status-text">Non connecté à Google Drive</span>
+    </div>
+    <button class="gdrive-btn" id="gdrive-connect-btn" onclick="connectDrive()">
+      <img src="https://www.google.com/favicon.ico" alt="Google">
+      Se connecter avec Google
+    </button>
+    <button class="drive-btn" id="gdrive-disconnect-btn" onclick="disconnectDrive()" style="display:none; background:var(--creme); color:var(--bordeaux); border-color:var(--rose-pale);">
+      Se déconnecter
+    </button>
+    <div class="drive-section" style="margin-top:10px;">
+      <p class="drive-title">Sauvegarde automatique</p>
+      <p class="drive-desc">Une fois connectée, chaque modification est sauvegardée automatiquement dans un fichier <strong>mybody-coach-data.json</strong> dans ton Google Drive.</p>
     </div>
     <div class="drive-section">
-      <p class="drive-title">Importer mes données</p>
-      <p class="drive-desc">Si tu as un fichier de données existant, importe-le pour reprendre là où tu en étais.</p>
+      <p class="drive-title">Sauvegarde manuelle</p>
+      <p class="drive-desc">Tu peux aussi télécharger tes données en local à tout moment.</p>
+      <button class="drive-btn" onclick="exportData()">⬇ Télécharger mes données (JSON)</button>
+    </div>
+    <div class="drive-section">
+      <p class="drive-title">Importer des données</p>
+      <p class="drive-desc">Reprends là où tu en étais depuis un fichier existant.</p>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
       <button class="drive-btn" onclick="document.getElementById('import-file').click()">⬆ Importer un fichier</button>
     </div>
@@ -569,6 +592,7 @@ function toggleHabit(el, key) {
   document.getElementById('done-num').textContent = done + '/6';
   if (done === 6) calcStreak();
   saveState();
+  if (driveAccessToken) saveToDrive();
 }
 
 function calcStreak() {
@@ -611,6 +635,7 @@ function saveJournal() {
     document.getElementById('prog-poids').textContent = poids;
   }
   saveState();
+  if (driveAccessToken) saveToDrive();
   document.getElementById('saved-msg').style.display = 'block';
   setTimeout(() => document.getElementById('saved-msg').style.display = 'none', 2000);
   genererDemain(getCycleDay(), getPhase(getCycleDay()));
@@ -917,6 +942,130 @@ function exportData() {
   a.click(); URL.revokeObjectURL(url);
 }
 
+// ===== GOOGLE DRIVE =====
+const GDRIVE_CLIENT_ID = '995009252075-n2ubfcu03hclfghhcq7180vkoiu7le6v.apps.googleusercontent.com';
+const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
+const GDRIVE_FILE_NAME = 'mybody-coach-data.json';
+let driveAccessToken = null;
+let driveFileId = null;
+
+function connectDrive() {
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: GDRIVE_CLIENT_ID,
+    scope: GDRIVE_SCOPE,
+    callback: async (response) => {
+      if (response.error) { alert('Erreur connexion Google : ' + response.error); return; }
+      driveAccessToken = response.access_token;
+      localStorage.setItem('drive_token', driveAccessToken);
+      updateDriveUI(true);
+      await syncFromDrive();
+    }
+  });
+  client.requestAccessToken();
+}
+
+function disconnectDrive() {
+  driveAccessToken = null;
+  driveFileId = null;
+  localStorage.removeItem('drive_token');
+  localStorage.removeItem('drive_file_id');
+  updateDriveUI(false);
+}
+
+function updateDriveUI(connected) {
+  const bar = document.getElementById('drive-status-bar');
+  const txt = document.getElementById('drive-status-text');
+  const connectBtn = document.getElementById('gdrive-connect-btn');
+  const disconnectBtn = document.getElementById('gdrive-disconnect-btn');
+  if (!bar) return;
+  if (connected) {
+    bar.className = 'drive-status connected';
+    bar.querySelector('i').className = 'ti ti-cloud-check';
+    txt.textContent = 'Connecté à Google Drive — sauvegarde automatique active';
+    connectBtn.style.display = 'none';
+    disconnectBtn.style.display = 'flex';
+  } else {
+    bar.className = 'drive-status disconnected';
+    bar.querySelector('i').className = 'ti ti-cloud-off';
+    txt.textContent = 'Non connecté à Google Drive';
+    connectBtn.style.display = 'flex';
+    disconnectBtn.style.display = 'none';
+  }
+}
+
+async function getDriveFileId() {
+  if (driveFileId) return driveFileId;
+  const cached = localStorage.getItem('drive_file_id');
+  if (cached) { driveFileId = cached; return driveFileId; }
+  try {
+    const res = await fetch(
+      "https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='" + GDRIVE_FILE_NAME + "'",
+      { headers: { Authorization: 'Bearer ' + driveAccessToken } }
+    );
+    const data = await res.json();
+    if (data.files && data.files.length > 0) {
+      driveFileId = data.files[0].id;
+      localStorage.setItem('drive_file_id', driveFileId);
+    }
+  } catch(e) {}
+  return driveFileId;
+}
+
+async function syncFromDrive() {
+  if (!driveAccessToken) return;
+  try {
+    const fileId = await getDriveFileId();
+    if (!fileId) { await saveToDrive(); return; }
+    const res = await fetch(
+      'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media',
+      { headers: { Authorization: 'Bearer ' + driveAccessToken } }
+    );
+    if (!res.ok) return;
+    const data = await res.json();
+    const apiKey = state.apiKey;
+    state = { ...state, ...data };
+    if (apiKey) state.apiKey = apiKey;
+    saveState();
+    initUI();
+  } catch(e) { console.log('Drive sync error:', e); }
+}
+
+async function saveToDrive() {
+  if (!driveAccessToken) return;
+  try {
+    const data = { ...state };
+    delete data.apiKey;
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const fileId = await getDriveFileId();
+    let res;
+    if (fileId) {
+      res = await fetch(
+        'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media',
+        { method: 'PATCH', headers: { Authorization: 'Bearer ' + driveAccessToken, 'Content-Type': 'application/json' }, body: blob }
+      );
+    } else {
+      const meta = { name: GDRIVE_FILE_NAME, parents: ['appDataFolder'] };
+      const form = new FormData();
+      form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
+      form.append('file', blob);
+      res = await fetch(
+        'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
+        { method: 'POST', headers: { Authorization: 'Bearer ' + driveAccessToken }, body: form }
+      );
+      if (res.ok) {
+        const created = await res.json();
+        driveFileId = created.id;
+        localStorage.setItem('drive_file_id', driveFileId);
+      }
+    }
+  } catch(e) { console.log('Drive save error:', e); }
+}
+
+function saveStateAndDrive() {
+  saveState();
+  if (driveAccessToken) saveToDrive();
+}
+
 function importData(input) {
   const file = input.files[0];
   if (!file) return;
@@ -959,6 +1108,17 @@ function loadState() {
 }
 
 loadState();
+
+// Restaurer token Drive si existant
+window.addEventListener('load', () => {
+  const token = localStorage.getItem('drive_token');
+  const fileId = localStorage.getItem('drive_file_id');
+  if (token) {
+    driveAccessToken = token;
+    if (fileId) driveFileId = fileId;
+    updateDriveUI(true);
+  }
+});
 </script>
 </body>
 </html>
