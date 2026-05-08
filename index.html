@@ -705,34 +705,56 @@ async function genererSeance(jour, phase) {
 
   const plaque = phase.court !== 'mens' && douleur < 3;
 
-  const prompt = `Tu es coach bien-être pour une femme avec endométriose et kystes ovariens.
-Crée une séance de sport pour aujourd'hui. Réponds UNIQUEMENT en JSON valide, sans markdown.
+  const prenom = state.prenom || 'elle';
+  const prompt = `Tu es coach santé et bien-être personnel pour ${prenom}. Tu la connais bien. Voici son profil complet :
 
-Contexte:
-- Jour du cycle: J${jour}
-- Phase: ${phase.nom}
-- Énergie hier (1-5): ${energie}
-- Douleur pelvienne hier (0-5): ${douleur}
-- Note: "${note}"
-- Plaque vibrante disponible: ${plaque}
+PROFIL PERSONNEL :
+- Femme de 31-40 ans
+- Endométriose + kystes ovariens : douleurs pelviennes pendant les règles et la phase folliculaire
+- Sédentaire depuis plus d'un an (travail de monteuse vidéo, assise toute la journée)
+- Poids actuel : environ 64-67 kg, objectif : maigrir progressivement et se sentir bien
+- Se lève à 5h du matin, très absorbée par son travail
+- Équipement disponible : tapis de yoga, haltères, mur, espace au sol, plaque vibrante
 
-Format JSON requis:
+RÈGLES POUR LA PLAQUE VIBRANTE :
+- JAMAIS pendant les règles (J1-J7) ni si douleur pelvienne >= 3
+- Autorisée en phase folliculaire, ovulatoire et lutéale sans douleur intense
+- Maximum 5 minutes
+
+RÈGLES GÉNÉRALES :
+- Séances courtes : 10 à 25 minutes maximum (elle n'a pas de temps)
+- Progressivité : elle revient au sport après plus d'un an de sédentarité
+- Bienveillance absolue : pas de pression, encouragement doux
+- Chaque exercice doit être expliqué comme si c'était la première fois
+- Toujours mentionner le bénéfice spécifique pour l'endométriose
+
+CONTEXTE DU JOUR :
+- Jour du cycle : J${jour}
+- Phase : ${phase.nom}
+- Énergie hier (1-5) : ${energie} ${energie <= 2 ? '→ séance très douce obligatoire' : energie >= 4 ? '→ peut pousser un peu plus' : '→ séance modérée'}
+- Douleur pelvienne hier (0-5) : ${douleur} ${douleur >= 3 ? '→ éviter tout impact et pression abdominale' : '→ pas de restriction particulière'}
+- Note de ${prenom} hier soir : "${note || 'rien de particulier'}"
+- Plaque vibrante aujourd'hui : ${plaque ? 'oui, inclure 5 min' : 'non, ne pas inclure'}
+
+Crée une séance personnalisée pour ${prenom} aujourd'hui. Réponds UNIQUEMENT en JSON valide, sans markdown, sans texte avant ou après.
+
+Format JSON requis :
 {
-  "titre": "Titre court de la séance",
+  "titre": "Titre court et motivant",
   "duree_totale": "XX min",
   "exercices": [
     {
       "nom": "Nom de l'exercice",
       "duree": "X min",
-      "position": "Position de départ exacte",
-      "etapes": ["étape 1", "étape 2", "étape 3"],
-      "conseil_endo": "Pourquoi cet exercice aide avec l'endométriose",
+      "position": "Position de départ exacte et précise",
+      "etapes": ["étape 1 détaillée", "étape 2", "étape 3", "étape 4"],
+      "conseil_endo": "Pourquoi cet exercice aide spécifiquement avec l'endométriose et les kystes",
       "duree_secondes": 120
     }
   ]
 }
 
-Inclure 3 à 5 exercices adaptés à la phase. Si plaque vibrante: inclure 5 min de vibration. Sois précise et bienveillante.`;
+Inclure 3 à 5 exercices. Sois précise, bienveillante, et parle-lui directement comme à une amie.`;
 
   if (!state.apiKey) {
     loading.style.display = 'none';
@@ -852,25 +874,30 @@ async function genererDemain(jour, phase) {
     return;
   }
 
-  const prompt = `Tu es coach bien-être. Génère une liste de préparation pour demain matin.
-Réponds UNIQUEMENT en JSON valide, sans markdown.
+  const prenomD = state.prenom || 'toi';
+  const prompt = `Tu es coach santé personnel pour ${prenomD}, monteuse vidéo de 31-40 ans qui se lève à 5h du matin.
+Elle a de l'endométriose et des kystes ovariens. Elle reprend le sport après plus d'un an de sédentarité.
+Elle a un tapis, des haltères, un mur, et une plaque vibrante.
 
-Contexte pour demain:
-- Jour du cycle demain: J${jourDemain}
-- Phase: ${phaseDemain.nom}
-- Énergie aujourd'hui: ${energie}/5
-- Douleur pelvienne: ${douleur}/5
+Génère sa liste de préparation pour demain soir — ce qu'elle doit préparer CE SOIR avant de dormir.
+Réponds UNIQUEMENT en JSON valide, sans markdown, sans texte avant ou après.
 
-Format JSON:
+Contexte pour demain :
+- Jour du cycle demain : J${jourDemain}
+- Phase : ${phaseDemain.nom}
+- Énergie aujourd'hui : ${energie}/5
+- Douleur pelvienne aujourd'hui : ${douleur}/5
+- Plaque vibrante demain : ${phaseDemain.court !== 'mens' && douleur < 3 ? 'oui' : 'non'}
+
+Format JSON :
 {
-  "heure_reveil": "5h00",
   "items": [
-    { "icone": "💧", "label": "Prépare ton verre d'eau", "detail": "Pose-le sur ta table de nuit ce soir" },
-    { "icone": "💊", "label": "Prépare tes compléments", "detail": "Magnésium + D3 + Oméga-3 à côté du verre" }
+    { "icone": "💧", "label": "Pose ton verre d'eau", "detail": "Sur ta table de nuit, premier geste demain à 5h avant même d'ouvrir les yeux" },
+    { "icone": "💊", "label": "Prépare tes compléments", "detail": "Magnésium bisglycinate + Vitamine D3 + Oméga-3 à côté du verre" }
   ]
 }
 
-Inclure 5 à 7 items concrets : verre d'eau, compléments, tenue, équipement (tapis/haltères/plaque si pertinent), nutrition matinale. Sois précise et bienveillante.`;
+Inclure 5 à 7 items très concrets et personnalisés : verre d'eau, compléments, tenue adaptée à la phase, équipement à sortir, rappel pour le sommeil si énergie basse. Parle-lui directement, comme une amie bienveillante.`;
 
   const result = await callClaude(prompt);
 
@@ -918,18 +945,22 @@ async function genererBilan() {
   const nbSeances = state.seances ? state.seances.length : 0;
   const streak = state.streak || 0;
 
-  const prompt = `Tu es coach bien-être bienveillante. Génère un bilan mensuel chaleureux et motivant.
-Données des 28 derniers jours:
-- Séances complétées: ${nbSeances}
-- Streak habitudes: ${streak} jours
-- Journal: ${resumeJournal || 'Pas encore de données'}
+  const prenomB = state.prenom || 'toi';
+  const prompt = `Tu es coach santé personnel pour ${prenomB}, monteuse vidéo de 31-40 ans.
+Elle a de l'endométriose et des kystes ovariens. Elle reprend le sport après plus d'un an de sédentarité.
+Son objectif : maigrir progressivement et prendre soin d'elle durablement.
 
-Écris un bilan en 3 paragraphes courts:
-1. Ce qui s'est bien passé (célèbre les efforts)
-2. Ce qu'on remarque (patterns énergie/douleur)
-3. Ce qu'on ajuste pour le mois prochain
+Voici ses données des 28 derniers jours :
+- Séances complétées : ${nbSeances}
+- Streak habitudes du matin : ${streak} jours de suite
+- Journal : ${resumeJournal || 'Pas encore de données'}
 
-Ton chaleureux, direct, sans condescendance. Max 200 mots.`;
+Écris-lui un bilan mensuel personnalisé en 3 paragraphes courts :
+1. Célèbre ses efforts concrets (même les petits)
+2. Ce que tu remarques sur ses patterns énergie/douleur/cycle
+3. Ce qu'on ajuste ensemble pour le mois prochain — sois précise
+
+Ton : chaleureux, direct, comme une amie coach. Jamais condescendant. Parle-lui à la deuxième personne. Max 200 mots.`;
 
   const result = await callClaude(prompt);
   if (result) {
