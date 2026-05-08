@@ -809,7 +809,7 @@ function getSeanceStatique(jour, phase, plaque) {
 
   const exercices = seances[phase.court] || seances.mens;
   const data = { titre: 'Séance ' + phase.nom, duree_totale: exercices.length * 4 + ' min', exercices };
-  return '<p style="font-size:11px;color:var(--gris);margin-bottom:10px;background:var(--creme);padding:8px;border-radius:6px;">💡 Configure ta clé API dans Réglages pour une séance générée par IA selon ton énergie du jour</p>' + renderSeance(data);
+  return renderSeance(data);
 }
 
 function toggleEx(header) {
