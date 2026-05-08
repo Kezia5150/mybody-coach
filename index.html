@@ -437,9 +437,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <input type="number" class="config-input" id="cfg-duree-regles" value="7" min="2" max="10">
     </div>
     <div class="config-field">
-      <label class="config-label">Clé API Anthropic <span style="font-size:11px;color:var(--gris);font-weight:400;">(pour les séances IA)</span></label>
-      <input type="password" class="config-input" id="cfg-api-key" placeholder="sk-ant-…">
-      <p class="api-note">Ta clé API reste stockée uniquement dans ton navigateur (localStorage). Elle n'est jamais envoyée ailleurs que vers api.anthropic.com. Obtiens-la sur console.anthropic.com → API Keys.</p>
+      <label class="config-label">Clé API Gemini <span style="font-size:11px;color:var(--gris);font-weight:400;">(gratuite — séances IA personnalisées)</span></label>
+      <input type="password" class="config-input" id="cfg-api-key" placeholder="AIza…">
+      <p class="api-note">Ta clé API reste stockée uniquement dans ton navigateur. Elle n'est jamais envoyée ailleurs que vers l'API Google. Obtiens-la gratuitement sur aistudio.google.com → "Get API key".</p>
     </div>
     <button class="config-btn" onclick="saveConfig()">Enregistrer mon profil</button>
     <p class="saved-msg" id="cfg-saved">✓ Profil enregistré</p>
@@ -479,7 +479,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 </div><!-- end main -->
 
 <script>
-const API_URL = 'https://api.anthropic.com/v1/messages';
+const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 let state = {
   prenom: '', dateRegles: null, dureeRegles: 7, apiKey: '',
   habitudes: {}, streak: 0, journal: {}, poids: [], seances: [],
@@ -681,13 +681,14 @@ function buildHeatGrid() {
 async function callClaude(prompt) {
   if (!state.apiKey) return null;
   try {
-    const res = await fetch(API_URL, {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + state.apiKey;
+    const res = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': state.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
     const data = await res.json();
-    return data.content && data.content[0] ? data.content[0].text : null;
+    return data.candidates && data.candidates[0] ? data.candidates[0].content.parts[0].text : null;
   } catch(e) { return null; }
 }
 
