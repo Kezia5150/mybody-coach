@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MyBody Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23850e35'/><text y='72' x='50' text-anchor='middle' font-size='60'>🌸</text></svg>">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MyBody Coach">
 <meta name="theme-color" content="#850e35">
-<meta name="theme-color" content="#850e35">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
@@ -28,48 +27,43 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(--text); min-height: 100vh; }
 
-/* NAV */
-.nav { background: var(--bordeaux); padding: 0; position: sticky; top: 0; z-index: 100; }
+.nav { background: var(--bordeaux); padding: 0; position: sticky; top: 0; z-index: 9999; -webkit-transform: translateZ(0); transform: translateZ(0); }
 .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--creme); padding: 14px 0; }
-.nav-tabs { display: flex; gap: 0; }
-.nav-tab { padding: 16px 14px; font-size: 12px; color: var(--rose-pale); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; }
+.nav-tabs { display: flex; }
+.nav-tab { padding: 16px 12px; font-size: 12px; color: var(--rose-pale); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; }
 .nav-tab.active { color: var(--creme); border-bottom-color: var(--rose-pale); }
-.nav-tab:hover { color: var(--creme); }
 .hamburger { display: none; background: none; border: none; color: var(--creme); font-size: 22px; cursor: pointer; padding: 14px 0; }
-@media (max-width: 600px) {
-  .nav-tabs { display: none; flex-direction: column; position: absolute; top: 50px; left: 0; right: 0; background: var(--bordeaux); z-index: 200; }
+@media (max-width: 650px) {
+  .nav-tabs { display: none; flex-direction: column; position: absolute; top: 50px; left: 0; right: 0; background: var(--bordeaux); z-index: 9998; }
   .nav-tabs.open { display: flex; }
   .nav-tab { padding: 14px 20px; border-bottom: 0.5px solid rgba(255,196,196,0.2); border-left: none; border-right: none; border-top: none; }
   .hamburger { display: block; }
 }
 
-/* LAYOUT */
 .main { max-width: 900px; margin: 0 auto; padding: 20px 16px 80px; }
 .page { display: none; }
 .page.active { display: block; }
 
-/* CARDS */
 .card { background: var(--white); border-radius: var(--radius); border: 0.5px solid var(--rose-pale); padding: 18px; margin-bottom: 14px; }
 .card-title { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin: 0 0 4px; text-transform: uppercase; letter-spacing: 0.04em; }
 .card-sub { font-size: 12px; color: var(--gris); margin: 0 0 14px; }
 
-/* HERO */
 .hero { background: var(--bordeaux); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }
-.hero-greeting { font-size: 13px; color: var(--rose-pale); margin: 0 0 4px; }
-.hero-title { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--creme); margin: 0 0 10px; }
+.hero-greeting { font-size: 13px; color: var(--rose-pale); margin: 0 0 2px; }
+.hero-name { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--creme); margin: 0 0 6px; }
+.hero-motiv { font-size: 13px; color: var(--rose-pale); margin: 0 0 10px; font-style: italic; min-height: 18px; }
 .phase-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--rose-pale); }
 .phase-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rose); }
 .cycle-track { margin-top: 14px; display: flex; gap: 3px; }
 .ct-seg { height: 4px; border-radius: 2px; }
 
-/* HABITUDES */
-.habit-list { display: flex; flex-direction: column; gap: 0; }
+.habit-list { display: flex; flex-direction: column; }
 .habit-item { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 0.5px solid var(--rose-pale); cursor: pointer; }
 .habit-item:last-child { border-bottom: none; }
-.hcheck { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--rose); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.hcheck { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--rose); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
 .hcheck.done { background: var(--bordeaux); border-color: var(--bordeaux); }
-.hcheck.done::after { content: '✓'; font-size: 11px; color: var(--creme); }
+.hcheck.done::after { content: '✓'; font-size: 12px; color: var(--creme); }
 .habit-label { flex: 1; font-size: 14px; color: var(--text); }
 .habit-time { font-size: 11px; color: var(--gris); }
 .streak-bar { display: flex; gap: 8px; margin-top: 12px; }
@@ -77,73 +71,85 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .streak-num { font-size: 22px; font-weight: 500; color: var(--bordeaux); }
 .streak-lbl { font-size: 10px; color: var(--gris); margin-top: 2px; }
 
-/* SEANCE */
 .seance-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .seance-phase-tag { background: var(--rose-pale); color: var(--bordeaux); font-size: 11px; padding: 3px 10px; border-radius: 20px; }
-.seance-loading { text-align: center; padding: 20px; }
-.seance-loading .spinner { width: 28px; height: 28px; border: 2px solid var(--rose-pale); border-top-color: var(--bordeaux); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.seance-loading p { font-size: 13px; color: var(--gris); }
 .exercise-block { border: 0.5px solid var(--rose-pale); border-radius: var(--radius-sm); margin-bottom: 10px; overflow: hidden; }
 .ex-header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; background: var(--creme); }
-.ex-num { width: 24px; height: 24px; border-radius: 50%; background: var(--bordeaux); color: var(--creme); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ex-num { width: 26px; height: 26px; border-radius: 50%; background: var(--bordeaux); color: var(--creme); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .ex-name { flex: 1; font-size: 14px; font-weight: 500; color: var(--bordeaux); }
 .ex-dur { font-size: 12px; color: var(--gris); }
 .ex-body { padding: 14px; background: var(--white); display: none; }
 .ex-body.open { display: block; }
+.ex-svg { margin-bottom: 12px; text-align: center; }
 .ex-position { font-size: 12px; color: var(--bordeaux); font-weight: 500; margin-bottom: 6px; }
 .ex-steps { list-style: none; margin-bottom: 10px; }
-.ex-steps li { font-size: 13px; color: var(--text); padding: 4px 0; padding-left: 16px; position: relative; line-height: 1.5; }
+.ex-steps li { font-size: 13px; color: var(--text); padding: 4px 0 4px 16px; position: relative; line-height: 1.5; }
 .ex-steps li::before { content: '→'; position: absolute; left: 0; color: var(--rose); }
 .ex-endo { background: var(--rose-pale); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 12px; color: var(--bordeaux); margin-bottom: 10px; }
 .ex-endo span { font-weight: 500; }
 .timer-btn { background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); padding: 9px 18px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; width: 100%; }
-.timer-btn:hover { background: #6b0b29; }
 .timer-display { text-align: center; padding: 10px; font-size: 28px; font-weight: 500; color: var(--bordeaux); display: none; }
 .timer-display.running { display: block; }
+.music-bar { display: flex; align-items: center; justify-content: space-between; background: var(--creme); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: 12px; }
+.music-label { font-size: 12px; color: var(--bordeaux); }
+.music-btn { background: none; border: none; cursor: pointer; font-size: 18px; }
 
-/* JOURNAL */
+.breath-wrap { background: var(--white); border: 0.5px solid var(--rose-pale); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; display: flex; flex-direction: column; align-items: center; }
+.breath-container { position: relative; width: 180px; height: 180px; margin-bottom: 16px; }
+.breath-svg { width: 180px; height: 180px; }
+.breath-cycles { display: flex; gap: 8px; margin-bottom: 16px; }
+.breath-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose-pale); transition: background 0.4s; }
+.breath-dot.done { background: var(--bordeaux); }
+.breath-btns { display: flex; gap: 10px; width: 100%; max-width: 260px; }
+.breath-btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); border: none; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.breath-btn-start { background: var(--bordeaux); color: var(--creme); }
+.breath-btn-stop { background: var(--creme); color: var(--bordeaux); border: 0.5px solid var(--rose-pale); }
+
 .journal-field { margin-bottom: 16px; }
 .jlabel { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin-bottom: 6px; display: block; }
 .jlabel-sub { font-size: 11px; color: var(--gris); font-weight: 400; }
 .slider-wrap { display: flex; align-items: center; gap: 10px; }
 .slider-wrap input[type=range] { flex: 1; accent-color: var(--bordeaux); }
 .slider-val { font-size: 15px; font-weight: 500; color: var(--bordeaux); min-width: 20px; text-align: center; }
-.mood-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.mood-btn { flex: 1; min-width: 70px; padding: 8px 6px; border-radius: var(--radius-sm); border: 1px solid var(--rose-pale); background: var(--white); font-size: 12px; color: var(--gris); cursor: pointer; text-align: center; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.mood-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.mood-btn { flex: 1; min-width: 60px; padding: 8px 4px; border-radius: var(--radius-sm); border: 1px solid var(--rose-pale); background: var(--white); font-size: 11px; color: var(--gris); cursor: pointer; text-align: center; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
 .mood-btn.selected { background: var(--bordeaux); color: var(--creme); border-color: var(--bordeaux); }
-.weight-input { width: 100%; padding: 10px 14px; border: 1px solid var(--rose-pale); border-radius: var(--radius-sm); font-size: 15px; font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); }
-.weight-input:focus { outline: none; border-color: var(--bordeaux); }
-.note-textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--rose-pale); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); min-height: 90px; resize: vertical; line-height: 1.5; }
-.note-textarea:focus { outline: none; border-color: var(--bordeaux); }
-.save-btn { width: 100%; padding: 13px; background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 6px; }
-.save-btn:hover { background: #6b0b29; }
+.weight-input, .config-input, .note-textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--rose-pale); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); }
+.note-textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
+.weight-input:focus, .config-input:focus, .note-textarea:focus { outline: none; border-color: var(--bordeaux); }
+.save-btn, .config-btn { width: 100%; padding: 13px; background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 6px; }
+.save-btn:hover, .config-btn:hover { background: #6b0b29; }
 .saved-msg { text-align: center; font-size: 13px; color: var(--bordeaux); margin-top: 10px; display: none; }
 
-/* DEMAIN */
-.demain-loading { text-align: center; padding: 20px; }
-.demain-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--rose-pale); }
-.demain-item:last-child { border-bottom: none; }
-.demain-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--rose-pale); color: var(--bordeaux); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
-.demain-text { flex: 1; }
-.demain-label { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin: 0 0 2px; }
-.demain-detail { font-size: 12px; color: var(--gris); margin: 0; line-height: 1.4; }
+.journal-entry { border-bottom: 0.5px solid var(--rose-pale); padding: 12px 0; }
+.journal-entry:last-child { border-bottom: none; }
+.je-date { font-size: 12px; font-weight: 500; color: var(--bordeaux); margin: 0 0 4px; }
+.je-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.je-tag { font-size: 11px; background: var(--rose-pale); color: var(--bordeaux); padding: 2px 8px; border-radius: 10px; }
+.je-note { font-size: 12px; color: var(--gris); font-style: italic; margin: 4px 0 0; }
 
-/* CYCLE PAGE */
-.cycle-phases { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-@media (max-width: 500px) { .cycle-phases { grid-template-columns: 1fr; } }
-.phase-card { border-radius: var(--radius-sm); border: 0.5px solid var(--rose-pale); padding: 14px; background: var(--white); cursor: pointer; transition: all 0.2s; }
+.compl-section { margin-bottom: 14px; }
+.compl-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.compl-time { font-size: 12px; font-weight: 500; color: var(--bordeaux); background: var(--rose-pale); padding: 3px 10px; border-radius: 20px; }
+.compl-note { font-size: 11px; color: var(--gris); }
+.compl-list { display: flex; flex-direction: column; gap: 6px; }
+.compl-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--creme); border-radius: var(--radius-sm); }
+.compl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
+.compl-name { font-size: 13px; font-weight: 500; color: var(--bordeaux); flex: 1; }
+.compl-desc { font-size: 11px; color: var(--gris); }
+
+.phase-card { border-radius: var(--radius-sm); border: 0.5px solid var(--rose-pale); padding: 14px; background: var(--white); margin-bottom: 8px; }
 .phase-card.current { border: 2px solid var(--bordeaux); background: var(--creme); }
-.phase-card:hover { background: var(--creme); }
 .phase-card-label { font-size: 10px; font-weight: 500; color: var(--gris); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 4px; }
 .phase-card.current .phase-card-label { color: var(--rose); }
 .phase-card-name { font-size: 15px; font-weight: 500; color: var(--bordeaux); margin: 0 0 4px; }
 .phase-card-days { font-size: 12px; color: var(--gris); margin: 0 0 6px; }
-.phase-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.phase-tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .ptag { background: var(--rose-pale); color: var(--bordeaux); font-size: 10px; padding: 2px 7px; border-radius: 10px; }
 .phase-card.current .ptag { background: var(--bordeaux); color: var(--creme); }
-.douleur-grid { display: flex; gap: 6px; flex-wrap: wrap; }
-.douleur-day { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; border: 0.5px solid var(--rose-pale); background: var(--white); color: var(--gris); cursor: pointer; }
+
+.douleur-grid { display: flex; gap: 5px; flex-wrap: wrap; }
+.douleur-day { width: 28px; height: 28px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; border: 0.5px solid var(--rose-pale); background: var(--white); color: var(--gris); }
 .douleur-day.d0 { background: var(--white); }
 .douleur-day.d1 { background: #ffe4e9; color: var(--bordeaux); }
 .douleur-day.d2 { background: #ffccd4; color: var(--bordeaux); }
@@ -151,48 +157,46 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .douleur-day.d4 { background: #f07b90; color: white; }
 .douleur-day.d5 { background: var(--bordeaux); color: white; }
 
-/* PROGRESSION */
 .prog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .prog-stat { background: var(--creme); border-radius: var(--radius-sm); padding: 14px; text-align: center; }
 .prog-num { font-size: 28px; font-weight: 500; color: var(--bordeaux); }
 .prog-lbl { font-size: 11px; color: var(--gris); margin-top: 2px; }
 .heat-grid { display: flex; flex-wrap: wrap; gap: 3px; }
-.heat-cell { width: 16px; height: 16px; border-radius: 3px; background: var(--rose-pale); }
+.heat-cell { width: 16px; height: 16px; border-radius: 3px; }
 .heat-cell.done { background: var(--bordeaux); }
 .heat-cell.rest { background: var(--rose-pale); opacity: 0.4; }
+.poids-btns { display: flex; gap: 8px; margin-bottom: 10px; }
+.poids-btn { flex: 1; padding: 7px; border-radius: var(--radius-sm); border: 1px solid var(--rose-pale); background: var(--white); font-size: 12px; color: var(--gris); cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.poids-btn.active { background: var(--bordeaux); color: var(--creme); border-color: var(--bordeaux); }
+.poids-canvas { width: 100%; height: 160px; }
 
-/* CONFIG */
-.config-field { margin-bottom: 14px; }
-.config-label { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin-bottom: 6px; display: block; }
-.config-input { width: 100%; padding: 10px 14px; border: 1px solid var(--rose-pale); border-radius: var(--radius-sm); font-size: 14px; font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--text); }
-.config-input:focus { outline: none; border-color: var(--bordeaux); }
-.config-btn { width: 100%; padding: 13px; background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; }
-.drive-section { background: var(--creme); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px; }
-.drive-title { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin: 0 0 6px; }
-.drive-desc { font-size: 12px; color: var(--gris); margin: 0 0 10px; line-height: 1.5; }
-.drive-btn { padding: 9px 18px; background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
-.api-note { font-size: 11px; color: var(--gris); background: var(--creme); padding: 10px; border-radius: var(--radius-sm); margin-top: 10px; line-height: 1.5; }
 .drive-status { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 10px; font-size: 13px; }
 .drive-status.connected { background: #e8f5e9; color: #2e7d32; border: 0.5px solid #a5d6a7; }
 .drive-status.disconnected { background: var(--creme); color: var(--gris); border: 0.5px solid var(--rose-pale); }
-.drive-status i { font-size: 18px; }
 .gdrive-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px; background: white; color: #444; border: 1px solid #ddd; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 10px; }
-.gdrive-btn:hover { background: #f5f5f5; }
-.gdrive-btn img { width: 18px; height: 18px; }
+.drive-section { background: var(--creme); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px; }
+.drive-title { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin: 0 0 6px; }
+.drive-desc { font-size: 12px; color: var(--gris); margin: 0 0 10px; line-height: 1.5; }
+.drive-btn { padding: 9px 18px; background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.api-note { font-size: 11px; color: var(--gris); background: var(--creme); padding: 10px; border-radius: var(--radius-sm); margin-top: 8px; line-height: 1.5; }
+.config-field { margin-bottom: 14px; }
+.config-label { font-size: 13px; font-weight: 500; color: var(--bordeaux); margin-bottom: 6px; display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { width: 28px; height: 28px; border: 2px solid var(--rose-pale); border-top-color: var(--bordeaux); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
 </style>
 </head>
 <body>
-
 <nav class="nav">
   <div class="nav-inner">
     <div class="nav-logo">MyBody Coach</div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
     <div class="nav-tabs" id="navTabs">
       <button class="nav-tab active" onclick="showPage('dashboard')">Accueil</button>
-      <button class="nav-tab" onclick="showPage('cycle')">Mon cycle</button>
+      <button class="nav-tab" onclick="showPage('cycle')">Cycle</button>
+      <button class="nav-tab" onclick="showPage('complements')">Compléments</button>
       <button class="nav-tab" onclick="showPage('journal')">Journal</button>
       <button class="nav-tab" onclick="showPage('demain')">Demain</button>
-      <button class="nav-tab" onclick="showPage('progression')">Progression</button>
+      <button class="nav-tab" onclick="showPage('progression')">Stats</button>
       <button class="nav-tab" onclick="showPage('config')">Réglages</button>
     </div>
   </div>
@@ -200,17 +204,18 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 
 <div class="main">
 
-<!-- ===== DASHBOARD ===== -->
+<!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
   <div class="hero">
     <p class="hero-greeting" id="hero-greeting">Bonjour,</p>
-    <h1 class="hero-title" id="hero-name">Chargement…</h1>
-    <div class="phase-badge"><span class="phase-dot"></span><span id="hero-phase">Phase en cours</span></div>
+    <h1 class="hero-name" id="hero-name">MyBody Coach</h1>
+    <p class="hero-motiv" id="hero-motiv"></p>
+    <div class="phase-badge"><span class="phase-dot"></span><span id="hero-phase">–</span></div>
     <div class="cycle-track">
-      <div class="ct-seg" id="ct1" style="background:rgba(255,255,255,0.85);"></div>
-      <div class="ct-seg" id="ct2" style="background:rgba(255,255,255,0.3);"></div>
-      <div class="ct-seg" id="ct3" style="background:rgba(255,255,255,0.2);"></div>
-      <div class="ct-seg" id="ct4" style="background:rgba(255,255,255,0.12);"></div>
+      <div class="ct-seg" id="ct1" style="width:25%"></div>
+      <div class="ct-seg" id="ct2" style="width:20%"></div>
+      <div class="ct-seg" id="ct3" style="width:14%"></div>
+      <div class="ct-seg" id="ct4" style="width:41%"></div>
     </div>
   </div>
 
@@ -218,143 +223,144 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <p class="card-title">Habitudes du matin</p>
     <p class="card-sub">Coche chaque habitude dès que tu la fais</p>
     <div class="habit-list">
-      <div class="habit-item" onclick="toggleHabit(this, 'eau')">
-        <div class="hcheck" id="h-eau"></div>
-        <span class="habit-label">💧 Eau tiède</span>
-        <span class="habit-time">1 min</span>
-      </div>
-      <div class="habit-item" onclick="toggleHabit(this, 'respiration')">
-        <div class="hcheck" id="h-respiration"></div>
-        <span class="habit-label">🌬 Respiration 4-4</span>
-        <span class="habit-time">2 min</span>
-      </div>
-      <div class="habit-item" onclick="toggleHabit(this, 'etirements')">
-        <div class="hcheck" id="h-etirements"></div>
-        <span class="habit-label">🧘 Étirements doux</span>
-        <span class="habit-time">5 min</span>
-      </div>
-      <div class="habit-item" onclick="toggleHabit(this, 'complements')">
-        <div class="hcheck" id="h-complements"></div>
-        <span class="habit-label">💊 Compléments alimentaires</span>
-        <span class="habit-time">30 s</span>
-      </div>
-      <div class="habit-item" onclick="toggleHabit(this, 'dents')">
-        <div class="hcheck" id="h-dents"></div>
-        <span class="habit-label">🪥 Brosser les dents</span>
-        <span class="habit-time">2 min</span>
-      </div>
-      <div class="habit-item" onclick="toggleHabit(this, 'cheveux')">
-        <div class="hcheck" id="h-cheveux"></div>
-        <span class="habit-label">💆 Brosser les cheveux</span>
-        <span class="habit-time">1 min</span>
-      </div>
+      <div class="habit-item" onclick="toggleHabit(this,'eau')"><div class="hcheck" id="h-eau"></div><span class="habit-label">💧 Eau tiède</span><span class="habit-time">1 min</span></div>
+      <div class="habit-item" onclick="toggleHabit(this,'respiration')"><div class="hcheck" id="h-respiration"></div><span class="habit-label">🌬 Respiration 4-4-4-4</span><span class="habit-time">5 min</span></div>
+      <div class="habit-item" onclick="toggleHabit(this,'etirements')"><div class="hcheck" id="h-etirements"></div><span class="habit-label">🧘 Étirements doux</span><span class="habit-time">5 min</span></div>
+      <div class="habit-item" onclick="toggleHabit(this,'complements')"><div class="hcheck" id="h-complements"></div><span class="habit-label">💊 Compléments (Oméga-3 + Magnésium)</span><span class="habit-time">30 s</span></div>
+      <div class="habit-item" onclick="toggleHabit(this,'ecriture')"><div class="hcheck" id="h-ecriture"></div><span class="habit-label">✍️ Écrire 10 min</span><span class="habit-time">10 min</span></div>
+      <div class="habit-item" onclick="toggleHabit(this,'dents')"><div class="hcheck" id="h-dents"></div><span class="habit-label">🪥 Brosser les dents</span><span class="habit-time">2 min</span></div>
+      <div class="habit-item" onclick="toggleHabit(this,'cheveux')"><div class="hcheck" id="h-cheveux"></div><span class="habit-label">💆 Brosser les cheveux</span><span class="habit-time">1 min</span></div>
     </div>
     <div class="streak-bar">
       <div class="streak-box"><div class="streak-num" id="streak-num">0</div><div class="streak-lbl">jours de suite</div></div>
-      <div class="streak-box"><div class="streak-num" id="done-num">0/4</div><div class="streak-lbl">faites aujourd'hui</div></div>
+      <div class="streak-box"><div class="streak-num" id="done-num">0/7</div><div class="streak-lbl">faites aujourd'hui</div></div>
       <div class="streak-box"><div class="streak-num" id="phase-day-num">J?</div><div class="streak-lbl">jour du cycle</div></div>
     </div>
   </div>
 
+  <!-- RESPIRATION -->
+  <div class="breath-wrap">
+    <p class="card-title" style="margin-bottom:14px;align-self:flex-start;">Guide respiration 4-4-4-4</p>
+    <div class="breath-container">
+      <svg class="breath-svg" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+        <defs><clipPath id="cc"><circle cx="90" cy="90" r="82"/></clipPath></defs>
+        <circle cx="90" cy="90" r="82" fill="#fff5e4" stroke="#ffc4c4" stroke-width="1.5"/>
+        <g clip-path="url(#cc)">
+          <path id="wave1" fill="#ffc4c4" opacity="0.6"/>
+          <path id="wave2" fill="#ee6983" opacity="0.4"/>
+          <path id="wave3" fill="#850e35" opacity="0.2"/>
+        </g>
+        <circle cx="90" cy="90" r="82" fill="none" stroke="#ffc4c4" stroke-width="1.5"/>
+        <text id="svg-phase" x="90" y="82" text-anchor="middle" font-size="13" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
+        <text id="svg-count" x="90" y="112" text-anchor="middle" font-size="38" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
+      </svg>
+    </div>
+    <div class="breath-cycles">
+      <div class="breath-dot" id="bd0"></div><div class="breath-dot" id="bd1"></div>
+      <div class="breath-dot" id="bd2"></div><div class="breath-dot" id="bd3"></div>
+    </div>
+    <div class="breath-btns">
+      <button class="breath-btn breath-btn-start" id="breath-start" onclick="startBreath()">Démarrer</button>
+      <button class="breath-btn breath-btn-stop" id="breath-stop" onclick="stopBreath()" style="display:none">Arrêter</button>
+    </div>
+  </div>
+
+  <!-- SEANCE -->
   <div class="card">
     <div class="seance-header">
-      <div>
-        <p class="card-title">Séance du jour</p>
-        <p class="card-sub" id="seance-subtitle">Générée par IA selon ta phase</p>
-      </div>
+      <div><p class="card-title">Séance du jour</p><p class="card-sub" id="seance-sub">Adaptée à ta phase</p></div>
       <span class="seance-phase-tag" id="seance-tag">–</span>
     </div>
-    <div id="seance-container">
-      <div class="seance-loading" id="seance-loading">
-        <div class="spinner"></div>
-        <p>Claude prépare ta séance…</p>
-      </div>
-      <div id="seance-content"></div>
+    <div class="music-bar">
+      <span class="music-label">🎵 Musique de séance</span>
+      <button class="music-btn" id="music-toggle" onclick="toggleSeanceMusic()" title="Musique">▶</button>
     </div>
+    <div id="seance-content"></div>
   </div>
 </div>
 
-<!-- ===== CYCLE ===== -->
+<!-- CYCLE -->
 <div class="page" id="page-cycle">
   <div class="card">
     <p class="card-title">Mes 4 phases</p>
-    <p class="card-sub">Basées sur un cycle de 28 jours — adapté à ton endométriose</p>
-    <div class="cycle-phases">
-      <div class="phase-card" id="phase-card-mens">
-        <p class="phase-card-label">Tu es ici ✦</p>
-        <p class="phase-card-name">Phase menstruelle</p>
-        <p class="phase-card-days">J1 – J7</p>
-        <div class="phase-card-tags">
-          <span class="ptag">Yoga doux</span><span class="ptag">Respiration</span><span class="ptag">Shavasana</span>
-        </div>
-      </div>
-      <div class="phase-card" id="phase-card-foll">
-        <p class="phase-card-label">Prochaine</p>
-        <p class="phase-card-name">Phase folliculaire</p>
-        <p class="phase-card-days">J8 – J13</p>
-        <div class="phase-card-tags">
-          <span class="ptag">Pilates mur</span><span class="ptag">Tai chi</span><span class="ptag">Vibration 5min</span>
-        </div>
-      </div>
-      <div class="phase-card" id="phase-card-ovu">
-        <p class="phase-card-label">Phase 3</p>
-        <p class="phase-card-name">Phase ovulatoire</p>
-        <p class="phase-card-days">J14 – J17</p>
-        <div class="phase-card-tags">
-          <span class="ptag">Cardio</span><span class="ptag">Danse</span><span class="ptag">Haltères</span><span class="ptag">Vibration</span>
-        </div>
-      </div>
-      <div class="phase-card" id="phase-card-lut">
-        <p class="phase-card-label">Phase 4</p>
-        <p class="phase-card-name">Phase lutéale</p>
-        <p class="phase-card-days">J18 – J28</p>
-        <div class="phase-card-tags">
-          <span class="ptag">Pilates</span><span class="ptag">Stretching</span><span class="ptag">Marche</span>
-        </div>
-      </div>
-    </div>
+    <p class="card-sub">Basées sur un cycle de 28 jours — adaptées à ton endométriose</p>
+    <div id="phase-cards"></div>
   </div>
-
   <div class="card">
     <p class="card-title">Historique douleurs pelviennes</p>
-    <p class="card-sub">Visualisation de tes douleurs enregistrées dans le journal — en lecture seule</p>
+    <p class="card-sub">Enregistre dans le Journal → les douleurs s'affichent ici</p>
     <div class="douleur-grid" id="douleur-grid"></div>
-    <div style="display:flex; gap:6px; margin-top:10px; align-items:center; flex-wrap:wrap;">
-      <span style="font-size:11px; color:var(--gris);">Légende :</span>
-      <span style="background:#fff; border:0.5px solid var(--rose-pale); color:var(--gris); font-size:10px; padding:2px 7px; border-radius:6px;">0 aucune</span>
-      <span style="background:#ffccd4; color:var(--bordeaux); font-size:10px; padding:2px 7px; border-radius:6px;">2 modérée</span>
-      <span style="background:var(--bordeaux); color:white; font-size:10px; padding:2px 7px; border-radius:6px;">5 intense</span>
+    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+      <span style="font-size:11px;color:var(--gris);">Légende :</span>
+      <span style="background:#fff;border:0.5px solid var(--rose-pale);color:var(--gris);font-size:10px;padding:2px 7px;border-radius:6px;">0 aucune</span>
+      <span style="background:#ffccd4;color:var(--bordeaux);font-size:10px;padding:2px 7px;border-radius:6px;">2 modérée</span>
+      <span style="background:var(--bordeaux);color:white;font-size:10px;padding:2px 7px;border-radius:6px;">5 intense</span>
     </div>
-    <p style="font-size:11px;color:var(--gris);margin-top:10px;">Pour saisir ta douleur du jour, va dans <strong style="color:var(--bordeaux);">Journal →</strong></p>
   </div>
 </div>
 
-<!-- ===== JOURNAL ===== -->
+<!-- COMPLEMENTS -->
+<div class="page" id="page-complements">
+  <div class="card">
+    <p class="card-title">Mes compléments alimentaires</p>
+    <p class="card-sub">Répartis selon ton jeûne intermittent 20h–midi</p>
+
+    <div class="compl-section">
+      <div class="compl-header">
+        <span class="compl-time">🌅 Matin — avec l'eau tiède</span>
+        <span class="compl-note">(ne cassent pas le jeûne)</span>
+      </div>
+      <div class="compl-list">
+        <div class="compl-item"><div class="compl-dot"></div><div><p class="compl-name">Oméga-3</p><p class="compl-desc">Anti-inflammatoire puissant · bénéfique pour l'endométriose · ok à jeun en petite dose</p></div></div>
+        <div class="compl-item"><div class="compl-dot"></div><div><p class="compl-name">Magnésium bisglycinate</p><p class="compl-desc">Réduit les crampes et la fatigue · favorise la relaxation musculaire · ne casse pas le jeûne</p></div></div>
+      </div>
+    </div>
+
+    <div class="compl-section">
+      <div class="compl-header">
+        <span class="compl-time">☀️ Midi — avec ton premier repas</span>
+      </div>
+      <div class="compl-list">
+        <div class="compl-item"><div class="compl-dot"></div><div><p class="compl-name">Créatine</p><p class="compl-desc">Énergie musculaire et récupération · à prendre avec des glucides · casse le jeûne</p></div></div>
+        <div class="compl-item"><div class="compl-dot"></div><div><p class="compl-name">Collagène</p><p class="compl-desc">Santé des articulations et de la peau · protéine donc casse le jeûne · prendre avec vitamine C</p></div></div>
+        <div class="compl-item"><div class="compl-dot"></div><div><p class="compl-name">Zinc</p><p class="compl-desc">Immunité et équilibre hormonal · toujours avec la nourriture pour éviter les nausées</p></div></div>
+      </div>
+    </div>
+
+    <div class="compl-section">
+      <div class="compl-header">
+        <span class="compl-time">🌙 Soir — avant de dormir</span>
+      </div>
+      <div class="compl-list">
+        <div class="compl-item"><div class="compl-dot"></div><div><p class="compl-name">Potassium</p><p class="compl-desc">Équilibre électrolytique · santé musculaire et cardiaque · favorise un bon sommeil</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOURNAL -->
 <div class="page" id="page-journal">
   <div class="card">
     <p class="card-title">Journal du soir</p>
     <p class="card-sub" id="journal-date">À remplir le soir — nourrit ta séance de demain</p>
-
     <div class="journal-field">
       <label class="jlabel">Énergie d'aujourd'hui <span class="jlabel-sub">— adapte ta séance de demain</span></label>
       <div class="slider-wrap">
-        <span style="font-size:12px; color:var(--gris);">Épuisée</span>
+        <span style="font-size:12px;color:var(--gris);">Épuisée</span>
         <input type="range" min="1" max="5" value="3" id="sl-energie" oninput="document.getElementById('val-energie').textContent=this.value">
-        <span style="font-size:12px; color:var(--gris);">Au top</span>
+        <span style="font-size:12px;color:var(--gris);">Au top</span>
         <span class="slider-val" id="val-energie">3</span>
       </div>
     </div>
-
     <div class="journal-field">
       <label class="jlabel">Douleur pelvienne <span class="jlabel-sub">— endométriose</span></label>
       <div class="slider-wrap">
-        <span style="font-size:12px; color:var(--gris);">Aucune</span>
+        <span style="font-size:12px;color:var(--gris);">Aucune</span>
         <input type="range" min="0" max="5" value="0" id="sl-douleur" oninput="document.getElementById('val-douleur').textContent=this.value">
-        <span style="font-size:12px; color:var(--gris);">Intense</span>
+        <span style="font-size:12px;color:var(--gris);">Intense</span>
         <span class="slider-val" id="val-douleur">0</span>
       </div>
     </div>
-
     <div class="journal-field">
       <label class="jlabel">Comment s'est passée ta journée ?</label>
       <div class="mood-row">
@@ -365,37 +371,35 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
         <button class="mood-btn" onclick="selectMood(this)" data-mood="excellente">✨ Top</button>
       </div>
     </div>
-
     <div class="journal-field">
       <label class="jlabel">Poids <span class="jlabel-sub">— optionnel</span></label>
-      <input type="number" class="weight-input" id="inp-poids" placeholder="ex: 65.2 kg" step="0.1" min="30" max="200">
+      <input type="number" class="weight-input" id="inp-poids" placeholder="ex: 65.2" step="0.1" min="30" max="200">
     </div>
-
     <div class="journal-field">
-      <label class="jlabel">Note libre <span class="jlabel-sub">— l'IA lit ça pour mieux t'adapter</span></label>
-      <textarea class="note-textarea" id="inp-note" placeholder="Comment tu te sens aujourd'hui ? Quelque chose à signaler ?"></textarea>
+      <label class="jlabel">Note libre <span class="jlabel-sub">— Gemini lit ça pour t'adapter demain</span></label>
+      <textarea class="note-textarea" id="inp-note" placeholder="Comment tu te sens ? Quelque chose à signaler ?"></textarea>
     </div>
-
     <button class="save-btn" onclick="saveJournal()">Enregistrer mon journal</button>
-    <p class="saved-msg" id="saved-msg">✓ Journal enregistré avec succès</p>
+    <p class="saved-msg" id="saved-msg">✓ Journal enregistré</p>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Mon journal du mois</p>
+    <p class="card-sub">Tes 30 dernières entrées</p>
+    <div id="journal-history"></div>
   </div>
 </div>
 
-<!-- ===== DEMAIN ===== -->
+<!-- DEMAIN -->
 <div class="page" id="page-demain">
   <div class="card">
     <p class="card-title">Prépare demain ce soir</p>
-    <p class="card-sub" id="demain-subtitle">Ta liste personnalisée générée par IA</p>
-    <div id="demain-container">
-      <div class="demain-loading">
-        <div class="spinner" style="width:28px;height:28px;border:2px solid var(--rose-pale);border-top-color:var(--bordeaux);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px;"></div>
-        <p style="font-size:13px;color:var(--gris);">Claude prépare ta liste pour demain…</p>
-      </div>
-    </div>
+    <p class="card-sub" id="demain-subtitle">Ta liste personnalisée</p>
+    <div id="demain-container"><div style="text-align:center;padding:20px;"><div class="spinner"></div><p style="font-size:13px;color:var(--gris);">Préparation de ta liste…</p></div></div>
   </div>
 </div>
 
-<!-- ===== PROGRESSION ===== -->
+<!-- PROGRESSION -->
 <div class="page" id="page-progression">
   <div class="card">
     <p class="card-title">Mes stats</p>
@@ -407,69 +411,65 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
   </div>
   <div class="card">
+    <p class="card-title">Courbe de poids</p>
+    <div class="poids-btns">
+      <button class="poids-btn active" onclick="drawPoids(30,this)">30 jours</button>
+      <button class="poids-btn" onclick="drawPoids(60,this)">60 jours</button>
+      <button class="poids-btn" onclick="drawPoids(90,this)">90 jours</button>
+    </div>
+    <canvas class="poids-canvas" id="poids-canvas"></canvas>
+    <p style="font-size:11px;color:var(--gris);margin-top:6px;">Les variations naturelles du cycle sont normales — regarde la tendance sur le long terme</p>
+  </div>
+  <div class="card">
     <p class="card-title">Séances des 30 derniers jours</p>
-    <p class="card-sub">Chaque carré foncé = une séance complétée</p>
     <div class="heat-grid" id="heat-grid"></div>
   </div>
   <div class="card">
-    <p class="card-title">Bilan IA mensuel</p>
-    <p class="card-sub">Analyse de tes données du mois pour adapter ta routine</p>
+    <p class="card-title">Bilan mensuel</p>
+    <p class="card-sub">Analyse Gemini de tes données</p>
     <div id="bilan-container">
       <button class="save-btn" onclick="genererBilan()">Générer mon bilan du mois</button>
     </div>
   </div>
 </div>
 
-<!-- ===== CONFIG ===== -->
+<!-- CONFIG -->
 <div class="page" id="page-config">
   <div class="card">
     <p class="card-title">Mon profil</p>
+    <div class="config-field"><label class="config-label">Mon prénom</label><input type="text" class="config-input" id="cfg-prenom" placeholder="ex: Kezia"></div>
+    <div class="config-field"><label class="config-label">Date de début de mes dernières règles</label><input type="date" class="config-input" id="cfg-date-regles"></div>
+    <div class="config-field"><label class="config-label">Durée habituelle de mes règles (jours)</label><input type="number" class="config-input" id="cfg-duree-regles" value="7" min="2" max="10"></div>
     <div class="config-field">
-      <label class="config-label">Mon prénom</label>
-      <input type="text" class="config-input" id="cfg-prenom" placeholder="ex: Marie">
-    </div>
-    <div class="config-field">
-      <label class="config-label">Date de début de mes dernières règles</label>
-      <input type="date" class="config-input" id="cfg-date-regles">
-    </div>
-    <div class="config-field">
-      <label class="config-label">Durée habituelle de mes règles (jours)</label>
-      <input type="number" class="config-input" id="cfg-duree-regles" value="7" min="2" max="10">
-    </div>
-    <div class="config-field">
-      <label class="config-label">Clé API Gemini <span style="font-size:11px;color:var(--gris);font-weight:400;">(gratuite — séances IA personnalisées)</span></label>
+      <label class="config-label">Clé API Gemini <span style="font-size:11px;color:var(--gris);font-weight:400;">(gratuite — liste demain + bilan mensuel)</span></label>
       <input type="password" class="config-input" id="cfg-api-key" placeholder="AIza…">
-      <p class="api-note">Ta clé API reste stockée uniquement dans ton navigateur. Elle n'est jamais envoyée ailleurs que vers l'API Google. Obtiens-la gratuitement sur aistudio.google.com → "Get API key".</p>
+      <p class="api-note">Stockée uniquement dans ton navigateur. Obtiens-la gratuitement sur aistudio.google.com → "Get API key".</p>
     </div>
     <button class="config-btn" onclick="saveConfig()">Enregistrer mon profil</button>
     <p class="saved-msg" id="cfg-saved">✓ Profil enregistré</p>
   </div>
-
   <div class="card">
     <p class="card-title">Google Drive</p>
     <div id="drive-status-bar" class="drive-status disconnected">
-      <i class="ti ti-cloud-off" aria-hidden="true"></i>
+      <span id="drive-status-icon">☁️</span>
       <span id="drive-status-text">Non connecté à Google Drive</span>
     </div>
     <button class="gdrive-btn" id="gdrive-connect-btn" onclick="connectDrive()">
-      <img src="https://www.google.com/favicon.ico" alt="Google">
-      Se connecter avec Google
+      <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="Google"> Se connecter avec Google
     </button>
-    <button class="drive-btn" id="gdrive-disconnect-btn" onclick="disconnectDrive()" style="display:none; background:var(--creme); color:var(--bordeaux); border-color:var(--rose-pale);">
-      Se déconnecter
-    </button>
-    <div class="drive-section" style="margin-top:10px;">
-      <p class="drive-title">Sauvegarde automatique</p>
-      <p class="drive-desc">Une fois connectée, chaque modification est sauvegardée automatiquement dans un fichier <strong>mybody-coach-data.json</strong> dans ton Google Drive.</p>
+    <button class="drive-btn" id="gdrive-disconnect-btn" onclick="disconnectDrive()" style="display:none;background:var(--creme);color:var(--bordeaux);border:0.5px solid var(--rose-pale);width:100%;margin-bottom:10px;">Se déconnecter</button>
+    <div class="drive-section">
+      <p class="drive-title">Exporter mes données</p>
+      <p class="drive-desc">Télécharge ton fichier JSON pour le partager avec ton coach ici.</p>
+      <button class="drive-btn" onclick="exportData()">⬇ Télécharger mes données</button>
     </div>
     <div class="drive-section">
-      <p class="drive-title">Sauvegarde manuelle</p>
-      <p class="drive-desc">Tu peux aussi télécharger tes données en local à tout moment.</p>
-      <button class="drive-btn" onclick="exportData()">⬇ Télécharger mes données (JSON)</button>
+      <p class="drive-title">Export PDF médical</p>
+      <p class="drive-desc">Résumé mensuel à montrer à ton gynécologue : douleurs, cycle, énergie.</p>
+      <button class="drive-btn" onclick="exportPDF()">📄 Exporter PDF</button>
     </div>
     <div class="drive-section">
       <p class="drive-title">Importer des données</p>
-      <p class="drive-desc">Reprends là où tu en étais depuis un fichier existant.</p>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
       <button class="drive-btn" onclick="document.getElementById('import-file').click()">⬆ Importer un fichier</button>
     </div>
@@ -478,53 +478,331 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 
 </div><!-- end main -->
 
+<audio id="audio-seance" loop></audio>
+<audio id="audio-ecriture" loop src="0509.mp3"></audio>
+<audio id="audio-debut-timer" src="debut-timer.mp3"></audio>
+<audio id="audio-fin-timer" src="fin-timer.mp3"></audio>
+
 <script>
-const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+// ===== STATE =====
 let state = {
-  prenom: '', dateRegles: null, dureeRegles: 7, apiKey: '',
-  habitudes: {}, streak: 0, journal: {}, poids: [], seances: [],
-  douleurs: {}
+  prenom:'', dateRegles:null, dureeRegles:7, apiKey:'',
+  habitudes:{}, streak:0, journal:{}, poids:[], seances:[], douleurs:{}
 };
 
-// loadState définie plus bas
+const GDRIVE_CLIENT_ID = '995009252075-n2ubfcu03hclfghhcq7180vkoiu7le6v.apps.googleusercontent.com';
+const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
+const GDRIVE_FILE_NAME = 'mybody-coach-data.json';
+let driveAccessToken = null, driveFileId = null;
 
-function saveState() {
-  localStorage.setItem('mybody_state', JSON.stringify(state));
+// ===== AUDIO =====
+const actx = new (window.AudioContext || window.webkitAudioContext)();
+let seanceMusicPlaying = false;
+
+function playTimerStart() {
+  const a = document.getElementById('audio-debut-timer');
+  if (a) { a.currentTime = 0; a.play().catch(()=>{}); }
+}
+function playTimerEnd() {
+  const a = document.getElementById('audio-fin-timer');
+  if (a) { a.currentTime = 0; a.play().catch(()=>{}); }
+}
+function playEcritureMusic(play) {
+  const a = document.getElementById('audio-ecriture');
+  if (!a) return;
+  if (play) { a.play().catch(()=>{}); } else { a.pause(); a.currentTime = 0; }
+}
+function toggleSeanceMusic() {
+  const a = document.getElementById('audio-seance');
+  const btn = document.getElementById('music-toggle');
+  if (!a) return;
+  if (seanceMusicPlaying) { a.pause(); btn.textContent = '▶'; seanceMusicPlaying = false; }
+  else { a.src = '718704__muyo5438__atmospheric-landscape-for-meditation-relaxation-and-yoga.mp3'; a.play().catch(()=>{}); btn.textContent = '⏸'; seanceMusicPlaying = true; }
 }
 
-function saveConfig() {
-  state.prenom = document.getElementById('cfg-prenom').value.trim();
-  state.dateRegles = document.getElementById('cfg-date-regles').value;
-  state.dureeRegles = parseInt(document.getElementById('cfg-duree-regles').value) || 7;
-  state.apiKey = document.getElementById('cfg-api-key').value.trim();
-  saveState();
-  document.getElementById('cfg-saved').style.display = 'block';
-  setTimeout(() => document.getElementById('cfg-saved').style.display = 'none', 2000);
-  initUI();
+// ===== RESPIRATION =====
+function bowlSound(freq, duration, vol=0.3) {
+  [1, 2.756, 5.404, 8.933].forEach((h,i) => {
+    const osc = actx.createOscillator(), gain = actx.createGain();
+    osc.connect(gain); gain.connect(actx.destination);
+    osc.type = 'sine'; osc.frequency.setValueAtTime(freq*h, actx.currentTime);
+    gain.gain.setValueAtTime(0, actx.currentTime);
+    gain.gain.linearRampToValueAtTime(vol*[1,0.4,0.2,0.08][i], actx.currentTime+0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+duration);
+    osc.start(); osc.stop(actx.currentTime+duration+0.1);
+  });
+}
+function inhaleSound() {
+  [220,277,330].forEach(f => {
+    const osc = actx.createOscillator(), gain = actx.createGain();
+    osc.connect(gain); gain.connect(actx.destination); osc.type='sine';
+    osc.frequency.setValueAtTime(f, actx.currentTime);
+    osc.frequency.linearRampToValueAtTime(f*1.5, actx.currentTime+4);
+    gain.gain.setValueAtTime(0, actx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.07, actx.currentTime+2);
+    gain.gain.linearRampToValueAtTime(0, actx.currentTime+4);
+    osc.start(); osc.stop(actx.currentTime+4.1);
+  });
+}
+function exhaleSound() {
+  [330,277,220].forEach(f => {
+    const osc = actx.createOscillator(), gain = actx.createGain();
+    osc.connect(gain); gain.connect(actx.destination); osc.type='sine';
+    osc.frequency.setValueAtTime(f*1.5, actx.currentTime);
+    osc.frequency.linearRampToValueAtTime(f, actx.currentTime+4);
+    gain.gain.setValueAtTime(0, actx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.07, actx.currentTime+1);
+    gain.gain.linearRampToValueAtTime(0, actx.currentTime+4);
+    osc.start(); osc.stop(actx.currentTime+4.1);
+  });
 }
 
+let breathRunning=false, breathTimers=[], breathCycle=0, waveAnim=null, waveOffset=0, currentLevel=110, targetLevel=110;
+const breathPhases=[
+  {label:'Inspire', sound:'inhale', duration:4, targetLevel:28},
+  {label:'Retiens', sound:'bowl',   duration:4, targetLevel:28},
+  {label:'Expire',  sound:'exhale', duration:4, targetLevel:110},
+  {label:'Retiens', sound:'bowl',   duration:4, targetLevel:110}
+];
+
+function drawWaves() {
+  waveOffset += 1.2;
+  currentLevel += (targetLevel - currentLevel) * 0.015;
+  const makeWave = (off, shift) => {
+    let d = `M -10 ${currentLevel+shift} `;
+    for (let x=-10;x<=190;x+=5) {
+      const y = currentLevel+shift+Math.sin((x+waveOffset+off)*0.05)*7+Math.sin((x+waveOffset*0.7+off)*0.09)*3;
+      d += `L ${x} ${y} `;
+    }
+    return d + `L 190 180 L -10 180 Z`;
+  };
+  document.getElementById('wave1').setAttribute('d', makeWave(0,0));
+  document.getElementById('wave2').setAttribute('d', makeWave(30,6));
+  document.getElementById('wave3').setAttribute('d', makeWave(60,12));
+  waveAnim = requestAnimationFrame(drawWaves);
+}
+
+function startBreath() {
+  if (breathRunning) return;
+  breathRunning=true; breathCycle=0; currentLevel=110; targetLevel=110;
+  document.getElementById('breath-start').style.display='none';
+  document.getElementById('breath-stop').style.display='block';
+  drawWaves(); runBreathCycle();
+}
+function stopBreath() {
+  breathRunning=false; breathTimers.forEach(clearTimeout); breathTimers=[];
+  if (waveAnim) { cancelAnimationFrame(waveAnim); waveAnim=null; }
+  targetLevel=110; currentLevel=110;
+  document.getElementById('svg-phase').textContent='';
+  document.getElementById('svg-count').textContent='';
+  document.getElementById('breath-start').style.display='block';
+  document.getElementById('breath-stop').style.display='none';
+  for(let i=0;i<4;i++) document.getElementById('bd'+i).classList.remove('done');
+}
+function runBreathCycle() {
+  if(!breathRunning) return;
+  let idx=0;
+  const next=()=>{
+    if(!breathRunning||idx>=breathPhases.length){
+      if(breathRunning){
+        if(breathCycle<4) document.getElementById('bd'+breathCycle).classList.add('done');
+        breathCycle++;
+        if(breathCycle>=4){ bowlSound(432,3,0.35); breathTimers.push(setTimeout(stopBreath,3000)); }
+        else breathTimers.push(setTimeout(runBreathCycle,300));
+      }
+      return;
+    }
+    const p=breathPhases[idx++];
+    targetLevel=p.targetLevel;
+    document.getElementById('svg-phase').textContent=p.label;
+    document.getElementById('svg-count').textContent=4;
+    if(p.sound==='inhale') inhaleSound();
+    else if(p.sound==='exhale') exhaleSound();
+    else bowlSound(432,2,0.2);
+    let count=3;
+    const tick=()=>{
+      if(!breathRunning) return;
+      document.getElementById('svg-count').textContent=count;
+      if(count>0){count--; breathTimers.push(setTimeout(tick,1000));}
+      else breathTimers.push(setTimeout(next,1000));
+    };
+    breathTimers.push(setTimeout(tick,1000));
+  };
+  next();
+}
+
+// ===== CYCLE =====
 function getCycleDay() {
-  if (!state.dateRegles) return 5;
-  const start = new Date(state.dateRegles);
-  const today = new Date();
-  const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-  return ((diff % 28) + 28) % 28 + 1;
+  if(!state.dateRegles) return 5;
+  const start=new Date(state.dateRegles), today=new Date();
+  const diff=Math.floor((today-start)/(1000*60*60*24));
+  return ((diff%28)+28)%28+1;
+}
+function getPhase(j) {
+  if(j<=7) return {nom:'Menstruelle',tag:'Douceur',court:'mens'};
+  if(j<=13) return {nom:'Folliculaire',tag:'Énergie montante',court:'foll'};
+  if(j<=17) return {nom:'Ovulatoire',tag:'Pic d\'énergie',court:'ovu'};
+  return {nom:'Lutéale',tag:'Ralentissement',court:'lut'};
+}
+function todayKey() { return new Date().toISOString().split('T')[0]; }
+function yesterday() { const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().split('T')[0]; }
+function getGreeting() { const h=new Date().getHours(); return h<12?'Bonjour,':h<18?'Bon après-midi,':'Bonsoir,'; }
+
+// ===== SEANCES FIXES =====
+const SEANCES = {
+  mens: {
+    titre:'Séance douce — Phase menstruelle', duree:'16 min',
+    exercices:[
+      {nom:'Respiration diaphragmatique', duree:'3 min', duree_s:180,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="75" rx="45" ry="22" fill="#ffc4c4"/><ellipse cx="110" cy="58" rx="18" ry="16" fill="#ee6983"/><ellipse cx="110" cy="52" rx="8" ry="7" fill="#ffc4c4"/><line x1="65" y1="75" x2="35" y2="95" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="155" y1="75" x2="185" y2="95" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="85" y1="97" x2="80" y2="118" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="135" y1="97" x2="140" y2="118" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée sur le dos, mains sur le ventre</text><path d="M 80 80 Q 110 90 140 80" stroke="#850e35" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/></svg>`,
+       position:'Allongée sur le dos, genoux fléchis, mains sur le ventre',
+       etapes:['Inspire lentement par le nez en 4 temps — sens ton ventre se soulever','Retiens 1 seconde','Expire doucement par la bouche en 6 temps — sens ton ventre descendre','Répète sans forcer, rythme très doux'],
+       conseil_endo:'Relâche les tensions du plancher pelvien et aide à réduire les crampes liées à l\'endométriose'},
+      {nom:'Cat-cow — dos de chat', duree:'3 min', duree_s:180,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><line x1="10" y1="110" x2="210" y2="110" stroke="#ffc4c4" stroke-width="1.5"/><path d="M 60 72 Q 110 88 160 72" stroke="#850e35" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="168" cy="65" rx="12" ry="10" fill="#ee6983"/><ellipse cx="177" cy="68" rx="5" ry="4" fill="#ffc4c4"/><path d="M 60 72 Q 45 58 42 44" stroke="#850e35" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="135" y1="76" x2="135" y2="110" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="118" y1="78" x2="116" y2="110" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="78" y1="76" x2="78" y2="110" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="92" y1="78" x2="90" y2="110" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">À quatre pattes — inspire, dos creux (vache)</text></svg>`,
+       position:'À quatre pattes sur le tapis, mains sous les épaules, genoux sous les hanches',
+       etapes:['Inspire : creuse le dos, lève la tête et le coccyx (vache)','Expire : arrondis le dos, rentre le menton et le bassin (chat)','Mouvements très doux, sans forcer','Rythme lent — une respiration par mouvement'],
+       conseil_endo:'Mobilise doucement la colonne et le bassin, réduit la pression sur les organes pelviens'},
+      {nom:'Étirement psoas et hanches', duree:'4 min', duree_s:240,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><line x1="10" y1="112" x2="210" y2="112" stroke="#ffc4c4" stroke-width="1.5"/><ellipse cx="130" cy="45" rx="14" ry="13" fill="#ee6983"/><line x1="130" y1="58" x2="125" y2="80" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="125" y1="80" x2="155" y2="112" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="125" y1="80" x2="95" y2="112" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="130" y1="65" x2="155" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="130" y1="65" x2="105" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="95" cy="113" rx="8" ry="3" fill="#ffc4c4"/><text x="110" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Fente basse — genou arrière au sol</text></svg>`,
+       position:'En fente basse sur le tapis, genou arrière au sol (coussin si besoin)',
+       etapes:['Pose le genou droit au sol, pied gauche devant','Avance légèrement le bassin vers l\'avant','Inspire, grandis-toi','Expire, laisse le bassin descendre doucement','Tiens 30 secondes, change de côté — 3 fois chaque'],
+       conseil_endo:'L\'endométriose crée souvent des tensions dans le psoas. Cet étirement libère cette zone clé'},
+      {nom:'Shavasana — relâchement total', duree:'3 min', duree_s:180,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="72" rx="55" ry="20" fill="#ffc4c4" opacity="0.5"/><ellipse cx="40" cy="72" rx="18" ry="15" fill="#ee6983"/><ellipse cx="40" cy="66" rx="8" ry="7" fill="#ffc4c4"/><line x1="58" y1="72" x2="165" y2="72" stroke="#850e35" stroke-width="4" stroke-linecap="round"/><line x1="70" y1="72" x2="60" y2="95" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="100" y1="72" x2="88" y2="95" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="85" y1="72" x2="72" y2="58" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="115" y1="72" x2="125" y2="58" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée, bras le long du corps, paumes vers le ciel</text><text x="110" y="108" text-anchor="middle" font-size="10" fill="#8a7070" font-family="sans-serif">Ferme les yeux · relâche tout</text></svg>`,
+       position:'Allongée sur le dos, jambes allongées légèrement écartées, bras relâchés, paumes vers le ciel',
+       etapes:['Ferme les yeux','Scanne ton corps de la tête aux pieds en relâchant chaque zone','Si douleur pelvienne présente, imagine ta respiration aller vers cet endroit','Laisse-toi fondre dans le tapis — ne fais rien'],
+       conseil_endo:'Le système nerveux parasympathique prend le contrôle — anti-inflammatoire naturel pour l\'endométriose'}
+    ]
+  },
+  foll: {
+    titre:'Séance énergie montante — Phase folliculaire', duree:'22 min',
+    exercices:[
+      {nom:'Pilates mur — squat', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><rect x="185" y="10" width="8" height="108" rx="3" fill="#ffc4c4"/><ellipse cx="155" cy="38" rx="13" ry="12" fill="#ee6983"/><line x1="155" y1="50" x2="155" y2="78" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="78" x2="135" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="78" x2="175" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="62" x2="183" y2="68" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="155" y1="62" x2="128" y2="68" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="100" y="20" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Dos contre le mur, pieds à 30 cm</text><path d="M 100 35 L 60 35 L 60 90 L 100 90" stroke="#ffc4c4" stroke-width="1" fill="none" stroke-dasharray="4,3"/><text x="80" y="65" text-anchor="middle" font-size="10" fill="#8a7070" font-family="sans-serif">90°</text></svg>`,
+       position:'Dos contre un mur, pieds à 30 cm du mur écartés à la largeur des hanches',
+       etapes:['Glisse le dos le long du mur jusqu\'à genoux à 90°','Garde le dos bien plaqué contre le mur','Tiens en respirant normalement — 30 secondes','Remonte en poussant sur les talons','10 répétitions, 3 séries'],
+       conseil_endo:'Renforce les quadriceps et le plancher pelvien sans impact. Parfait en phase folliculaire'},
+      {nom:'Tai chi walking', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="30" rx="14" ry="13" fill="#ee6983"/><line x1="110" y1="43" x2="110" y2="75" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="75" x2="88" y2="108" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="75" x2="132" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="58" x2="80" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="58" x2="140" y2="65" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><path d="M 88 108 Q 85 115 82 118" stroke="#850e35" stroke-width="2" fill="none"/><path d="M 132 105 Q 135 112 138 118" stroke="#850e35" stroke-width="2" fill="none"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, pieds parallèles, légèrement fléchis</text></svg>`,
+       position:'Debout, pieds parallèles, légèrement fléchis, bras relâchés le long du corps',
+       etapes:['Commence à marcher sur place très lentement','Transfère le poids d\'un pied sur l\'autre avec intention','Laisse les bras suivre naturellement le mouvement','Respire profondément, yeux mi-clos si possible','Sens chaque appui du pied sur le sol'],
+       conseil_endo:'Active la circulation lymphatique, réduit l\'inflammation systémique liée à l\'endométriose'},
+      {nom:'Plaque vibrante — 5 min', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><rect x="60" y="100" width="100" height="12" rx="4" fill="#ee6983"/><ellipse cx="110" cy="38" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="50" x2="110" y2="78" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="78" x2="90" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="78" x2="130" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="84" y2="70" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="62" x2="136" y2="70" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Sur la plaque, genoux légèrement fléchis</text><text x="110" y="118" text-anchor="middle" font-size="9" fill="#ee6983" font-family="sans-serif">〰〰〰〰〰〰〰〰〰〰</text></svg>`,
+       position:'Debout sur la plaque vibrante, genoux légèrement fléchis, ventre légèrement rentré',
+       etapes:['1 min : position debout neutre, bras relâchés','2 min : plie les genoux à 30°, tiens la position','2 min : essaie des petites fentes alternées sur la plaque'],
+       conseil_endo:'⚠️ Uniquement en phase folliculaire sans douleur. Excellent pour la densité osseuse et la tonicité musculaire profonde. Jamais pendant les règles.'},
+      {nom:'Haltères — curl biceps', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="28" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="40" x2="110" y2="72" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="72" x2="90" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="72" x2="130" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="52" x2="80" y2="45" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="72" cy="43" rx="8" ry="5" fill="#ffc4c4"/><line x1="110" y1="52" x2="140" y2="45" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="148" cy="43" rx="8" ry="5" fill="#ffc4c4"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, haltères dans chaque main</text></svg>`,
+       position:'Debout, pieds écartés à la largeur des épaules, haltères dans chaque main, paumes vers l\'avant',
+       etapes:['Garde les coudes collés au corps','Fléchis les coudes pour monter les haltères vers les épaules','Descends lentement en 3 temps — ne lâche pas','12 répétitions, 3 séries, pause 30s entre chaque'],
+       conseil_endo:'La musculation légère augmente ton métabolisme de base — ton corps brûle plus de calories même au repos'}
+    ]
+  },
+  ovu: {
+    titre:'Séance pic d\'énergie — Phase ovulatoire', duree:'25 min',
+    exercices:[
+      {nom:'Cardio — jumping jacks', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="22" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="34" x2="110" y2="65" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="65" x2="80" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="65" x2="140" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="48" x2="68" y2="30" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="48" x2="152" y2="30" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, bras levés, jambes écartées</text></svg>`,
+       position:'Debout, pieds joints, bras le long du corps',
+       etapes:['Saute en écartant les pieds et levant les bras au-dessus de la tête','Reviens à la position initiale d\'un saut','Rythme modéré à vigoureux selon ton énergie','Pause de 30s si trop essoufflée, reprends','5 séries de 1 minute'],
+       conseil_endo:'Phase ovulatoire = pic d\'énergie hormonal. Le cardio libère des endorphines qui sont anti-douleur naturels'},
+      {nom:'Haltères — squat avec poids', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="30" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="42" x2="110" y2="68" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="83" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="137" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="52" x2="82" y2="58" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="74" cy="57" rx="8" ry="5" fill="#ffc4c4"/><line x1="110" y1="52" x2="138" y2="58" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="146" cy="57" rx="8" ry="5" fill="#ffc4c4"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Haltères tenus devant, pieds écartés</text></svg>`,
+       position:'Debout, pieds écartés à la largeur des épaules, haltères tenus devant ou sur les épaules',
+       etapes:['Inspire et descends comme pour t\'asseoir sur une chaise','Genoux dans l\'axe des orteils, dos droit','Descends jusqu\'à ce que les cuisses soient parallèles au sol','Expire en remontant en poussant sur les talons','10 répétitions, 3 séries'],
+       conseil_endo:'Renforce les fessiers et les cuisses — les grands muscles brûlent le plus de calories'},
+      {nom:'Plaque vibrante + fentes', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><rect x="55" y="100" width="110" height="12" rx="4" fill="#ee6983"/><ellipse cx="110" cy="30" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="42" x2="105" y2="70" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="105" y1="70" x2="80" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="105" y1="70" x2="130" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="55" x2="82" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="108" y1="55" x2="135" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Fente sur la plaque vibrante</text></svg>`,
+       position:'Sur la plaque vibrante, position fente — un pied devant, l\'autre derrière',
+       etapes:['1 min : debout neutre sur la plaque','2 min : squat pulsé sur la plaque, genoux à 30°','2 min : fentes alternées sur la plaque — alterne les pieds'],
+       conseil_endo:'En phase ovulatoire sans douleur — excellent pour la tonicité et la circulation pelvienne'},
+      {nom:'Danse libre', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="25" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="37" x2="112" y2="68" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="112" y1="68" x2="90" y2="105" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="112" y1="68" x2="135" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="111" y1="50" x2="75" y2="38" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="111" y1="50" x2="148" y2="60" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Bouge librement — laisse ton corps s\'exprimer</text></svg>`,
+       position:'Debout dans ton espace, musique que tu aimes',
+       etapes:['Mets ta musique préférée','Bouge comme tu le sens — pas de règle','Laisse tes hanches, bras et épaules suivre le rythme','Si tu n\'oses pas, commence par balancer les bras','C\'est fait pour te faire sourire'],
+       conseil_endo:'La danse libère de la dopamine et de la sérotonine — les hormones du bonheur qui réduisent la perception de la douleur'}
+    ]
+  },
+  lut: {
+    titre:'Séance ralentissement — Phase lutéale', duree:'18 min',
+    exercices:[
+      {nom:'Pilates sol — pont', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="40" cy="65" rx="12" ry="11" fill="#ee6983"/><line x1="52" y1="65" x2="95" y2="60" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><path d="M 95 60 Q 120 40 150 58" stroke="#850e35" stroke-width="3.5" fill="none" stroke-linecap="round"/><line x1="150" y1="58" x2="165" y2="90" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="165" y1="90" x2="175" y2="112" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="120" y1="75" x2="128" y2="112" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="68" x2="45" y2="90" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="68" x2="70" y2="85" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="15" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée, hanches décollées, pont</text></svg>`,
+       position:'Allongée sur le dos, genoux fléchis, pieds à plat, bras le long du corps',
+       etapes:['Inspire, prépare','Expire : décolle les hanches vertèbre par vertèbre','En haut : serre les fessiers et tiens 3 secondes','Redescends vertèbre par vertèbre — très lentement','10 répétitions — concentre-toi sur chaque vertèbre'],
+       conseil_endo:'Renforce le plancher pelvien et les fessiers en douceur. La phase lutéale demande moins d\'intensité'},
+      {nom:'Stretching dos et colonne', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="45" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="57" x2="110" y2="88" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="88" x2="85" y2="112" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="88" x2="135" y2="112" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="145" y2="55" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="68" x2="82" y2="80" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><path d="M 145 55 Q 155 45 152 35" stroke="#ffc4c4" stroke-width="2" fill="none" stroke-dasharray="3,2"/><text x="110" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Assise, inclinaison latérale douce</text></svg>`,
+       position:'Assise en tailleur sur le tapis, dos droit',
+       etapes:['Pose la main droite à côté de toi sur le sol','Lève le bras gauche vers le ciel','Expire et incline-toi doucement vers la droite','Sens l\'étirement sur tout le côté gauche','Tiens 20 secondes, change de côté — 3 fois chaque'],
+       conseil_endo:'Soulage les tensions du dos souvent présentes en phase prémenstruelle'},
+      {nom:'Marche consciente', duree:'5 min', duree_s:300,
+       svg:`<svg viewBox="0 0 220 120" width="220" height="120" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="120" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="25" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="37" x2="108" y2="68" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="68" x2="85" y2="108" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="68" x2="125" y2="95" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="109" y1="50" x2="82" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="109" y1="50" x2="136" y2="42" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><path d="M 40 112 Q 80 108 120 112 Q 160 116 200 112" stroke="#ffc4c4" stroke-width="1.5" fill="none"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Marche lente et intentionnelle</text></svg>`,
+       position:'Debout, prête à marcher dans ton espace ou dehors',
+       etapes:['Marche lentement, sens chaque pas','Inspire sur 3 pas, expire sur 3 pas','Regarde autour de toi, sens l\'air','Pas d\'objectif de vitesse ou de distance','Juste présente dans ton corps'],
+       conseil_endo:'La marche douce stimule la circulation pelvienne et réduit les prostaglandines responsables des crampes'}
+    ]
+  }
+};
+
+function renderSeance(phase) {
+  const s = SEANCES[phase.court];
+  const plaque = phase.court !== 'mens' && (state.journal[yesterday()]?.douleur||0) < 3;
+  let exercices = s.exercices;
+  if (!plaque) exercices = exercices.filter(e => !e.nom.includes('vibrante'));
+  let html = `<p style="font-size:13px;color:var(--gris);margin-bottom:12px;">${s.duree} au total</p>`;
+  exercices.forEach((ex,i) => {
+    html += `<div class="exercise-block">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <div class="ex-num">${i+1}</div>
+        <span class="ex-name">${ex.nom}</span>
+        <span class="ex-dur">${ex.duree}</span>
+      </div>
+      <div class="ex-body">
+        <div class="ex-svg">${ex.svg}</div>
+        <p class="ex-position">📍 ${ex.position}</p>
+        <ul class="ex-steps">${ex.etapes.map(e=>`<li>${e}</li>`).join('')}</ul>
+        <div class="ex-endo"><span>💜 Endométriose :</span> ${ex.conseil_endo}</div>
+        <button class="timer-btn" onclick="startTimer(this,${ex.duree_s})">▶ Démarrer le timer (${ex.duree})</button>
+        <div class="timer-display"></div>
+      </div>
+    </div>`;
+  });
+  return html;
 }
 
-function getPhase(jour) {
-  if (jour <= 7) return { nom: 'Menstruelle', tag: 'Douceur', court: 'mens' };
-  if (jour <= 13) return { nom: 'Folliculaire', tag: 'Énergie montante', court: 'foll' };
-  if (jour <= 17) return { nom: 'Ovulatoire', tag: 'Pic d\'énergie', court: 'ovu' };
-  return { nom: 'Lutéale', tag: 'Ralentissement', court: 'lut' };
+function toggleEx(header) {
+  header.nextElementSibling.classList.toggle('open');
 }
 
-function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 12) return 'Bonjour,';
-  if (h < 18) return 'Bon après-midi,';
-  return 'Bonsoir,';
+let timerIntervals = {};
+function startTimer(btn, seconds) {
+  const display = btn.nextElementSibling;
+  const key = btn.dataset.tid || (btn.dataset.tid = Math.random().toString(36).substr(2,9));
+  if (timerIntervals[key]) {
+    clearInterval(timerIntervals[key]); delete timerIntervals[key];
+    btn.textContent = '▶ Reprendre'; display.classList.remove('running'); return;
+  }
+  playTimerStart();
+  let remaining = seconds;
+  display.classList.add('running');
+  display.textContent = formatTime(remaining);
+  btn.textContent = '⏸ Pause';
+  timerIntervals[key] = setInterval(() => {
+    remaining--;
+    display.textContent = formatTime(remaining);
+    if (remaining <= 0) {
+      clearInterval(timerIntervals[key]); delete timerIntervals[key];
+      btn.textContent = '✓ Terminé'; display.textContent = '🎉';
+      playTimerEnd();
+    }
+  }, 1000);
 }
+function formatTime(s) { return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 
+// ===== INIT UI =====
 function initUI() {
   const jour = getCycleDay();
   const phase = getPhase(jour);
@@ -532,134 +810,92 @@ function initUI() {
 
   document.getElementById('hero-greeting').textContent = getGreeting();
   document.getElementById('hero-name').textContent = prenom;
-  document.getElementById('hero-phase').textContent = 'J' + jour + ' · Phase ' + phase.nom;
+  document.getElementById('hero-phase').textContent = 'J'+jour+' · Phase '+phase.nom;
   document.getElementById('seance-tag').textContent = phase.tag;
-  document.getElementById('phase-day-num').textContent = 'J' + jour;
-  document.getElementById('prog-cycle').textContent = 'J' + jour;
+  document.getElementById('seance-sub').textContent = 'Phase '+phase.nom+' · Séance fixe';
+  document.getElementById('phase-day-num').textContent = 'J'+jour;
+  document.getElementById('prog-cycle').textContent = 'J'+jour;
 
-  const phaseLengths = { mens: 25, foll: 20, ovu: 14, lut: 38 };
-  Object.keys(phaseLengths).forEach(p => {
-    const el = document.getElementById('ct' + ['mens','foll','ovu','lut'].indexOf(p) + 1);
-  });
-  ['ct1','ct2','ct3','ct4'].forEach((id, i) => {
-    const lengths = ['25%','20%','14%','41%'];
-    document.getElementById(id).style.width = lengths[i];
-    const isActive = ['mens','foll','ovu','lut'][i] === phase.court;
-    document.getElementById(id).style.opacity = isActive ? '1' : '0.3';
+  ['ct1','ct2','ct3','ct4'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    const phases = ['mens','foll','ovu','lut'];
+    el.style.opacity = phases[i] === phase.court ? '1' : '0.3';
+    el.style.background = phases[i] === phase.court ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)';
   });
 
   const today = todayKey();
   const hab = state.habitudes[today] || {};
-  ['eau','respiration','etirements','complements'].forEach(h => {
-    const el = document.getElementById('h-' + h);
+  ['eau','respiration','etirements','complements','ecriture','dents','cheveux'].forEach(h => {
+    const el = document.getElementById('h-'+h);
     if (el) el.classList.toggle('done', !!hab[h]);
   });
-  const doneCount = Object.values(hab).filter(Boolean).length;
-  document.getElementById('done-num').textContent = doneCount + '/6';
-  document.getElementById('streak-num').textContent = state.streak || 0;
-  document.getElementById('prog-streak').textContent = state.streak || 0;
+  const done = Object.values(hab).filter(Boolean).length;
+  document.getElementById('done-num').textContent = done+'/7';
+  document.getElementById('streak-num').textContent = state.streak||0;
+  document.getElementById('prog-streak').textContent = state.streak||0;
+  document.getElementById('prog-seances').textContent = (state.seances||[]).length;
 
-  document.getElementById('prog-seances').textContent = state.seances ? state.seances.length : 0;
-
-  const lastPoids = state.poids && state.poids.length ? state.poids[state.poids.length - 1].val : '–';
+  const lastPoids = state.poids?.length ? state.poids[state.poids.length-1].val : '–';
   document.getElementById('prog-poids').textContent = lastPoids;
-
-  document.getElementById('journal-date').textContent = new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('journal-date').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
 
   if (state.prenom) document.getElementById('cfg-prenom').value = state.prenom;
   if (state.dateRegles) document.getElementById('cfg-date-regles').value = state.dateRegles;
   if (state.dureeRegles) document.getElementById('cfg-duree-regles').value = state.dureeRegles;
   if (state.apiKey) document.getElementById('cfg-api-key').value = state.apiKey;
 
-  updateCyclePhaseCards(phase.court);
+  document.getElementById('seance-content').innerHTML = renderSeance(phase);
+  buildPhaseCards(jour, phase);
   buildDouleurGrid();
   buildHeatGrid();
-  genererSeance(jour, phase);
+  buildJournalHistory();
+  drawPoids(30, document.querySelector('.poids-btn.active'));
   genererDemain(jour, phase);
+  genererMotivation();
 }
 
-function updateCyclePhaseCards(court) {
-  ['mens','foll','ovu','lut'].forEach(p => {
-    const el = document.getElementById('phase-card-' + p);
-    if (el) el.classList.toggle('current', p === court);
-  });
-}
-
-function todayKey() {
-  return new Date().toISOString().split('T')[0];
-}
-
-function toggleHabit(el, key) {
-  const today = todayKey();
-  if (!state.habitudes[today]) state.habitudes[today] = {};
-  state.habitudes[today][key] = !state.habitudes[today][key];
-  const check = document.getElementById('h-' + key);
-  if (check) check.classList.toggle('done', state.habitudes[today][key]);
-  const done = Object.values(state.habitudes[today]).filter(Boolean).length;
-  document.getElementById('done-num').textContent = done + '/6';
-  if (done === 6) calcStreak();
-  saveState();
-  if (driveAccessToken) saveToDrive();
-}
-
-function calcStreak() {
-  let s = 0, d = new Date();
-  while (true) {
-    const k = d.toISOString().split('T')[0];
-    const hab = state.habitudes[k] || {};
-    if (Object.values(hab).filter(Boolean).length >= 4) { s++; d.setDate(d.getDate() - 1); }
-    else break;
-  }
-  state.streak = s;
-  document.getElementById('streak-num').textContent = s;
-  document.getElementById('prog-streak').textContent = s;
-  saveState();
-}
-
-function selectMood(btn) {
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
-function saveJournal() {
-  const today = todayKey();
-  const mood = document.querySelector('.mood-btn.selected');
-  const poids = parseFloat(document.getElementById('inp-poids').value);
-  const douleurVal = parseInt(document.getElementById('sl-douleur').value);
-  state.journal[today] = {
-    energie: parseInt(document.getElementById('sl-energie').value),
-    douleur: douleurVal,
-    humeur: mood ? mood.dataset.mood : null,
-    note: document.getElementById('inp-note').value,
-    poids: isNaN(poids) ? null : poids
+function genererMotivation() {
+  const hier = state.journal[yesterday()];
+  const motifs = {
+    epuisee: ['Tu es là malgré la fatigue — c\'est déjà tout.','Le repos est aussi un acte de soin.','Douceur avec toi-même aujourd\'hui.'],
+    neutre: ['Chaque petit pas compte.','Tu construis quelque chose de solide.','Continuité > perfection.'],
+    bien: ['Belle énergie — profites-en avec douceur.','Tu avances, et ça se voit.','Tu prends soin de toi et ça compte.'],
+    motivee: ['Cette énergie est un cadeau — utilise-la bien !','Tu es dans ta zone — reste ancrée.','Vas-y, tu es prête !'],
+    excellente: ['Tu rayonnes aujourd\'hui — magnifique !','Top énergie — fais-en bon usage !','Tu es en feu — doucement mais sûrement !'],
   };
-  // Sync douleur vers grille cycle
-  const jourCycle = getCycleDay();
-  state.douleurs['j' + jourCycle] = douleurVal;
-  if (!isNaN(poids)) {
-    state.poids = state.poids || [];
-    state.poids.push({ date: today, val: poids });
-    document.getElementById('prog-poids').textContent = poids;
-  }
-  saveState();
-  if (driveAccessToken) saveToDrive();
-  document.getElementById('saved-msg').style.display = 'block';
-  setTimeout(() => document.getElementById('saved-msg').style.display = 'none', 2000);
-  genererDemain(getCycleDay(), getPhase(getCycleDay()));
+  const humeur = hier?.humeur || 'neutre';
+  const options = motifs[humeur] || motifs['neutre'];
+  const msg = options[Math.floor(Math.random()*options.length)];
+  document.getElementById('hero-motiv').textContent = '✨ '+msg;
+}
+
+function buildPhaseCards(jour, phase) {
+  const phases = [
+    {court:'mens', nom:'Phase menstruelle', jours:'J1 – J7', tags:['Yoga doux','Respiration','Shavasana']},
+    {court:'foll', nom:'Phase folliculaire', jours:'J8 – J13', tags:['Pilates mur','Tai chi','Vibration']},
+    {court:'ovu',  nom:'Phase ovulatoire',  jours:'J14 – J17', tags:['Cardio','Danse','Haltères']},
+    {court:'lut',  nom:'Phase lutéale',     jours:'J18 – J28', tags:['Pilates','Stretching','Marche']}
+  ];
+  const container = document.getElementById('phase-cards');
+  container.innerHTML = phases.map(p => `
+    <div class="phase-card ${p.court===phase.court?'current':''}">
+      <p class="phase-card-label">${p.court===phase.court?'Tu es ici ✦':'Phase'}</p>
+      <p class="phase-card-name">${p.nom}</p>
+      <p class="phase-card-days">${p.jours}</p>
+      <div class="phase-tags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div>
+    </div>`).join('');
 }
 
 function buildDouleurGrid() {
   const grid = document.getElementById('douleur-grid');
   if (!grid) return;
   grid.innerHTML = '';
-  for (let i = 1; i <= 28; i++) {
-    const key = 'j' + i;
-    const level = state.douleurs[key] || 0;
+  for (let i=1;i<=28;i++) {
+    const level = state.douleurs?.['j'+i]||0;
     const div = document.createElement('div');
-    div.className = 'douleur-day d' + level;
+    div.className = `douleur-day d${level}`;
     div.textContent = i;
-    div.title = 'J' + i + ' - douleur ' + level;
-    div.title = 'J' + i + ' — douleur enregistrée : ' + level + '/5';
+    div.title = `J${i} — douleur ${level}/5`;
     grid.appendChild(div);
   }
 }
@@ -668,496 +904,307 @@ function buildHeatGrid() {
   const grid = document.getElementById('heat-grid');
   if (!grid) return;
   grid.innerHTML = '';
-  const seanceDates = new Set(state.seances || []);
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const k = d.toISOString().split('T')[0];
-    const div = document.createElement('div');
-    div.className = 'heat-cell ' + (seanceDates.has(k) ? 'done' : 'rest');
-    div.title = k;
-    grid.appendChild(div);
+  const seanceDates = new Set(state.seances||[]);
+  for (let i=29;i>=0;i--) {
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const k=d.toISOString().split('T')[0];
+    const div=document.createElement('div');
+    div.className='heat-cell '+(seanceDates.has(k)?'done':'rest');
+    div.title=k; grid.appendChild(div);
   }
 }
 
-async function callClaude(prompt) {
-  if (!state.apiKey) return null;
-  try {
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + state.apiKey;
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-    const data = await res.json();
-    return data.candidates && data.candidates[0] ? data.candidates[0].content.parts[0].text : null;
-  } catch(e) { return null; }
-}
-
-async function genererSeance(jour, phase) {
-  const container = document.getElementById('seance-content');
-  const loading = document.getElementById('seance-loading');
-  document.getElementById('seance-subtitle').textContent = 'Générée par IA · Phase ' + phase.nom;
-
-  const today = todayKey();
-  const journalHier = state.journal[yesterday()] || {};
-  const energie = journalHier.energie || 3;
-  const douleur = journalHier.douleur || 0;
-  const note = journalHier.note || '';
-
-  const plaque = phase.court !== 'mens' && douleur < 3;
-
-  const prenom = state.prenom || 'elle';
-  const prompt = `Tu es coach santé et bien-être personnel pour ${prenom}. Tu la connais bien. Voici son profil complet :
-
-PROFIL PERSONNEL :
-- Femme de 31-40 ans
-- Endométriose + kystes ovariens : douleurs pelviennes pendant les règles et la phase folliculaire
-- Sédentaire depuis plus d'un an (travail de monteuse vidéo, assise toute la journée)
-- Poids actuel : environ 64-67 kg, objectif : maigrir progressivement et se sentir bien
-- Se lève à 5h du matin, très absorbée par son travail
-- Équipement disponible : tapis de yoga, haltères, mur, espace au sol, plaque vibrante
-
-RÈGLES POUR LA PLAQUE VIBRANTE :
-- JAMAIS pendant les règles (J1-J7) ni si douleur pelvienne >= 3
-- Autorisée en phase folliculaire, ovulatoire et lutéale sans douleur intense
-- Maximum 5 minutes
-
-RÈGLES GÉNÉRALES :
-- Séances courtes : 10 à 25 minutes maximum (elle n'a pas de temps)
-- Progressivité : elle revient au sport après plus d'un an de sédentarité
-- Bienveillance absolue : pas de pression, encouragement doux
-- Chaque exercice doit être expliqué comme si c'était la première fois
-- Toujours mentionner le bénéfice spécifique pour l'endométriose
-
-CONTEXTE DU JOUR :
-- Jour du cycle : J${jour}
-- Phase : ${phase.nom}
-- Énergie hier (1-5) : ${energie} ${energie <= 2 ? '→ séance très douce obligatoire' : energie >= 4 ? '→ peut pousser un peu plus' : '→ séance modérée'}
-- Douleur pelvienne hier (0-5) : ${douleur} ${douleur >= 3 ? '→ éviter tout impact et pression abdominale' : '→ pas de restriction particulière'}
-- Note de ${prenom} hier soir : "${note || 'rien de particulier'}"
-- Plaque vibrante aujourd'hui : ${plaque ? 'oui, inclure 5 min' : 'non, ne pas inclure'}
-
-Crée une séance personnalisée pour ${prenom} aujourd'hui. Réponds UNIQUEMENT en JSON valide, sans markdown, sans texte avant ou après.
-
-Format JSON requis :
-{
-  "titre": "Titre court et motivant",
-  "duree_totale": "XX min",
-  "exercices": [
-    {
-      "nom": "Nom de l'exercice",
-      "duree": "X min",
-      "position": "Position de départ exacte et précise",
-      "etapes": ["étape 1 détaillée", "étape 2", "étape 3", "étape 4"],
-      "conseil_endo": "Pourquoi cet exercice aide spécifiquement avec l'endométriose et les kystes",
-      "duree_secondes": 120
-    }
-  ]
-}
-
-Inclure 3 à 5 exercices. Sois précise, bienveillante, et parle-lui directement comme à une amie.`;
-
-  if (!state.apiKey) {
-    loading.style.display = 'none';
-    container.innerHTML = getSeanceStatique(jour, phase, plaque);
-    return;
-  }
-
-  const result = await callClaude(prompt);
-  loading.style.display = 'none';
-
-  if (!result) {
-    container.innerHTML = getSeanceStatique(jour, phase, plaque);
-    return;
-  }
-
-  try {
-    const data = JSON.parse(result.replace(/```json|```/g, '').trim());
-    container.innerHTML = renderSeance(data);
-    state.seances = state.seances || [];
-    if (!state.seances.includes(today)) { state.seances.push(today); saveState(); buildHeatGrid(); }
-  } catch(e) {
-    container.innerHTML = getSeanceStatique(jour, phase, plaque);
-  }
-}
-
-function yesterday() {
-  const d = new Date(); d.setDate(d.getDate() - 1);
-  return d.toISOString().split('T')[0];
-}
-
-function renderSeance(data) {
-  let html = '<p style="font-size:13px;color:var(--gris);margin-bottom:12px;">' + (data.duree_totale || '') + ' au total</p>';
-  (data.exercices || []).forEach((ex, i) => {
-    html += `<div class="exercise-block">
-      <div class="ex-header" onclick="toggleEx(this)">
-        <div class="ex-num">${i+1}</div>
-        <span class="ex-name">${ex.nom}</span>
-        <span class="ex-dur">${ex.duree}</span>
+function buildJournalHistory() {
+  const container = document.getElementById('journal-history');
+  if (!container) return;
+  const entries = Object.entries(state.journal||{}).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,30);
+  if (!entries.length) { container.innerHTML = '<p style="font-size:13px;color:var(--gris);">Aucune entrée pour le moment.</p>'; return; }
+  const moodEmoji = {epuisee:'😴',neutre:'😐',bien:'🙂',motivee:'💪',excellente:'✨'};
+  container.innerHTML = entries.map(([date,j]) => {
+    const d = new Date(date);
+    const label = d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+    return `<div class="journal-entry">
+      <p class="je-date">${label}</p>
+      <div class="je-row">
+        <span class="je-tag">⚡ Énergie ${j.energie||'–'}/5</span>
+        <span class="je-tag">💜 Douleur ${j.douleur||0}/5</span>
+        ${j.humeur?`<span class="je-tag">${moodEmoji[j.humeur]||''} ${j.humeur}</span>`:''}
+        ${j.poids?`<span class="je-tag">⚖️ ${j.poids} kg</span>`:''}
       </div>
-      <div class="ex-body">
-        <p class="ex-position">📍 ${ex.position}</p>
-        <ul class="ex-steps">${(ex.etapes||[]).map(e => '<li>'+e+'</li>').join('')}</ul>
-        ${ex.conseil_endo ? '<div class="ex-endo"><span>💜 Endométriose :</span> '+ex.conseil_endo+'</div>' : ''}
-        <button class="timer-btn" onclick="startTimer(this, ${ex.duree_secondes||120})">▶ Démarrer le timer (${ex.duree})</button>
-        <div class="timer-display"></div>
-      </div>
+      ${j.note?`<p class="je-note">"${j.note}"</p>`:''}
     </div>`;
+  }).join('');
+}
+
+function drawPoids(jours, btn) {
+  document.querySelectorAll('.poids-btn').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const canvas = document.getElementById('poids-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 300, H = 160;
+  canvas.width = W; canvas.height = H;
+  ctx.clearRect(0,0,W,H);
+  const entries = (state.poids||[]).filter(p => {
+    const d = new Date(p.date), cutoff = new Date();
+    cutoff.setDate(cutoff.getDate()-jours);
+    return d >= cutoff;
   });
-  return html;
+  if (entries.length < 2) {
+    ctx.fillStyle = '#8a7070'; ctx.font = '13px DM Sans, sans-serif';
+    ctx.textAlign = 'center'; ctx.fillText('Pas encore assez de données — reviens dans quelques jours !', W/2, H/2);
+    return;
+  }
+  const vals = entries.map(e=>e.val);
+  const minV = Math.min(...vals)-1, maxV = Math.max(...vals)+1;
+  const toX = i => (i/(entries.length-1))*(W-40)+20;
+  const toY = v => H-20-((v-minV)/(maxV-minV))*(H-40);
+  ctx.strokeStyle = '#ffc4c4'; ctx.lineWidth = 1; ctx.setLineDash([4,3]);
+  [minV, (minV+maxV)/2, maxV].forEach(v => {
+    const y = toY(v);
+    ctx.beginPath(); ctx.moveTo(20,y); ctx.lineTo(W-20,y); ctx.stroke();
+    ctx.fillStyle='#8a7070'; ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(v.toFixed(1),18,y+4);
+  });
+  ctx.setLineDash([]);
+  ctx.strokeStyle='#850e35'; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  entries.forEach((e,i) => { i===0?ctx.moveTo(toX(i),toY(e.val)):ctx.lineTo(toX(i),toY(e.val)); });
+  ctx.stroke();
+  ctx.fillStyle='#ee6983';
+  entries.forEach((e,i) => { ctx.beginPath(); ctx.arc(toX(i),toY(e.val),4,0,Math.PI*2); ctx.fill(); });
 }
 
-function getSeanceStatique(jour, phase, plaque) {
-  const seances = {
-    mens: [
-      { nom: 'Respiration diaphragmatique', duree: '3 min', position: 'Allongée sur le dos, genoux fléchis, mains sur le ventre', etapes: ['Inspire lentement par le nez en 4 temps — sens ton ventre se soulever', 'Retiens 1 seconde', 'Expire doucement par la bouche en 6 temps — sens ton ventre descendre', 'Répète sans forcer'], conseil_endo: 'Cette respiration profonde relâche les tensions du plancher pelvien et aide à réduire les crampes liées à l\'endométriose', duree_secondes: 180 },
-      { nom: 'Cat-cow — dos de chat', duree: '3 min', position: 'À quatre pattes sur le tapis, mains sous les épaules, genoux sous les hanches', etapes: ['Inspire : creuse le dos, lève la tête et le coccyx (vache)', 'Expire : arrondis le dos, rentre le menton et le bassin (chat)', 'Mouvements très doux, sans forcer', 'Rythme lent, une respiration par mouvement'], conseil_endo: 'Mobilise doucement la colonne et le bassin, réduit la pression sur les organes pelviens', duree_secondes: 180 },
-      { nom: 'Étirement psoas et hanches', duree: '4 min', position: 'En fente basse sur le tapis, genou arrière au sol (mettre un coussin si besoin)', etapes: ['Pose le genou droit au sol, pied gauche devant', 'Avance légèrement le bassin vers l\'avant', 'Inspire, grandis-toi', 'Expire, laisse le bassin descendre doucement', 'Tiens 30 secondes, change de côté'], conseil_endo: 'L\'endométriose crée souvent des tensions dans le psoas. Cet étirement libère cette zone clé', duree_secondes: 240 },
-      { nom: 'Shavasana — relâchement total', duree: '3 min', position: 'Allongée sur le dos, jambes allongées légèrement écartées, bras le long du corps, paumes vers le ciel', etapes: ['Ferme les yeux', 'Scanne ton corps de la tête aux pieds en relâchant chaque zone', 'Si une douleur pelvienne est présente, imagine ta respiration aller vers cet endroit', 'Laisse-toi fondre dans le tapis'], conseil_endo: 'Le système nerveux parasympathique prend le contrôle — anti-inflammatoire naturel pour l\'endo', duree_secondes: 180 }
-    ],
-    foll: [
-      { nom: 'Pilates mur — squat contre le mur', duree: '4 min', position: 'Dos contre un mur, pieds à 30 cm du mur, écartés à la largeur des hanches', etapes: ['Glisse le dos le long du mur jusqu\'à avoir les genoux à 90°', 'Tiens la position en respirant', 'Pousse sur les talons pour remonter', 'Répète 10 fois, 3 séries'], conseil_endo: 'Renforce les quadriceps et le plancher pelvien sans impact. Parfait en phase folliculaire', duree_secondes: 240 },
-      { nom: 'Tai chi walking', duree: '5 min', position: 'Debout, pieds parallèles, légèrement fléchis, bras relâchés', etapes: ['Commence à marcher lentement sur place', 'Transfère le poids d\'un pied sur l\'autre avec intention', 'Laisse les bras suivre naturellement', 'Respire profondément, yeux mi-clos si possible'], conseil_endo: 'Active la circulation lymphatique, réduit l\'inflammation systémique', duree_secondes: 300 },
-      { nom: 'Plaque vibrante', duree: '5 min', position: 'Debout sur la plaque, genoux légèrement fléchis, ventre légèrement rentré', etapes: ['Commence en position debout neutre, 1 minute', 'Plie légèrement les genoux, 2 minutes', 'Essaie une fente ou un squat pendant les 2 dernières minutes'], conseil_endo: 'Évitée pendant les règles et si douleur ≥ 3. En phase folliculaire sans douleur : parfaitement safe et bénéfique pour la densité osseuse', duree_secondes: 300 }
-    ],
-    ovu: [
-      { nom: 'Cardio — jumping jacks', duree: '5 min', position: 'Debout, pieds joints, bras le long du corps', etapes: ['Saute en écartant les pieds et levant les bras au-dessus de la tête', 'Reviens à la position initiale', 'Rythme modéré à vigoureux', 'Pause si essoufflée, reprends'], conseil_endo: 'Phase ovulatoire = pic d\'énergie. Le cardio brûle les graisses et libère des endorphines anti-douleur', duree_secondes: 300 },
-      { nom: 'Haltères — bicep curl', duree: '5 min', position: 'Debout, pieds écartés à la largeur des épaules, haltères dans chaque main, paumes vers l\'avant', etapes: ['Garde les coudes collés au corps', 'Fléchis les coudes pour monter les haltères vers les épaules', 'Descends lentement en 3 temps', '12 répétitions, 3 séries'], conseil_endo: 'La musculation légère augmente le métabolisme de base — brûle plus de calories même au repos', duree_secondes: 300 },
-      { nom: 'Plaque vibrante', duree: '5 min', position: 'Sur la plaque, genoux fléchis à 30°', etapes: ['1 min debout neutre', '2 min squat pulsé', '2 min fentes alternées sur la plaque'], conseil_endo: 'En phase ovulatoire sans douleur — excellent pour la tonicité musculaire profonde', duree_secondes: 300 }
-    ],
-    lut: [
-      { nom: 'Pilates sol — pont', duree: '5 min', position: 'Allongée sur le dos, genoux fléchis, pieds à plat, bras le long du corps', etapes: ['Inspire, prépare', 'Expire : décolle les hanches vertèbre par vertèbre', 'En haut : serre les fessiers et tiens 3 secondes', 'Redescends vertèbre par vertèbre', '10 répétitions'], conseil_endo: 'Renforce le plancher pelvien et les fessiers en douceur. La phase lutéale demande moins d\'effort', duree_secondes: 300 },
-      { nom: 'Stretching dos et colonne', duree: '5 min', position: 'Assise en tailleur sur le tapis', etapes: ['Pose la main droite à côté de toi, lève le bras gauche', 'Incline-toi vers la droite en respirant', 'Tiens 20 secondes', 'Change de côté', '3 fois de chaque côté'], conseil_endo: 'Soulage les tensions du dos souvent présentes en phase prémenstruelle', duree_secondes: 300 }
-    ]
+// ===== JOURNAL =====
+function selectMood(btn) {
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function saveJournal() {
+  const today = todayKey();
+  const mood = document.querySelector('.mood-btn.selected');
+  const poids = parseFloat(document.getElementById('inp-poids').value);
+  const douleurVal = parseInt(document.getElementById('sl-douleur').value);
+  state.journal[today] = {
+    energie: parseInt(document.getElementById('sl-energie').value),
+    douleur: douleurVal,
+    humeur: mood?mood.dataset.mood:null,
+    note: document.getElementById('inp-note').value,
+    poids: isNaN(poids)?null:poids
   };
-
-  const exercices = seances[phase.court] || seances.mens;
-  const data = { titre: 'Séance ' + phase.nom, duree_totale: exercices.length * 4 + ' min', exercices };
-  return renderSeance(data);
+  const jourCycle = getCycleDay();
+  state.douleurs['j'+jourCycle] = douleurVal;
+  if (!isNaN(poids)) {
+    state.poids = state.poids||[];
+    state.poids.push({date:today,val:poids});
+    document.getElementById('prog-poids').textContent = poids;
+  }
+  saveState();
+  if (driveAccessToken) saveToDrive();
+  document.getElementById('saved-msg').style.display='block';
+  setTimeout(()=>document.getElementById('saved-msg').style.display='none',2000);
+  buildJournalHistory();
+  buildDouleurGrid();
+  genererDemain(getCycleDay(), getPhase(getCycleDay()));
 }
 
-function toggleEx(header) {
-  const body = header.nextElementSibling;
-  body.classList.toggle('open');
-}
-
-let timerIntervals = {};
-function startTimer(btn, seconds) {
-  const display = btn.nextElementSibling;
-  const key = btn.dataset.timerId || Math.random().toString(36).substr(2,9);
-  btn.dataset.timerId = key;
-  if (timerIntervals[key]) { clearInterval(timerIntervals[key]); delete timerIntervals[key]; btn.textContent = '▶ Reprendre'; display.classList.remove('running'); return; }
-  let remaining = seconds;
-  display.classList.add('running');
-  display.textContent = formatTime(remaining);
-  btn.textContent = '⏸ Pause';
-  timerIntervals[key] = setInterval(() => {
-    remaining--;
-    display.textContent = formatTime(remaining);
-    if (remaining <= 0) { clearInterval(timerIntervals[key]); delete timerIntervals[key]; btn.textContent = '✓ Terminé'; display.textContent = '🎉'; }
-  }, 1000);
-}
-
-function formatTime(s) {
-  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
-}
-
+// ===== DEMAIN =====
 async function genererDemain(jour, phase) {
   const container = document.getElementById('demain-container');
-  const jourDemain = (jour % 28) + 1;
+  const jourDemain = (jour%28)+1;
   const phaseDemain = getPhase(jourDemain);
-  const journalToday = state.journal[todayKey()] || {};
-  const energie = journalToday.energie || 3;
-  const douleur = journalToday.douleur || 0;
+  const j = state.journal[todayKey()]||{};
+  const energie = j.energie||3, douleur = j.douleur||0;
+  document.getElementById('demain-subtitle').textContent = 'Pour demain J'+jourDemain+' · Phase '+phaseDemain.nom;
 
-  if (!state.apiKey) {
-    container.innerHTML = getDemainStatique(jourDemain, phaseDemain, energie, douleur);
-    return;
-  }
+  if (!state.apiKey) { container.innerHTML = getDemainStatique(jourDemain, phaseDemain, douleur); return; }
 
-  const prenomD = state.prenom || 'toi';
-  const prompt = `Tu es coach santé personnel pour ${prenomD}, monteuse vidéo de 31-40 ans qui se lève à 5h du matin.
-Elle a de l'endométriose et des kystes ovariens. Elle reprend le sport après plus d'un an de sédentarité.
-Elle a un tapis, des haltères, un mur, et une plaque vibrante.
+  const plaque = phaseDemain.court!=='mens' && douleur<3;
+  const prompt = `Tu es coach santé pour ${state.prenom||'Kezia'}, monteuse vidéo 31-40 ans qui se lève à 5h. Endométriose + kystes ovariens. Jeûne intermittent 20h-midi. Tapis, haltères, mur, plaque vibrante.
+Génère sa liste de préparation pour demain soir. JSON uniquement, sans markdown.
+Contexte: J${jourDemain}, Phase ${phaseDemain.nom}, énergie aujourd'hui ${energie}/5, douleur ${douleur}/5, plaque demain: ${plaque?'oui':'non'}.
+Format: {"items":[{"icone":"💧","label":"...","detail":"..."}]}
+5-7 items concrets: eau, compléments matin (Oméga-3+Magnésium), tenue, équipement, sommeil si fatiguée. Bienveillant, direct.`;
 
-Génère sa liste de préparation pour demain soir — ce qu'elle doit préparer CE SOIR avant de dormir.
-Réponds UNIQUEMENT en JSON valide, sans markdown, sans texte avant ou après.
-
-Contexte pour demain :
-- Jour du cycle demain : J${jourDemain}
-- Phase : ${phaseDemain.nom}
-- Énergie aujourd'hui : ${energie}/5
-- Douleur pelvienne aujourd'hui : ${douleur}/5
-- Plaque vibrante demain : ${phaseDemain.court !== 'mens' && douleur < 3 ? 'oui' : 'non'}
-
-Format JSON :
-{
-  "items": [
-    { "icone": "💧", "label": "Pose ton verre d'eau", "detail": "Sur ta table de nuit, premier geste demain à 5h avant même d'ouvrir les yeux" },
-    { "icone": "💊", "label": "Prépare tes compléments", "detail": "Magnésium bisglycinate + Vitamine D3 + Oméga-3 à côté du verre" }
-  ]
-}
-
-Inclure 5 à 7 items très concrets et personnalisés : verre d'eau, compléments, tenue adaptée à la phase, équipement à sortir, rappel pour le sommeil si énergie basse. Parle-lui directement, comme une amie bienveillante.`;
-
-  const result = await callClaude(prompt);
-
-  if (!result) { container.innerHTML = getDemainStatique(jourDemain, phaseDemain, energie, douleur); return; }
-
+  const result = await callGemini(prompt);
+  if (!result) { container.innerHTML = getDemainStatique(jourDemain, phaseDemain, douleur); return; }
   try {
-    const data = JSON.parse(result.replace(/```json|```/g, '').trim());
-    document.getElementById('demain-subtitle').textContent = 'Pour demain J' + jourDemain + ' · Phase ' + phaseDemain.nom;
-    let html = '';
-    (data.items || []).forEach(item => {
-      html += `<div class="demain-item">
-        <div class="demain-icon">${item.icone}</div>
-        <div class="demain-text"><p class="demain-label">${item.label}</p><p class="demain-detail">${item.detail}</p></div>
-      </div>`;
-    });
-    container.innerHTML = html;
-  } catch(e) { container.innerHTML = getDemainStatique(jourDemain, phaseDemain, energie, douleur); }
+    const data = JSON.parse(result.replace(/```json|```/g,'').trim());
+    container.innerHTML = data.items.map(item=>`
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--rose-pale);">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--rose-pale);color:var(--bordeaux);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${item.icone}</div>
+        <div><p style="font-size:13px;font-weight:500;color:var(--bordeaux);margin:0 0 2px;">${item.label}</p><p style="font-size:12px;color:var(--gris);margin:0;">${item.detail}</p></div>
+      </div>`).join('');
+  } catch(e) { container.innerHTML = getDemainStatique(jourDemain, phaseDemain, douleur); }
 }
 
-function getDemainStatique(jour, phase, energie, douleur) {
-  document.getElementById('demain-subtitle').textContent = 'Pour demain J' + jour + ' · Phase ' + phase.nom;
-  const plaque = phase.court !== 'mens' && douleur < 3;
+function getDemainStatique(jour, phase, douleur) {
+  const plaque = phase.court!=='mens' && douleur<3;
   const items = [
-    { icone: '💧', label: 'Pose ton verre d\'eau', detail: 'Sur ta table de nuit ce soir — premier geste demain matin avant tout' },
-    { icone: '💊', label: 'Prépare tes compléments', detail: 'Magnésium bisglycinate + Vitamine D3 + Oméga-3 — à côté du verre' },
-    { icone: '🧘', label: 'Sors ton tapis ce soir', detail: 'Place-le au sol dans ta chambre ou ton espace dédié' },
-    ...(plaque ? [{ icone: '📳', label: 'Prépare la plaque vibrante', detail: 'Branche-la ce soir, 5 min prévues dans ta séance de demain' }] : []),
-    ...(energie <= 2 ? [{ icone: '🌙', label: 'Couche-toi tôt ce soir', detail: 'Ton énergie est basse. Le sommeil est ta priorité numéro 1 cette nuit' }] : []),
-    { icone: '🌅', label: 'Réveil à 5h00', detail: 'Pas de snooze. Eau → compléments → tapis → travail. Dans cet ordre.' },
-    { icone: '🍌', label: 'Prépare un en-cas léger', detail: 'Une banane ou des noix à portée pour après la séance si tu as faim' }
+    {icone:'💧',label:'Pose ton verre d\'eau',detail:'Sur ta table de nuit — premier geste à 5h avant d\'ouvrir les yeux'},
+    {icone:'💊',label:'Prépare tes compléments du matin',detail:'Oméga-3 + Magnésium bisglycinate à côté du verre d\'eau'},
+    {icone:'🧘',label:'Sors ton tapis ce soir',detail:'Place-le au sol dans ton espace — déjà prêt demain matin'},
+    ...(plaque?[{icone:'📳',label:'Prépare la plaque vibrante',detail:'Branche-la ce soir — 5 min prévues dans ta séance'}]:[]),
+    {icone:'✍️',label:'Prépare ton carnet d\'écriture',detail:'Pose-le sur le tapis avec un stylo — 10 min d\'écriture libre'},
+    {icone:'🌅',label:'Réveil à 5h00',detail:'Eau → compléments → respiration → séance → écriture. Dans cet ordre.'},
+    {icone:'🌙',label:'Couche-toi tôt ce soir',detail:'Ton sommeil est la base de tout le reste — protège-le'}
   ];
-  return items.map(i => `<div class="demain-item"><div class="demain-icon">${i.icone}</div><div class="demain-text"><p class="demain-label">${i.label}</p><p class="demain-detail">${i.detail}</p></div></div>`).join('');
+  return items.map(i=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--rose-pale);">
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--rose-pale);color:var(--bordeaux);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${i.icone}</div>
+      <div><p style="font-size:13px;font-weight:500;color:var(--bordeaux);margin:0 0 2px;">${i.label}</p><p style="font-size:12px;color:var(--gris);margin:0;">${i.detail}</p></div>
+    </div>`).join('');
+}
+
+// ===== GEMINI =====
+async function callGemini(prompt) {
+  if (!state.apiKey) return null;
+  try {
+    const url='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+state.apiKey;
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+    const data=await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text||null;
+  } catch(e){return null;}
 }
 
 async function genererBilan() {
-  const container = document.getElementById('bilan-container');
-  container.innerHTML = '<div style="text-align:center;padding:20px;"><div class="spinner" style="width:28px;height:28px;border:2px solid var(--rose-pale);border-top-color:var(--bordeaux);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px;"></div><p style="font-size:13px;color:var(--gris);">Analyse en cours…</p></div>';
-
-  if (!state.apiKey) {
-    container.innerHTML = '<p style="font-size:13px;color:var(--gris);padding:10px;background:var(--creme);border-radius:8px;">Configure ta clé API dans Réglages pour générer ton bilan mensuel personnalisé.</p><button class="save-btn" style="margin-top:10px;" onclick="showPage(\'config\')">Aller dans Réglages</button>';
-    return;
-  }
-
-  const resumeJournal = Object.entries(state.journal || {}).slice(-28).map(([d, j]) => `${d}: energie=${j.energie} douleur=${j.douleur} humeur=${j.humeur}`).join('\n');
-  const nbSeances = state.seances ? state.seances.length : 0;
-  const streak = state.streak || 0;
-
-  const prenomB = state.prenom || 'toi';
-  const prompt = `Tu es coach santé personnel pour ${prenomB}, monteuse vidéo de 31-40 ans.
-Elle a de l'endométriose et des kystes ovariens. Elle reprend le sport après plus d'un an de sédentarité.
-Son objectif : maigrir progressivement et prendre soin d'elle durablement.
-
-Voici ses données des 28 derniers jours :
-- Séances complétées : ${nbSeances}
-- Streak habitudes du matin : ${streak} jours de suite
-- Journal : ${resumeJournal || 'Pas encore de données'}
-
-Écris-lui un bilan mensuel personnalisé en 3 paragraphes courts :
-1. Célèbre ses efforts concrets (même les petits)
-2. Ce que tu remarques sur ses patterns énergie/douleur/cycle
-3. Ce qu'on ajuste ensemble pour le mois prochain — sois précise
-
-Ton : chaleureux, direct, comme une amie coach. Jamais condescendant. Parle-lui à la deuxième personne. Max 200 mots.`;
-
-  const result = await callClaude(prompt);
-  if (result) {
-    container.innerHTML = '<div style="font-size:14px;color:var(--text);line-height:1.7;white-space:pre-wrap;padding:4px 0;">' + result + '</div><button class="save-btn" style="margin-top:14px;" onclick="exportData()">⬇ Exporter pour mon gynécologue</button>';
-  } else {
-    container.innerHTML = '<p style="font-size:13px;color:var(--gris);">Impossible de générer le bilan. Vérifie ta clé API.</p>';
-  }
+  const container=document.getElementById('bilan-container');
+  container.innerHTML='<div style="text-align:center;padding:20px;"><div class="spinner"></div><p style="font-size:13px;color:var(--gris);">Analyse en cours…</p></div>';
+  if(!state.apiKey){container.innerHTML='<p style="font-size:13px;color:var(--gris);padding:10px;">Configure ta clé API Gemini dans Réglages.</p><button class="save-btn" style="margin-top:10px;" onclick="showPage(\'config\')">Aller dans Réglages</button>';return;}
+  const resumeJournal=Object.entries(state.journal||{}).slice(-28).map(([d,j])=>`${d}: energie=${j.energie} douleur=${j.douleur} humeur=${j.humeur}`).join('\n');
+  const prompt=`Tu es coach santé pour ${state.prenom||'Kezia'}, monteuse vidéo 31-40 ans avec endométriose. Elle reprend le sport après 1 an de sédentarité. Objectif: maigrir progressivement et prendre soin d'elle.
+Données 28 jours: séances=${( state.seances||[]).length}, streak=${state.streak||0} jours, journal:\n${resumeJournal||'Pas encore de données'}
+Écris un bilan en 3 paragraphes: 1) Célèbre ses efforts 2) Patterns énergie/douleur/cycle 3) Ce qu'on ajuste ensemble. Ton: chaleureux, direct, comme une amie. 200 mots max.`;
+  const result=await callGemini(prompt);
+  if(result){container.innerHTML=`<div style="font-size:14px;color:var(--text);line-height:1.7;white-space:pre-wrap;">${result}</div><button class="save-btn" style="margin-top:14px;" onclick="exportPDF()">📄 Exporter PDF gynécologue</button>`;}
+  else{container.innerHTML='<p style="font-size:13px;color:var(--gris);">Erreur. Vérifie ta clé API.</p>';}
 }
 
-function exportData() {
-  const data = { ...state, exportDate: new Date().toISOString(), version: '1.0' };
-  delete data.apiKey;
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'mybody-coach-' + todayKey() + '.json';
-  a.click(); URL.revokeObjectURL(url);
+// ===== HABITUDES =====
+function toggleHabit(el, key) {
+  const today=todayKey();
+  if(!state.habitudes[today]) state.habitudes[today]={};
+  state.habitudes[today][key]=!state.habitudes[today][key];
+  const check=document.getElementById('h-'+key);
+  if(check) check.classList.toggle('done',state.habitudes[today][key]);
+  const done=Object.values(state.habitudes[today]).filter(Boolean).length;
+  document.getElementById('done-num').textContent=done+'/7';
+  if(done===7) calcStreak();
+  if(key==='ecriture') { if(state.habitudes[today][key]) playEcritureMusic(true); else playEcritureMusic(false); }
+  saveState(); if(driveAccessToken) saveToDrive();
+}
+function calcStreak(){
+  let s=0,d=new Date();
+  while(true){const k=d.toISOString().split('T')[0];const hab=state.habitudes[k]||{};if(Object.values(hab).filter(Boolean).length>=7){s++;d.setDate(d.getDate()-1);}else break;}
+  state.streak=s; document.getElementById('streak-num').textContent=s; document.getElementById('prog-streak').textContent=s; saveState();
 }
 
-// ===== GOOGLE DRIVE =====
-const GDRIVE_CLIENT_ID = '995009252075-n2ubfcu03hclfghhcq7180vkoiu7le6v.apps.googleusercontent.com';
-const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
-const GDRIVE_FILE_NAME = 'mybody-coach-data.json';
-let driveAccessToken = null;
-let driveFileId = null;
-
-function connectDrive() {
-  const client = google.accounts.oauth2.initTokenClient({
-    client_id: GDRIVE_CLIENT_ID,
-    scope: GDRIVE_SCOPE,
-    callback: async (response) => {
-      if (response.error) { alert('Erreur connexion Google : ' + response.error); return; }
-      driveAccessToken = response.access_token;
-      localStorage.setItem('drive_token', driveAccessToken);
-      updateDriveUI(true);
-      await syncFromDrive();
-    }
-  });
-  client.requestAccessToken();
+// ===== CONFIG =====
+function saveConfig(){
+  state.prenom=document.getElementById('cfg-prenom').value.trim();
+  state.dateRegles=document.getElementById('cfg-date-regles').value;
+  state.dureeRegles=parseInt(document.getElementById('cfg-duree-regles').value)||7;
+  state.apiKey=document.getElementById('cfg-api-key').value.trim();
+  saveState(); document.getElementById('cfg-saved').style.display='block';
+  setTimeout(()=>document.getElementById('cfg-saved').style.display='none',2000); initUI();
 }
 
-function disconnectDrive() {
-  driveAccessToken = null;
-  driveFileId = null;
-  localStorage.removeItem('drive_token');
-  localStorage.removeItem('drive_file_id');
-  updateDriveUI(false);
-}
-
-function updateDriveUI(connected) {
-  const bar = document.getElementById('drive-status-bar');
-  const txt = document.getElementById('drive-status-text');
-  const connectBtn = document.getElementById('gdrive-connect-btn');
-  const disconnectBtn = document.getElementById('gdrive-disconnect-btn');
-  if (!bar) return;
-  if (connected) {
-    bar.className = 'drive-status connected';
-    bar.querySelector('i').className = 'ti ti-cloud-check';
-    txt.textContent = 'Connecté à Google Drive — sauvegarde automatique active';
-    connectBtn.style.display = 'none';
-    disconnectBtn.style.display = 'flex';
-  } else {
-    bar.className = 'drive-status disconnected';
-    bar.querySelector('i').className = 'ti ti-cloud-off';
-    txt.textContent = 'Non connecté à Google Drive';
-    connectBtn.style.display = 'flex';
-    disconnectBtn.style.display = 'none';
-  }
-}
-
-async function getDriveFileId() {
-  if (driveFileId) return driveFileId;
-  const cached = localStorage.getItem('drive_file_id');
-  if (cached) { driveFileId = cached; return driveFileId; }
-  try {
-    const res = await fetch(
-      "https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='" + GDRIVE_FILE_NAME + "'",
-      { headers: { Authorization: 'Bearer ' + driveAccessToken } }
-    );
-    const data = await res.json();
-    if (data.files && data.files.length > 0) {
-      driveFileId = data.files[0].id;
-      localStorage.setItem('drive_file_id', driveFileId);
-    }
-  } catch(e) {}
-  return driveFileId;
-}
-
-async function syncFromDrive() {
-  if (!driveAccessToken) return;
-  try {
-    const fileId = await getDriveFileId();
-    if (!fileId) { await saveToDrive(); return; }
-    const res = await fetch(
-      'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media',
-      { headers: { Authorization: 'Bearer ' + driveAccessToken } }
-    );
-    if (!res.ok) return;
-    const data = await res.json();
-    const apiKey = state.apiKey;
-    state = { ...state, ...data };
-    if (apiKey) state.apiKey = apiKey;
-    saveState();
-    initUI();
-  } catch(e) { console.log('Drive sync error:', e); }
-}
-
-async function saveToDrive() {
-  if (!driveAccessToken) return;
-  try {
-    const data = { ...state };
-    delete data.apiKey;
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const fileId = await getDriveFileId();
-    let res;
-    if (fileId) {
-      res = await fetch(
-        'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media',
-        { method: 'PATCH', headers: { Authorization: 'Bearer ' + driveAccessToken, 'Content-Type': 'application/json' }, body: blob }
-      );
-    } else {
-      const meta = { name: GDRIVE_FILE_NAME, parents: ['appDataFolder'] };
-      const form = new FormData();
-      form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
-      form.append('file', blob);
-      res = await fetch(
-        'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
-        { method: 'POST', headers: { Authorization: 'Bearer ' + driveAccessToken }, body: form }
-      );
-      if (res.ok) {
-        const created = await res.json();
-        driveFileId = created.id;
-        localStorage.setItem('drive_file_id', driveFileId);
-      }
-    }
-  } catch(e) { console.log('Drive save error:', e); }
-}
-
-function saveStateAndDrive() {
-  saveState();
-  if (driveAccessToken) saveToDrive();
-}
-
-function importData(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      const apiKey = state.apiKey;
-      state = { ...state, ...data };
-      if (apiKey) state.apiKey = apiKey;
-      saveState(); initUI();
-      alert('Données importées avec succès !');
-    } catch(err) { alert('Fichier invalide.'); }
-  };
-  reader.readAsText(file);
-}
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  const tabs = ['dashboard','cycle','journal','demain','progression','config'];
-  const idx = tabs.indexOf(id);
-  const tabEls = document.querySelectorAll('.nav-tab');
-  if (tabEls[idx]) tabEls[idx].classList.add('active');
-  document.getElementById('navTabs').classList.remove('open');
-}
-
-function toggleMenu() {
-  document.getElementById('navTabs').classList.toggle('open');
-}
-
-// Fix JS syntax error in loadState
-function loadState() {
-  const saved = localStorage.getItem('mybody_state');
-  if (saved) {
-    try { const parsed = JSON.parse(saved); state = { ...state, ...parsed }; } catch(e) {}
-  }
+// ===== STORAGE =====
+function saveState(){localStorage.setItem('mybody_state',JSON.stringify(state));}
+function loadState(){
+  const saved=localStorage.getItem('mybody_state');
+  if(saved){try{const p=JSON.parse(saved);state={...state,...p};}catch(e){}}
   initUI();
 }
 
-loadState();
+// ===== EXPORT =====
+function exportData(){
+  const data={...state,exportDate:new Date().toISOString(),version:'2.0'};delete data.apiKey;
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download='mybody-coach-'+todayKey()+'.json';a.click();URL.revokeObjectURL(url);
+}
+function importData(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{try{const d=JSON.parse(e.target.result);const k=state.apiKey;state={...state,...d};if(k)state.apiKey=k;saveState();initUI();alert('Données importées !');}catch(e){alert('Fichier invalide.');}};
+  reader.readAsText(file);
+}
+function exportPDF(){
+  const jour=getCycleDay(),phase=getPhase(jour);
+  const entries=Object.entries(state.journal||{}).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,28);
+  let html=`<html><head><meta charset="UTF-8"><title>MyBody Coach — Bilan médical</title><style>body{font-family:sans-serif;max-width:700px;margin:40px auto;color:#2a1a1a;}h1{color:#850e35;}h2{color:#850e35;font-size:16px;margin-top:24px;}table{width:100%;border-collapse:collapse;margin-top:10px;}td,th{padding:8px;border:1px solid #ffc4c4;font-size:13px;}th{background:#ffc4c4;color:#850e35;}.tag{background:#ffc4c4;color:#850e35;padding:2px 8px;border-radius:10px;font-size:12px;margin-right:4px;}</style></head><body>`;
+  html+=`<h1>MyBody Coach — Bilan mensuel</h1><p><strong>Patiente :</strong> ${state.prenom||'–'} &nbsp;|&nbsp; <strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR')} &nbsp;|&nbsp; <strong>Jour du cycle :</strong> J${jour} (${phase.nom})</p>`;
+  html+=`<h2>Journal des 28 derniers jours</h2><table><tr><th>Date</th><th>Énergie</th><th>Douleur pelvienne</th><th>Humeur</th><th>Poids</th><th>Note</th></tr>`;
+  entries.forEach(([d,j])=>{html+=`<tr><td>${d}</td><td>${j.energie||'–'}/5</td><td>${j.douleur||0}/5</td><td>${j.humeur||'–'}</td><td>${j.poids||'–'} kg</td><td>${j.note||''}</td></tr>`;});
+  html+=`</table><h2>Douleurs par jour de cycle</h2><p>`;
+  for(let i=1;i<=28;i++){const d=state.douleurs?.['j'+i]||0;html+=`<span class="tag">J${i}: ${d}/5</span>`;}
+  html+=`</p><h2>Activité physique</h2><p>Séances complétées : <strong>${(state.seances||[]).length}</strong></p>`;
+  html+=`<p style="margin-top:40px;font-size:12px;color:#8a7070;">Document généré par MyBody Coach — kezia5150.github.io/mybody-coach</p></body></html>`;
+  const win=window.open('','_blank');win.document.write(html);win.document.close();win.print();
+}
 
-// Restaurer token Drive si existant
-window.addEventListener('load', () => {
-  const token = localStorage.getItem('drive_token');
-  const fileId = localStorage.getItem('drive_file_id');
-  if (token) {
-    driveAccessToken = token;
-    if (fileId) driveFileId = fileId;
-    updateDriveUI(true);
-  }
+// ===== GOOGLE DRIVE =====
+function connectDrive(){
+  const client=google.accounts.oauth2.initTokenClient({client_id:GDRIVE_CLIENT_ID,scope:GDRIVE_SCOPE,callback:async(r)=>{
+    if(r.error){alert('Erreur Google: '+r.error);return;}
+    driveAccessToken=r.access_token;localStorage.setItem('drive_token',driveAccessToken);
+    updateDriveUI(true);await syncFromDrive();
+  }});client.requestAccessToken();
+}
+function disconnectDrive(){driveAccessToken=null;driveFileId=null;localStorage.removeItem('drive_token');localStorage.removeItem('drive_file_id');updateDriveUI(false);}
+function updateDriveUI(connected){
+  const bar=document.getElementById('drive-status-bar'),txt=document.getElementById('drive-status-text'),icon=document.getElementById('drive-status-icon');
+  const cb=document.getElementById('gdrive-connect-btn'),db=document.getElementById('gdrive-disconnect-btn');
+  if(connected){bar.className='drive-status connected';icon.textContent='✅';txt.textContent='Connecté à Google Drive — sauvegarde automatique active';cb.style.display='none';db.style.display='block';}
+  else{bar.className='drive-status disconnected';icon.textContent='☁️';txt.textContent='Non connecté à Google Drive';cb.style.display='flex';db.style.display='none';}
+}
+async function getDriveFileId(){
+  if(driveFileId)return driveFileId;
+  const cached=localStorage.getItem('drive_file_id');if(cached){driveFileId=cached;return driveFileId;}
+  try{const res=await fetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='"+GDRIVE_FILE_NAME+"'",{headers:{Authorization:'Bearer '+driveAccessToken}});
+  const data=await res.json();if(data.files?.length>0){driveFileId=data.files[0].id;localStorage.setItem('drive_file_id',driveFileId);}}catch(e){}
+  return driveFileId;
+}
+async function syncFromDrive(){
+  if(!driveAccessToken)return;
+  try{const fileId=await getDriveFileId();if(!fileId){await saveToDrive();return;}
+  const res=await fetch('https://www.googleapis.com/drive/v3/files/'+fileId+'?alt=media',{headers:{Authorization:'Bearer '+driveAccessToken}});
+  if(!res.ok)return;const data=await res.json();const k=state.apiKey;state={...state,...data};if(k)state.apiKey=k;saveState();initUI();}
+  catch(e){console.log('Drive sync error:',e);}
+}
+async function saveToDrive(){
+  if(!driveAccessToken)return;
+  try{const data={...state};delete data.apiKey;
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const fileId=await getDriveFileId();let res;
+  if(fileId){res=await fetch('https://www.googleapis.com/upload/drive/v3/files/'+fileId+'?uploadType=media',{method:'PATCH',headers:{Authorization:'Bearer '+driveAccessToken,'Content-Type':'application/json'},body:blob});}
+  else{const meta={name:GDRIVE_FILE_NAME,parents:['appDataFolder']};const form=new FormData();form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));form.append('file',blob);
+  res=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{Authorization:'Bearer '+driveAccessToken},body:form});
+  if(res.ok){const c=await res.json();driveFileId=c.id;localStorage.setItem('drive_file_id',driveFileId);}}}
+  catch(e){console.log('Drive save error:',e);}
+}
+
+// ===== NAV =====
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const tabs=['dashboard','cycle','complements','journal','demain','progression','config'];
+  const tabEls=document.querySelectorAll('.nav-tab');
+  const idx=tabs.indexOf(id);if(tabEls[idx])tabEls[idx].classList.add('active');
+  document.getElementById('navTabs').classList.remove('open');
+  if(id==='progression'){setTimeout(()=>drawPoids(30,document.querySelector('.poids-btn.active')),100);}
+}
+function toggleMenu(){document.getElementById('navTabs').classList.toggle('open');}
+
+// ===== START =====
+window.addEventListener('load',()=>{
+  const token=localStorage.getItem('drive_token');
+  const fileId=localStorage.getItem('drive_file_id');
+  if(token){driveAccessToken=token;if(fileId)driveFileId=fileId;updateDriveUI(true);}
 });
+loadState();
 </script>
 </body>
 </html>
