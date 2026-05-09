@@ -821,8 +821,8 @@ function stopWriting(auto=false){
 
 function getCycleDay(){if(!state.dateRegles)return 5;const start=new Date(state.dateRegles),today=new Date();const diff=Math.floor((today-start)/(1000*60*60*24));return((diff%28)+28)%28+1;}
 function getPhase(j){if(j<=7)return{nom:'Menstruelle',tag:'Douceur',court:'mens'};if(j<=13)return{nom:'Folliculaire',tag:'Énergie montante',court:'foll'};if(j<=17)return{nom:'Ovulatoire',tag:'Pic d\'énergie',court:'ovu'};return{nom:'Lutéale',tag:'Ralentissement',court:'lut'};}
-function todayKey(){return new Date().toISOString().split('T')[0];}
-function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().split('T')[0];}
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function getGreeting(){const h=new Date().getHours();return h<12?'Bonjour,':h<18?'Bon après-midi,':'Bonsoir,';}
 function formatTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 
