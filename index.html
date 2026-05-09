@@ -557,8 +557,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 
 <audio id="audio-seance" loop></audio>
 <audio id="audio-ecriture" loop></audio>
-<audio id="audio-debut-timer" src="debut-timer.mp3"></audio>
-<audio id="audio-fin-timer" src="fin-timer.mp3"></audio>
+<audio id="audio-debut-timer" src="debut-timer.MP3"></audio>
+<audio id="audio-fin-timer" src="fin-timer.MP3"></audio>
 
 <script>
 let state = {
@@ -585,9 +585,9 @@ async function preloadAudio(url){
 }
 
 async function preloadAllAudio(){
-  bufferDebutTimer=await preloadAudio('debut-timer.mp3');
-  bufferFinTimer=await preloadAudio('fin-timer.mp3');
-  bufferEcriture=await preloadAudio('0509.mp3');
+  bufferDebutTimer=await preloadAudio('debut-timer.MP3');
+  bufferFinTimer=await preloadAudio('fin-timer.MP3');
+  bufferEcriture=await preloadAudio('0509.MP3');
 }
 
 function playBuffer(buffer){
@@ -740,8 +740,6 @@ function runBreathCycle(){
       if(breathRunning){
         if(breathCycle<4)document.getElementById('bd'+breathCycle).classList.add('done');
         breathCycle++;
-        const lbl=document.getElementById('breath-timer-label');
-        if(lbl&&breathCycle<4)lbl.textContent='Cycle '+(breathCycle+1)+' sur 4';
         if(breathCycle>=4){bowlSound(432,3,0.35);playTimerEnd();const cd=document.getElementById('breath-countdown');if(cd)cd.textContent='✓';breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
         else breathTimers.push(setTimeout(runBreathCycle,300));
       }
@@ -783,7 +781,7 @@ function startWriting(){
     ecritureSource=playBufferLoop(bufferEcriture);
   } else {
     const a=document.getElementById('audio-ecriture');
-    if(a){if(!a.src||a.src===window.location.href)a.src='0509.mp3';a.play().catch(()=>{});}
+    if(a){if(!a.src||a.src===window.location.href)a.src='0509.MP3';a.play().catch(()=>{});}
   }
   writingRemaining=600;
   document.getElementById('writing-start').style.display='none';
