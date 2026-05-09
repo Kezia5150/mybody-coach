@@ -263,7 +263,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <span class="habit-time">30 s</span>
     </div>
     <div class="habit-item" onclick="toggleAccordion('acc-respiration')">
-      <div class="hcheck" id="h-respiration"></div>
+      <div class="hcheck" id="h-respiration" onclick="event.stopPropagation()"></div>
       <span class="habit-label">🌬 Respiration 4-4-4-4</span>
       <span class="habit-time">4 min 16 s</span>
       <span class="habit-arrow" id="arr-respiration">›</span>
@@ -293,7 +293,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
 
     <div class="habit-item" onclick="toggleAccordion('acc-ecriture')">
-      <div class="hcheck" id="h-ecriture"></div>
+      <div class="hcheck" id="h-ecriture" onclick="event.stopPropagation()"></div>
       <span class="habit-label">✍️ Écrire 10 min</span>
       <span class="habit-time">10 min</span>
       <span class="habit-arrow" id="arr-ecriture">›</span>
@@ -344,7 +344,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <!-- SOIR -->
     <div class="section-label">🌙 Soir</div>
     <div class="habit-item" onclick="toggleAccordion('acc-etirements')">
-      <div class="hcheck" id="h-etirements"></div>
+      <div class="hcheck" id="h-etirements" onclick="event.stopPropagation()"></div>
       <span class="habit-label">🧘 Étirements doux</span>
       <span class="habit-time">8 min</span>
       <span class="habit-arrow" id="arr-etirements">›</span>
@@ -722,7 +722,7 @@ function stopBreath(auto=false){
   if(cd)cd.textContent='4:16';
   document.getElementById('breath-start').style.display='block';
   document.getElementById('breath-stop').style.display='none';
-  for(let i=0;i<4;i++)document.getElementById('bd'+i).classList.remove('done');
+  
   if(auto){
     const today=todayKey();
     if(!state.habitudes[today])state.habitudes[today]={};
