@@ -738,7 +738,6 @@ function runBreathCycle(){
   const next=()=>{
     if(!breathRunning||idx>=breathPhases.length){
       if(breathRunning){
-        if(breathCycle<4)document.getElementById('bd'+breathCycle).classList.add('done');
         breathCycle++;
         if(breathCycle>=4){bowlSound(432,3,0.35);playTimerEnd();const cd=document.getElementById('breath-countdown');if(cd)cd.textContent='✓';breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
         else breathTimers.push(setTimeout(runBreathCycle,300));
@@ -783,6 +782,7 @@ function startWriting(){
     const a=document.getElementById('audio-ecriture');
     if(a){if(!a.src||a.src===window.location.href)a.src='0509.MP3';a.play().catch(()=>{});}
   }
+  playTimerStart();
   writingRemaining=600;
   document.getElementById('writing-start').style.display='none';
   document.getElementById('writing-stop').style.display='block';
@@ -808,6 +808,7 @@ function stopWriting(auto=false){
   document.getElementById('writing-start').style.display='block';
   document.getElementById('writing-stop').style.display='none';
   if(auto||writingRemaining<=0){
+    playTimerEnd();
     const today=todayKey();
     if(!state.habitudes[today])state.habitudes[today]={};
     state.habitudes[today]['ecriture']=true;
