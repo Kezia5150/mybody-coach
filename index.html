@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MyBody Coach</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23850e35'/><text y='72' x='50' text-anchor='middle' font-size='60'>🌸</text></svg>">
@@ -25,9 +25,10 @@
   --radius-sm: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(--text); min-height: 100vh; padding-bottom: 90px; padding-top: env(safe-area-inset-top, 0px); }
+body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(--text); min-height: 100vh; padding-bottom: 90px; }
 
-.nav { background: var(--bordeaux); position: sticky; top: 0; z-index: 9999; -webkit-transform: translateZ(0); transform: translateZ(0); padding-top: env(safe-area-inset-top, 0px); margin-top: calc(-1 * env(safe-area-inset-top, 0px)); }
+.nav { background: var(--bordeaux); position: sticky; top: 0; z-index: 9999; -webkit-transform: translateZ(0); transform: translateZ(0); }
+.nav-inner { padding-top: env(safe-area-inset-top, 0px); }
 .nav-inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--creme); padding: 14px 0; }
 .hamburger { background: none; border: none; color: var(--creme); font-size: 22px; cursor: pointer; padding: 14px 0; }
@@ -555,7 +556,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 </div>
 
 <audio id="audio-seance" loop></audio>
-<audio id="audio-ecriture" loop src="0509.mp3"></audio>
+<audio id="audio-ecriture" loop></audio>
 <audio id="audio-debut-timer" src="debut-timer.mp3"></audio>
 <audio id="audio-fin-timer" src="fin-timer.mp3"></audio>
 
@@ -573,10 +574,12 @@ let seanceMusicPlaying=false;
 const actx=new (window.AudioContext||window.webkitAudioContext)();
 
 function playTimerStart(){
+  if(actx.state==='suspended')actx.resume();
   try{
     const a=document.getElementById('audio-debut-timer');
-    if(a&&a.src&&a.src!==window.location.href){a.currentTime=0;a.play().catch(()=>playTimerStartFallback());}
-    else playTimerStartFallback();
+    if(!a.src||a.src===window.location.href)a.src='debut-timer.mp3';
+    a.currentTime=0;
+    a.play().catch(()=>playTimerStartFallback());
   }catch(e){playTimerStartFallback();}
 }
 function playTimerStartFallback(){
@@ -592,10 +595,12 @@ function playTimerStartFallback(){
   });
 }
 function playTimerEnd(){
+  if(actx.state==='suspended')actx.resume();
   try{
     const a=document.getElementById('audio-fin-timer');
-    if(a&&a.src&&a.src!==window.location.href){a.currentTime=0;a.play().catch(()=>playTimerEndFallback());}
-    else playTimerEndFallback();
+    if(!a.src||a.src===window.location.href)a.src='fin-timer.mp3';
+    a.currentTime=0;
+    a.play().catch(()=>playTimerEndFallback());
   }catch(e){playTimerEndFallback();}
 }
 function playTimerEndFallback(){
@@ -743,11 +748,12 @@ function startWriting(){
   if(actx.state==='suspended')actx.resume();
   const a=document.getElementById('audio-ecriture');
   if(a){
+    if(!a.src||a.src===window.location.href)a.src='0509.mp3';
     a.volume=1.0;
     const playPromise=a.play();
     if(playPromise!==undefined){
       playPromise.catch(err=>{
-        console.log('Audio bloqué:',err);
+        console.log('Audio écriture bloqué:',err);
         document.getElementById('writing-label').textContent='active le son ↑';
       });
     }
