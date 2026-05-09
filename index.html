@@ -287,6 +287,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
         <div style="font-size:28px;font-weight:500;color:var(--bordeaux);text-align:center;margin-bottom:12px;" id="breath-countdown">4:16</div>
         <div class="breath-btns">
           <button class="action-btn action-btn-primary" id="breath-start" onclick="startBreath()">Démarrer</button>
+          <button class="action-btn action-btn-secondary" id="breath-pause" onclick="pauseBreath()" style="display:none">⏸ Pause</button>
           <button class="action-btn action-btn-secondary" id="breath-stop" onclick="stopBreath(false)" style="display:none">Arrêter</button>
         </div>
       </div>
@@ -351,6 +352,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
     <div class="accordion-body" id="acc-etirements">
       <div class="etirement-wrap" id="etirement-content"></div>
+      <button class="save-btn" style="margin-top:8px;" onclick="marquerEtirementsTermines()">✓ Étirements terminés</button>
     </div>
 
     <div class="habit-item" onclick="toggleHabit(this,'dents')">
@@ -670,7 +672,7 @@ function bowlSound(freq,duration,vol=0.3){
 function inhaleSound(){[220,277,330].forEach(f=>{const osc=actx.createOscillator(),gain=actx.createGain();osc.connect(gain);gain.connect(actx.destination);osc.type='sine';osc.frequency.setValueAtTime(f,actx.currentTime);osc.frequency.linearRampToValueAtTime(f*1.5,actx.currentTime+4);gain.gain.setValueAtTime(0,actx.currentTime);gain.gain.linearRampToValueAtTime(0.07,actx.currentTime+2);gain.gain.linearRampToValueAtTime(0,actx.currentTime+4);osc.start();osc.stop(actx.currentTime+4.1);});}
 function exhaleSound(){[330,277,220].forEach(f=>{const osc=actx.createOscillator(),gain=actx.createGain();osc.connect(gain);gain.connect(actx.destination);osc.type='sine';osc.frequency.setValueAtTime(f*1.5,actx.currentTime);osc.frequency.linearRampToValueAtTime(f,actx.currentTime+4);gain.gain.setValueAtTime(0,actx.currentTime);gain.gain.linearRampToValueAtTime(0.07,actx.currentTime+1);gain.gain.linearRampToValueAtTime(0,actx.currentTime+4);osc.start();osc.stop(actx.currentTime+4.1);});}
 
-let breathRunning=false,breathTimers=[],breathCycle=0,waveAnim=null,waveOffset=0,currentLevel=100,targetLevel=100;
+let breathRunning=false,breathPaused=false,breathTimers=[],breathCycle=0,waveAnim=null,waveOffset=0,currentLevel=100,targetLevel=100;
 const breathPhases=[
   {label:'Inspire',sound:'inhale',duration:4,targetLevel:22},
   {label:'Retiens',sound:'bowl',duration:4,targetLevel:22},
@@ -695,20 +697,22 @@ function startBreath(){
   if(breathRunning)return;
   breathRunning=true;breathCycle=0;currentLevel=100;targetLevel=100;
   document.getElementById('breath-start').style.display='none';
+  document.getElementById('breath-pause').style.display='block';
   document.getElementById('breath-stop').style.display='block';
+  breathPaused=false;
   playTimerStart();
   drawWaves();runBreathCycle();
   startBreathCountdown();
 }
 let breathCountdownInterval=null;
 function startBreathCountdown(){
-  let remaining=256;
+  breathCountdownRemaining=256;
   const el=document.getElementById('breath-countdown');
-  if(el)el.textContent=formatTime(remaining);
+  if(el)el.textContent=formatTime(breathCountdownRemaining);
   breathCountdownInterval=setInterval(()=>{
-    remaining--;
-    if(el)el.textContent=formatTime(remaining);
-    if(remaining<=0){clearInterval(breathCountdownInterval);}
+    breathCountdownRemaining--;
+    if(el)el.textContent=formatTime(breathCountdownRemaining);
+    if(breathCountdownRemaining<=0){clearInterval(breathCountdownInterval);}
   },1000);
 }
 function stopBreath(auto=false){
@@ -721,7 +725,9 @@ function stopBreath(auto=false){
   const cd=document.getElementById('breath-countdown');
   if(cd)cd.textContent='4:16';
   document.getElementById('breath-start').style.display='block';
+  document.getElementById('breath-pause').style.display='none';
   document.getElementById('breath-stop').style.display='none';
+  breathPaused=false;
   
   if(auto){
     const today=todayKey();
@@ -732,8 +738,39 @@ function stopBreath(auto=false){
     updateDoneCount();saveState();if(driveAccessToken)saveToDrive();
   }
 }
-function runBreathCycle(){
+function pauseBreath(){
   if(!breathRunning)return;
+  if(!breathPaused){
+    // Mettre en pause
+    breathPaused=true;
+    breathTimers.forEach(clearTimeout);breathTimers=[];
+    if(waveAnim){cancelAnimationFrame(waveAnim);waveAnim=null;}
+    if(breathCountdownInterval){clearInterval(breathCountdownInterval);breathCountdownInterval=null;}
+    document.getElementById('breath-pause').textContent='▶ Reprendre';
+    document.getElementById('svg-phase').textContent='Pause';
+    document.getElementById('svg-count').textContent='';
+  } else {
+    // Reprendre
+    breathPaused=false;
+    document.getElementById('breath-pause').textContent='⏸ Pause';
+    drawWaves();
+    runBreathCycle();
+    resumeBreathCountdown();
+  }
+}
+
+let breathCountdownRemaining=256;
+function resumeBreathCountdown(){
+  const el=document.getElementById('breath-countdown');
+  breathCountdownInterval=setInterval(()=>{
+    breathCountdownRemaining--;
+    if(el)el.textContent=formatTime(breathCountdownRemaining);
+    if(breathCountdownRemaining<=0)clearInterval(breathCountdownInterval);
+  },1000);
+}
+
+function runBreathCycle(){
+  if(!breathRunning||breathPaused)return;
   let idx=0;
   const next=()=>{
     if(!breathRunning||idx>=breathPhases.length){
@@ -926,6 +963,17 @@ function startTimer(btn,seconds){
   },1000);
 }
 
+function marquerEtirementsTermines(){
+  const today=todayKey();
+  if(!state.habitudes[today])state.habitudes[today]={};
+  state.habitudes[today]['etirements']=true;
+  state.habitudes[today]['etirements_completed']=true;
+  const el=document.getElementById('h-etirements');
+  if(el)el.classList.add('done');
+  updateDoneCount();calcStreak();saveState();if(driveAccessToken)saveToDrive();
+  toggleAccordion('acc-etirements');
+}
+
 function marquerSeanceFaite(){
   const today=todayKey();
   if(!state.habitudes[today])state.habitudes[today]={};
@@ -1112,7 +1160,22 @@ async function genererBilan(){
 
 function saveConfig(){state.prenom=document.getElementById('cfg-prenom').value.trim();state.dateRegles=document.getElementById('cfg-date-regles').value;state.dureeRegles=parseInt(document.getElementById('cfg-duree-regles').value)||7;state.apiKey=document.getElementById('cfg-api-key').value.trim();saveState();document.getElementById('cfg-saved').style.display='block';setTimeout(()=>document.getElementById('cfg-saved').style.display='none',2000);initUI();}
 function saveState(){localStorage.setItem('mybody_state',JSON.stringify(state));}
-function loadState(){const saved=localStorage.getItem('mybody_state');if(saved){try{const p=JSON.parse(saved);state={...state,...p};}catch(e){}}initUI();}
+function loadState(){
+  const saved=localStorage.getItem('mybody_state');
+  if(saved){try{const p=JSON.parse(saved);state={...state,...p};}catch(e){}}
+  // Si les habitudes d'aujourd'hui n'existent pas encore, s'assurer qu'elles sont vides
+  const today=todayKey();
+  if(!state.habitudes[today]){state.habitudes[today]={};}
+  // Respiration et étirements ne peuvent être cochés que par leur widget
+  // Si coché sans timestamp de completion, on remet à false
+  if(state.habitudes[today]['etirements']===true && !state.habitudes[today]['etirements_completed']){
+    state.habitudes[today]['etirements']=false;
+  }
+  // Nettoyer les anciennes habitudes (garder seulement les 30 derniers jours)
+  const keys=Object.keys(state.habitudes).sort();
+  if(keys.length>30){keys.slice(0,keys.length-30).forEach(k=>delete state.habitudes[k]);}
+  initUI();
+}
 
 function exportData(){const data={...state,exportDate:new Date().toISOString(),version:'3.0'};delete data.apiKey;const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='mybody-coach-'+todayKey()+'.json';a.click();URL.revokeObjectURL(url);}
 function importData(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const d=JSON.parse(e.target.result);const k=state.apiKey;state={...state,...d};if(k)state.apiKey=k;saveState();initUI();alert('Données importées !');}catch(e){alert('Fichier invalide.');}};reader.readAsText(file);}
