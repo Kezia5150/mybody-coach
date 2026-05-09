@@ -265,7 +265,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <div class="habit-item" onclick="toggleAccordion('acc-respiration')">
       <div class="hcheck" id="h-respiration"></div>
       <span class="habit-label">🌬 Respiration 4-4-4-4</span>
-      <span class="habit-time">5 min</span>
+      <span class="habit-time">4 min 16 s</span>
       <span class="habit-arrow" id="arr-respiration">›</span>
     </div>
     <div class="accordion-body" id="acc-respiration">
@@ -284,7 +284,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
             <text id="svg-count" x="80" y="100" text-anchor="middle" font-size="36" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
           </svg>
         </div>
-        <div style="font-size:28px;font-weight:500;color:var(--bordeaux);text-align:center;margin-bottom:12px;" id="breath-countdown">2:40</div>
+        <div style="font-size:28px;font-weight:500;color:var(--bordeaux);text-align:center;margin-bottom:12px;" id="breath-countdown">4:16</div>
         <div class="breath-btns">
           <button class="action-btn action-btn-primary" id="breath-start" onclick="startBreath()">Démarrer</button>
           <button class="action-btn action-btn-secondary" id="breath-stop" onclick="stopBreath(false)" style="display:none">Arrêter</button>
@@ -573,17 +573,53 @@ let seanceMusicPlaying=false;
 
 const actx=new (window.AudioContext||window.webkitAudioContext)();
 
+// Buffers audio préchargés
+let bufferDebutTimer=null, bufferFinTimer=null, bufferEcriture=null;
+
+async function preloadAudio(url){
+  try{
+    const response=await fetch(url);
+    const arrayBuffer=await response.arrayBuffer();
+    return await actx.decodeAudioData(arrayBuffer);
+  }catch(e){console.log('Preload failed:',url,e);return null;}
+}
+
+async function preloadAllAudio(){
+  bufferDebutTimer=await preloadAudio('debut-timer.mp3');
+  bufferFinTimer=await preloadAudio('fin-timer.mp3');
+  bufferEcriture=await preloadAudio('0509.mp3');
+}
+
+function playBuffer(buffer){
+  if(!buffer)return false;
+  try{
+    if(actx.state==='suspended')actx.resume();
+    const source=actx.createBufferSource();
+    source.buffer=buffer;
+    source.connect(actx.destination);
+    source.start(0);
+    return true;
+  }catch(e){return false;}
+}
+
+function playBufferLoop(buffer){
+  if(!buffer)return null;
+  try{
+    if(actx.state==='suspended')actx.resume();
+    const source=actx.createBufferSource();
+    source.buffer=buffer;
+    source.loop=true;
+    source.connect(actx.destination);
+    source.start(0);
+    return source;
+  }catch(e){return null;}
+}
+
 function playTimerStart(){
   if(actx.state==='suspended')actx.resume();
-  try{
-    const a=document.getElementById('audio-debut-timer');
-    if(!a.src||a.src===window.location.href)a.src='debut-timer.mp3';
-    a.currentTime=0;
-    a.play().catch(()=>playTimerStartFallback());
-  }catch(e){playTimerStartFallback();}
+  if(!playBuffer(bufferDebutTimer)) playTimerStartFallback();
 }
 function playTimerStartFallback(){
-  // Son ting cristallin généré
   [880,1100].forEach((freq,i)=>{
     const osc=actx.createOscillator(),gain=actx.createGain();
     osc.connect(gain);gain.connect(actx.destination);
@@ -596,15 +632,9 @@ function playTimerStartFallback(){
 }
 function playTimerEnd(){
   if(actx.state==='suspended')actx.resume();
-  try{
-    const a=document.getElementById('audio-fin-timer');
-    if(!a.src||a.src===window.location.href)a.src='fin-timer.mp3';
-    a.currentTime=0;
-    a.play().catch(()=>playTimerEndFallback());
-  }catch(e){playTimerEndFallback();}
+  if(!playBuffer(bufferFinTimer)) playTimerEndFallback();
 }
 function playTimerEndFallback(){
-  // Mélodie descendante douce
   [1047,880,698,523].forEach((freq,i)=>{
     const osc=actx.createOscillator(),gain=actx.createGain();
     osc.connect(gain);gain.connect(actx.destination);
@@ -615,6 +645,9 @@ function playTimerEndFallback(){
     osc.start(actx.currentTime+i*0.2);osc.stop(actx.currentTime+i*0.2+0.6);
   });
 }
+
+// Source audio écriture (pour pouvoir l'arrêter)
+let ecritureSource=null;
 
 function toggleSeanceMusic(){
   const a=document.getElementById('audio-seance'),btn=document.getElementById('music-toggle');
@@ -669,7 +702,7 @@ function startBreath(){
 }
 let breathCountdownInterval=null;
 function startBreathCountdown(){
-  let remaining=160;
+  let remaining=256;
   const el=document.getElementById('breath-countdown');
   if(el)el.textContent=formatTime(remaining);
   breathCountdownInterval=setInterval(()=>{
@@ -686,7 +719,7 @@ function stopBreath(auto=false){
   document.getElementById('svg-phase').textContent='';
   document.getElementById('svg-count').textContent='';
   const cd=document.getElementById('breath-countdown');
-  if(cd)cd.textContent='2:40';
+  if(cd)cd.textContent='4:16';
   document.getElementById('breath-start').style.display='block';
   document.getElementById('breath-stop').style.display='none';
   for(let i=0;i<4;i++)document.getElementById('bd'+i).classList.remove('done');
@@ -746,17 +779,11 @@ const writingPrompts=[
 
 function startWriting(){
   if(actx.state==='suspended')actx.resume();
-  const a=document.getElementById('audio-ecriture');
-  if(a){
-    if(!a.src||a.src===window.location.href)a.src='0509.mp3';
-    a.volume=1.0;
-    const playPromise=a.play();
-    if(playPromise!==undefined){
-      playPromise.catch(err=>{
-        console.log('Audio écriture bloqué:',err);
-        document.getElementById('writing-label').textContent='active le son ↑';
-      });
-    }
+  if(bufferEcriture){
+    ecritureSource=playBufferLoop(bufferEcriture);
+  } else {
+    const a=document.getElementById('audio-ecriture');
+    if(a){if(!a.src||a.src===window.location.href)a.src='0509.mp3';a.play().catch(()=>{});}
   }
   writingRemaining=600;
   document.getElementById('writing-start').style.display='none';
@@ -774,6 +801,7 @@ function startWriting(){
 }
 function stopWriting(auto=false){
   clearInterval(writingTimer);writingTimer=null;
+  if(ecritureSource){try{ecritureSource.stop();}catch(e){}ecritureSource=null;}
   const a=document.getElementById('audio-ecriture');
   if(a){a.pause();a.currentTime=0;}
   document.getElementById('writing-circle').classList.remove('running');
@@ -1124,9 +1152,11 @@ window.addEventListener('load',()=>{
 });
 document.addEventListener('touchstart',()=>{
   if(actx.state==='suspended')actx.resume();
+  preloadAllAudio();
 },{once:true});
 document.addEventListener('click',()=>{
   if(actx.state==='suspended')actx.resume();
+  preloadAllAudio();
 },{once:true});
 loadState();
 </script>
