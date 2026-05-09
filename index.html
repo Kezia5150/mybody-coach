@@ -25,9 +25,9 @@
   --radius-sm: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(--text); min-height: 100vh; padding-bottom: 70px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(--text); min-height: 100vh; padding-bottom: 90px; padding-top: env(safe-area-inset-top, 0px); }
 
-.nav { background: var(--bordeaux); position: sticky; top: 0; z-index: 9999; -webkit-transform: translateZ(0); transform: translateZ(0); }
+.nav { background: var(--bordeaux); position: sticky; top: 0; z-index: 9999; -webkit-transform: translateZ(0); transform: translateZ(0); padding-top: env(safe-area-inset-top, 0px); margin-top: calc(-1 * env(safe-area-inset-top, 0px)); }
 .nav-inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--creme); padding: 14px 0; }
 .hamburger { background: none; border: none; color: var(--creme); font-size: 22px; cursor: pointer; padding: 14px 0; }
@@ -39,10 +39,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .dropdown-label { font-size: 14px; color: var(--creme); }
 .dropdown-sub { font-size: 11px; color: var(--rose-pale); }
 
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 0.5px solid var(--rose-pale); display: flex; z-index: 9998; -webkit-transform: translateZ(0); transform: translateZ(0); }
-.btab { flex: 1; padding: 10px 4px 8px; text-align: center; font-size: 10px; color: var(--gris); border: none; background: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color 0.2s; }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 0.5px solid var(--rose-pale); display: flex; z-index: 9998; -webkit-transform: translateZ(0); transform: translateZ(0); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.btab { flex: 1; padding: 12px 4px 10px; text-align: center; font-size: 11px; color: var(--gris); border: none; background: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: color 0.2s; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
 .btab.active { color: var(--bordeaux); }
-.btab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+.btab.active .btab-icon { background: var(--rose-pale); border-radius: 16px; padding: 4px 16px; }
+.btab-icon { font-size: 24px; display: block; transition: all 0.2s; }
 
 .main { max-width: 700px; margin: 0 auto; padding: 16px 16px 20px; }
 .page { display: none; }
@@ -260,7 +261,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <span class="habit-label">💊 Oméga-3 + Magnésium</span>
       <span class="habit-time">30 s</span>
     </div>
-    <div class="habit-item" onclick="toggleAccordion('acc-respiration','respiration')">
+    <div class="habit-item" onclick="toggleAccordion('acc-respiration')">
       <div class="hcheck" id="h-respiration"></div>
       <span class="habit-label">🌬 Respiration 4-4-4-4</span>
       <span class="habit-time">5 min</span>
@@ -282,18 +283,19 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
             <text id="svg-count" x="80" y="100" text-anchor="middle" font-size="36" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
           </svg>
         </div>
+        <div style="font-size:11px;color:var(--gris);text-align:center;margin-bottom:4px;" id="breath-timer-label">4 cycles · ~2 min 40 sec</div>
         <div class="breath-cycles">
           <div class="breath-dot" id="bd0"></div><div class="breath-dot" id="bd1"></div>
           <div class="breath-dot" id="bd2"></div><div class="breath-dot" id="bd3"></div>
         </div>
         <div class="breath-btns">
           <button class="action-btn action-btn-primary" id="breath-start" onclick="startBreath()">Démarrer</button>
-          <button class="action-btn action-btn-secondary" id="breath-stop" onclick="stopBreath()" style="display:none">Arrêter</button>
+          <button class="action-btn action-btn-secondary" id="breath-stop" onclick="stopBreath(false)" style="display:none">Arrêter</button>
         </div>
       </div>
     </div>
 
-    <div class="habit-item" onclick="toggleAccordion('acc-ecriture','ecriture')">
+    <div class="habit-item" onclick="toggleAccordion('acc-ecriture')">
       <div class="hcheck" id="h-ecriture"></div>
       <span class="habit-label">✍️ Écrire 10 min</span>
       <span class="habit-time">10 min</span>
@@ -328,11 +330,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <span class="habit-label">🏃 Séance du jour</span>
       <span class="habit-arrow">›</span>
     </div>
-    <div class="habit-item" onclick="showPage('seance');setActiveTab('seance')">
+    <div class="habit-item" onclick="toggleHabit(this,'plaque')">
       <div class="hcheck" id="h-plaque"></div>
       <span class="habit-label">📳 Plaque vibrante</span>
-      <span class="habit-time" id="plaque-time">incluse dans la séance</span>
-      <span class="habit-arrow">›</span>
+      <span class="habit-time">5 min</span>
     </div>
 
     <!-- MIDI -->
@@ -345,7 +346,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 
     <!-- SOIR -->
     <div class="section-label">🌙 Soir</div>
-    <div class="habit-item" onclick="toggleAccordion('acc-etirements','etirements')">
+    <div class="habit-item" onclick="toggleAccordion('acc-etirements')">
       <div class="hcheck" id="h-etirements"></div>
       <span class="habit-label">🧘 Étirements doux</span>
       <span class="habit-time">8 min</span>
@@ -633,6 +634,8 @@ function stopBreath(auto=false){
   targetLevel=100;currentLevel=100;
   document.getElementById('svg-phase').textContent='';
   document.getElementById('svg-count').textContent='';
+  const lbl=document.getElementById('breath-timer-label');
+  if(lbl)lbl.textContent='4 cycles · ~2 min 40 sec';
   document.getElementById('breath-start').style.display='block';
   document.getElementById('breath-stop').style.display='none';
   for(let i=0;i<4;i++)document.getElementById('bd'+i).classList.remove('done');
@@ -653,7 +656,9 @@ function runBreathCycle(){
       if(breathRunning){
         if(breathCycle<4)document.getElementById('bd'+breathCycle).classList.add('done');
         breathCycle++;
-        if(breathCycle>=4){bowlSound(432,3,0.35);breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
+        const lbl=document.getElementById('breath-timer-label');
+        if(lbl&&breathCycle<4)lbl.textContent='Cycle '+(breathCycle+1)+' sur 4';
+        if(breathCycle>=4){bowlSound(432,3,0.35);if(lbl)lbl.textContent='✓ Terminé !';breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
         else breathTimers.push(setTimeout(runBreathCycle,300));
       }
       return;
@@ -836,16 +841,16 @@ function marquerSeanceFaite(){
   const today=todayKey();
   if(!state.habitudes[today])state.habitudes[today]={};
   state.habitudes[today]['seance']=true;
-  state.habitudes[today]['plaque']=true;
-  const es=document.getElementById('h-seance'),ep=document.getElementById('h-plaque');
-  if(es)es.classList.add('done');if(ep)ep.classList.add('done');
+  const es=document.getElementById('h-seance');
+  if(es)es.classList.add('done');
   if(!state.seances)state.seances=[];
   if(!state.seances.includes(today))state.seances.push(today);
   updateDoneCount();calcStreak();saveState();if(driveAccessToken)saveToDrive();
   alert('💪 Bravo Kezia ! Séance enregistrée !');
 }
 
-function toggleAccordion(id,key){
+function toggleAccordion(id){
+  const key=id.replace('acc-','');
   const body=document.getElementById(id);
   const arrow=document.getElementById('arr-'+key);
   const isOpen=body.classList.contains('open');
