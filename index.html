@@ -114,8 +114,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .et-steps li::before { content: '→'; position: absolute; left: 0; color: var(--rose); }
 .et-endo { background: var(--rose-pale); border-radius: 6px; padding: 7px 10px; font-size: 11px; color: var(--bordeaux); margin-bottom: 8px; }
 .timer-btn { background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); padding: 8px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; width: 100%; }
-.video-btn { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0.5px solid var(--rose-pale); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: var(--gris); cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 6px; text-decoration: none; }
-.video-btn:hover { background: var(--creme); color: var(--bordeaux); }
+.video-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--creme); border: 0.5px solid var(--rose-pale); border-radius: 20px; padding: 6px 14px; font-size: 12px; color: var(--bordeaux); cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 8px; text-decoration: none; }
+.video-btn:hover { background: var(--rose-pale); }
 .timer-display { text-align: center; padding: 8px; font-size: 24px; font-weight: 500; color: var(--bordeaux); display: none; }
 .timer-display.running { display: block; }
 
@@ -431,11 +431,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <div class="journal-field">
         <label class="jlabel">Alimentation des dernières heures <span class="jlabel-sub">— plusieurs possibles</span></label>
         <div class="mood-row" id="alim-row">
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="jeune">Jeûne</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="laitages">Laitages</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="legumineuses">Légumineuses</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="choux">Choux/brocolis</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="normal">Normal</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="jeune">🕐 Jeûne</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="laitages">🥛 Laitages</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="legumineuses">🫘 Légum.</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="choux">🥦 Choux</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="normal">✅ Normal</button>
         </div>
       </div>
     </div>
@@ -995,6 +995,7 @@ function renderSeance(phase){
         <div class="ex-endo">💜 ${ex.conseil_endo}</div>
         <button class="timer-btn" onclick="startTimer(this,${ex.duree_s})">▶ Démarrer le timer (${ex.duree})</button>
         <div class="timer-display"></div>
+        ${ex.video ? `<button class="video-btn" onclick="openVideoPopup('${ex.video}')">▶ voir le mouvement</button>` : ''}
       </div>
     </div>`;
   });
@@ -1016,6 +1017,7 @@ function renderEtirements(){
         <div class="et-endo">💜 ${et.conseil_endo}</div>
         <button class="timer-btn" onclick="startTimer(this,${et.duree_s})">▶ Timer (${et.duree})</button>
         <div class="timer-display"></div>
+        ${et.video ? `<button class="video-btn" onclick="openVideoPopup('${et.video}')">▶ voir le mouvement</button>` : ''}
       </div>
     </div>`).join('');
 }
