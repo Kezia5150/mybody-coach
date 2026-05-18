@@ -28,8 +28,7 @@
 body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(--text); min-height: 100vh; padding-bottom: 90px; }
 
 .nav { background: var(--bordeaux); position: sticky; top: 0; z-index: 9999; -webkit-transform: translateZ(0); transform: translateZ(0); }
-.nav-inner { padding-top: env(safe-area-inset-top, 0px); }
-.nav-inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.nav-inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; padding-top: env(safe-area-inset-top, 0px); }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--creme); padding: 14px 0; }
 .hamburger { background: none; border: none; color: var(--creme); font-size: 22px; cursor: pointer; padding: 14px 0; }
 .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; left: 0; background: var(--bordeaux); z-index: 9998; }
@@ -115,6 +114,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .et-steps li::before { content: '→'; position: absolute; left: 0; color: var(--rose); }
 .et-endo { background: var(--rose-pale); border-radius: 6px; padding: 7px 10px; font-size: 11px; color: var(--bordeaux); margin-bottom: 8px; }
 .timer-btn { background: var(--bordeaux); color: var(--creme); border: none; border-radius: var(--radius-sm); padding: 8px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; width: 100%; }
+.video-btn { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0.5px solid var(--rose-pale); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: var(--gris); cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 6px; text-decoration: none; }
+.video-btn:hover { background: var(--creme); color: var(--bordeaux); }
 .timer-display { text-align: center; padding: 8px; font-size: 24px; font-weight: 500; color: var(--bordeaux); display: none; }
 .timer-display.running { display: block; }
 
@@ -201,6 +202,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 @keyframes spin { to { transform: rotate(360deg); } }
 .spinner { width: 26px; height: 26px; border: 2px solid var(--rose-pale); border-top-color: var(--bordeaux); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
 .plaque-reminder { background: #ffecd1; border: 0.5px solid #ffb347; border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px; color: #7a4500; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.video-popup-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); z-index: 99999; align-items: center; justify-content: center; }
+.video-popup-overlay.open { display: flex; }
+.video-popup { background: #000; border-radius: var(--radius); overflow: hidden; width: 90vw; max-width: 500px; position: relative; }
+.video-popup-close { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; font-size: 16px; cursor: pointer; z-index: 100000; display: flex; align-items: center; justify-content: center; color: #2a1a1a; font-weight: 500; }
+.video-popup iframe { width: 100%; height: 56.25vw; max-height: 281px; display: block; border: none; }
 </style>
 </head>
 <body>
@@ -265,7 +271,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <div class="habit-item" onclick="toggleAccordion('acc-respiration')">
       <div class="hcheck" id="h-respiration" onclick="event.stopPropagation()"></div>
       <span class="habit-label">🌬 Respiration 4-4-4-4</span>
-      <span class="habit-time">4 min 16 s</span>
+      <span class="habit-time">~5 min</span>
       <span class="habit-arrow" id="arr-respiration">›</span>
     </div>
     <div class="accordion-body" id="acc-respiration">
@@ -284,7 +290,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
             <text id="svg-count" x="80" y="100" text-anchor="middle" font-size="36" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
           </svg>
         </div>
-        <div style="font-size:28px;font-weight:500;color:var(--bordeaux);text-align:center;margin-bottom:12px;" id="breath-countdown">4:16</div>
+        <div style="font-size:28px;font-weight:500;color:var(--bordeaux);text-align:center;margin-bottom:12px;" id="breath-countdown">4:48</div>
         <div class="breath-btns">
           <button class="action-btn action-btn-primary" id="breath-start" onclick="startBreath()">Démarrer</button>
           <button class="action-btn action-btn-secondary" id="breath-pause" onclick="pauseBreath()" style="display:none">⏸ Pause</button>
@@ -383,12 +389,54 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       </div>
     </div>
     <div class="journal-field">
-      <label class="jlabel">Douleur pelvienne <span class="jlabel-sub">— endométriose</span></label>
+      <label class="jlabel">Douleur pelvienne <span class="jlabel-sub">— 0 aucune · 10 insupportable</span></label>
       <div class="slider-wrap">
-        <span style="font-size:11px;color:var(--gris);">Aucune</span>
-        <input type="range" min="0" max="5" value="0" id="sl-douleur" oninput="document.getElementById('val-douleur').textContent=this.value">
-        <span style="font-size:11px;color:var(--gris);">Intense</span>
+        <span style="font-size:11px;color:var(--gris);">0</span>
+        <input type="range" min="0" max="10" value="0" id="sl-douleur" oninput="document.getElementById('val-douleur').textContent=this.value;toggleDouleurFields(this.value)">
+        <span style="font-size:11px;color:var(--gris);">10</span>
         <span class="slider-val" id="val-douleur">0</span>
+      </div>
+    </div>
+
+    <div id="douleur-detail" style="display:none;">
+      <div class="journal-field">
+        <label class="jlabel">Localisation <span class="jlabel-sub">— plusieurs possibles</span></label>
+        <div class="mood-row" id="localisation-row">
+          <button class="mood-btn" onclick="toggleLocali(this)" data-loc="aine-droite">Aine droite</button>
+          <button class="mood-btn" onclick="toggleLocali(this)" data-loc="aine-gauche">Aine gauche</button>
+          <button class="mood-btn" onclick="toggleLocali(this)" data-loc="coccyx">Coccyx</button>
+          <button class="mood-btn" onclick="toggleLocali(this)" data-loc="bas-ventre">Bas-ventre</button>
+          <button class="mood-btn" onclick="toggleLocali(this)" data-loc="autre">Autre</button>
+        </div>
+      </div>
+
+      <div class="journal-field">
+        <label class="jlabel">AINS pris</label>
+        <div class="mood-row">
+          <button class="mood-btn" onclick="selectMedoc(this)" data-medoc="oui">Oui</button>
+          <button class="mood-btn" onclick="selectMedoc(this)" data-medoc="non">Non</button>
+        </div>
+      </div>
+
+      <div class="journal-field" id="soulagement-field" style="display:none;">
+        <label class="jlabel">Soulagement en combien de minutes ?</label>
+        <div class="slider-wrap">
+          <span style="font-size:11px;color:var(--gris);">5 min</span>
+          <input type="range" min="5" max="120" value="30" step="5" id="sl-soulagement" oninput="document.getElementById('val-soulagement').textContent=this.value+'min'">
+          <span style="font-size:11px;color:var(--gris);">2h</span>
+          <span class="slider-val" id="val-soulagement">30min</span>
+        </div>
+      </div>
+
+      <div class="journal-field">
+        <label class="jlabel">Alimentation des dernières heures <span class="jlabel-sub">— plusieurs possibles</span></label>
+        <div class="mood-row" id="alim-row">
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="jeune">Jeûne</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="laitages">Laitages</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="legumineuses">Légumineuses</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="choux">Choux/brocolis</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="normal">Normal</button>
+        </div>
       </div>
     </div>
     <div class="journal-field">
@@ -557,6 +605,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
   </button>
 </div>
 
+<!-- POPUP VIDEO -->
+<div class="video-popup-overlay" id="video-popup-overlay" onclick="closeVideoPopup(event)">
+  <div class="video-popup">
+    <button class="video-popup-close" onclick="closeVideoPopup(null)">✕</button>
+    <iframe id="video-popup-iframe" src="" allowfullscreen allow="autoplay"></iframe>
+  </div>
+</div>
+
 <audio id="audio-seance" loop></audio>
 <audio id="audio-ecriture" loop></audio>
 <audio id="audio-debut-timer" src="debut-timer.MP3"></audio>
@@ -592,13 +648,16 @@ async function preloadAllAudio(){
   bufferEcriture=await preloadAudio('0509.MP3');
 }
 
-function playBuffer(buffer){
+function playBuffer(buffer, volume=1.5){
   if(!buffer)return false;
   try{
     if(actx.state==='suspended')actx.resume();
     const source=actx.createBufferSource();
+    const gainNode=actx.createGain();
     source.buffer=buffer;
-    source.connect(actx.destination);
+    gainNode.gain.setValueAtTime(volume, actx.currentTime);
+    source.connect(gainNode);
+    gainNode.connect(actx.destination);
     source.start(0);
     return true;
   }catch(e){return false;}
@@ -634,17 +693,17 @@ function playTimerStartFallback(){
 }
 function playTimerEnd(){
   if(actx.state==='suspended')actx.resume();
-  if(!playBuffer(bufferFinTimer)) playTimerEndFallback();
+  if(!playBuffer(bufferFinTimer, 2.0)) playTimerEndFallback();
 }
 function playTimerEndFallback(){
   [1047,880,698,523].forEach((freq,i)=>{
     const osc=actx.createOscillator(),gain=actx.createGain();
     osc.connect(gain);gain.connect(actx.destination);
-    osc.type='sine';osc.frequency.setValueAtTime(freq,actx.currentTime+i*0.2);
-    gain.gain.setValueAtTime(0,actx.currentTime+i*0.2);
-    gain.gain.linearRampToValueAtTime(0.3,actx.currentTime+i*0.2+0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+i*0.2+0.5);
-    osc.start(actx.currentTime+i*0.2);osc.stop(actx.currentTime+i*0.2+0.6);
+    osc.type='sine';osc.frequency.setValueAtTime(freq,actx.currentTime+i*0.3);
+    gain.gain.setValueAtTime(0,actx.currentTime+i*0.3);
+    gain.gain.linearRampToValueAtTime(0.7,actx.currentTime+i*0.3+0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+i*0.3+1.2);
+    osc.start(actx.currentTime+i*0.3);osc.stop(actx.currentTime+i*0.3+1.3);
   });
 }
 
@@ -705,15 +764,19 @@ function startBreath(){
   startBreathCountdown();
 }
 let breathCountdownInterval=null;
+let breathStartTime=null;
 function startBreathCountdown(){
-  breathCountdownRemaining=256;
+  breathCountdownRemaining=288;
+  breathStartTime=Date.now();
   const el=document.getElementById('breath-countdown');
   if(el)el.textContent=formatTime(breathCountdownRemaining);
   breathCountdownInterval=setInterval(()=>{
-    breathCountdownRemaining--;
-    if(el)el.textContent=formatTime(breathCountdownRemaining);
-    if(breathCountdownRemaining<=0){clearInterval(breathCountdownInterval);}
-  },1000);
+    const elapsed=Math.floor((Date.now()-breathStartTime)/1000);
+    const left=Math.max(0,288-elapsed);
+    breathCountdownRemaining=left;
+    if(el)el.textContent=formatTime(left);
+    if(left<=0){clearInterval(breathCountdownInterval);}
+  },500);
 }
 function stopBreath(auto=false){
   breathRunning=false;breathTimers.forEach(clearTimeout);breathTimers=[];
@@ -723,7 +786,7 @@ function stopBreath(auto=false){
   document.getElementById('svg-phase').textContent='';
   document.getElementById('svg-count').textContent='';
   const cd=document.getElementById('breath-countdown');
-  if(cd)cd.textContent='4:16';
+  if(cd)cd.textContent='4:48';
   document.getElementById('breath-start').style.display='block';
   document.getElementById('breath-pause').style.display='none';
   document.getElementById('breath-stop').style.display='none';
@@ -761,12 +824,15 @@ function pauseBreath(){
 
 let breathCountdownRemaining=256;
 function resumeBreathCountdown(){
+  breathStartTime=Date.now()-(288-breathCountdownRemaining)*1000;
   const el=document.getElementById('breath-countdown');
   breathCountdownInterval=setInterval(()=>{
-    breathCountdownRemaining--;
-    if(el)el.textContent=formatTime(breathCountdownRemaining);
-    if(breathCountdownRemaining<=0)clearInterval(breathCountdownInterval);
-  },1000);
+    const elapsed=Math.floor((Date.now()-breathStartTime)/1000);
+    const left=Math.max(0,288-elapsed);
+    breathCountdownRemaining=left;
+    if(el)el.textContent=formatTime(left);
+    if(left<=0)clearInterval(breathCountdownInterval);
+  },500);
 }
 
 function runBreathCycle(){
@@ -776,7 +842,7 @@ function runBreathCycle(){
     if(!breathRunning||idx>=breathPhases.length){
       if(breathRunning){
         breathCycle++;
-        if(breathCycle>=4){bowlSound(432,3,0.35);playTimerEnd();const cd=document.getElementById('breath-countdown');if(cd)cd.textContent='✓';breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
+        if(breathCycle>=18){bowlSound(432,4,0.8);playTimerEnd();const cd=document.getElementById('breath-countdown');if(cd)cd.textContent='✓';breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
         else breathTimers.push(setTimeout(runBreathCycle,300));
       }
       return;
@@ -788,11 +854,12 @@ function runBreathCycle(){
     if(p.sound==='inhale')inhaleSound();
     else if(p.sound==='exhale')exhaleSound();
     else bowlSound(432,2,0.2);
-    let count=3;
+    let count=4;
     const tick=()=>{
       if(!breathRunning)return;
       document.getElementById('svg-count').textContent=count;
-      if(count>0){count--;breathTimers.push(setTimeout(tick,1000));}
+      count--;
+      if(count>0){breathTimers.push(setTimeout(tick,1000));}
       else breathTimers.push(setTimeout(next,1000));
     };
     breathTimers.push(setTimeout(tick,1000));
@@ -826,13 +893,14 @@ function startWriting(){
   document.getElementById('writing-circle').classList.add('running');
   const prompt=writingPrompts[Math.floor(Math.random()*writingPrompts.length)];
   document.getElementById('writing-prompt').textContent=prompt;
+  const writingStartTime=Date.now();
+  const writingDuration=writingRemaining;
   writingTimer=setInterval(()=>{
-    writingRemaining--;
+    const elapsed=Math.floor((Date.now()-writingStartTime)/1000);
+    writingRemaining=Math.max(0,writingDuration-elapsed);
     document.getElementById('writing-time').textContent=formatTime(writingRemaining);
-    if(writingRemaining<=0){
-      stopWriting(true);
-    }
-  },1000);
+    if(writingRemaining<=0){stopWriting(true);}
+  },500);
 }
 function stopWriting(auto=false){
   clearInterval(writingTimer);writingTimer=null;
@@ -865,46 +933,54 @@ function formatTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
 
 const SEANCES={
   mens:{titre:'Séance douce — Phase menstruelle',duree:'16 min',exercices:[
-    {nom:'Respiration diaphragmatique',duree:'3 min',duree_s:180,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="68" rx="45" ry="20" fill="#ffc4c4"/><ellipse cx="110" cy="52" rx="18" ry="15" fill="#ee6983"/><ellipse cx="110" cy="46" rx="8" ry="7" fill="#ffc4c4"/><line x1="65" y1="68" x2="38" y2="88" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="155" y1="68" x2="182" y2="88" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="88" y1="88" x2="84" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="132" y1="88" x2="136" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée sur le dos, mains sur le ventre</text></svg>`,position:'Allongée sur le dos, genoux fléchis, mains sur le ventre',etapes:['Inspire lentement par le nez en 4 temps — sens ton ventre se soulever','Retiens 1 seconde','Expire doucement par la bouche en 6 temps','Répète sans forcer'],conseil_endo:'Relâche les tensions du plancher pelvien et aide à réduire les crampes liées à l\'endométriose'},
-    {nom:'Cat-cow — dos de chat',duree:'3 min',duree_s:180,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><line x1="10" y1="102" x2="210" y2="102" stroke="#ffc4c4" stroke-width="1.5"/><path d="M 60 68 Q 110 84 160 68" stroke="#850e35" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="168" cy="61" rx="12" ry="10" fill="#ee6983"/><ellipse cx="177" cy="64" rx="5" ry="4" fill="#ffc4c4"/><path d="M 60 68 Q 45 54 42 40" stroke="#850e35" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="135" y1="72" x2="135" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="118" y1="74" x2="116" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="78" y1="72" x2="78" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="92" y1="74" x2="90" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">À quatre pattes — inspire dos creux, expire dos rond</text></svg>`,position:'À quatre pattes, mains sous les épaules, genoux sous les hanches',etapes:['Inspire : creuse le dos, lève la tête et le coccyx (vache)','Expire : arrondis le dos, rentre le menton (chat)','Mouvements très doux, rythme lent'],conseil_endo:'Mobilise doucement le bassin, réduit la pression sur les organes pelviens'},
-    {nom:'Étirement psoas et hanches',duree:'4 min',duree_s:240,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><line x1="10" y1="104" x2="210" y2="104" stroke="#ffc4c4" stroke-width="1.5"/><ellipse cx="130" cy="38" rx="13" ry="12" fill="#ee6983"/><line x1="130" y1="50" x2="125" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="125" y1="72" x2="155" y2="104" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="125" y1="72" x2="95" y2="104" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="130" y1="58" x2="155" y2="65" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="130" y1="58" x2="105" y2="65" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Fente basse — genou arrière au sol</text></svg>`,position:'En fente basse, genou arrière au sol (coussin si besoin)',etapes:['Pied gauche devant, genou droit au sol','Avance le bassin vers l\'avant doucement','Inspire, grandis-toi','Expire, laisse descendre','30 secondes, change de côté'],conseil_endo:'L\'endométriose crée des tensions dans le psoas — cet étirement libère cette zone clé'},
-    {nom:'Shavasana — relâchement total',duree:'3 min',duree_s:180,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="40" cy="65" rx="12" ry="11" fill="#ee6983"/><line x1="52" y1="65" x2="95" y2="62" stroke="#850e35" stroke-width="4" stroke-linecap="round"/><line x1="95" y1="62" x2="165" y2="65" stroke="#850e35" stroke-width="4" stroke-linecap="round"/><line x1="115" y1="65" x2="108" y2="100" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="145" y1="65" x2="150" y2="100" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="66" x2="44" y2="86" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="66" x2="68" y2="82" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée, bras relâchés, paumes vers le ciel</text><text x="110" y="100" text-anchor="middle" font-size="10" fill="#8a7070" font-family="sans-serif">Ferme les yeux · relâche tout</text></svg>`,position:'Allongée sur le dos, jambes légèrement écartées, bras relâchés paumes vers le ciel',etapes:['Ferme les yeux','Scanne ton corps de la tête aux pieds','Relâche chaque zone — ne fais absolument rien','Reste là, présente'],conseil_endo:'Active le système parasympathique — anti-inflammatoire naturel pour l\'endométriose'}
+    {nom:'Respiration diaphragmatique',duree:'3 min',duree_s:180,video:'https://www.youtube.com/watch?v=mXxhVVG6rI4',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="68" rx="45" ry="20" fill="#ffc4c4"/><ellipse cx="110" cy="52" rx="18" ry="15" fill="#ee6983"/><ellipse cx="110" cy="46" rx="8" ry="7" fill="#ffc4c4"/><line x1="65" y1="68" x2="38" y2="88" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="155" y1="68" x2="182" y2="88" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="88" y1="88" x2="84" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="132" y1="88" x2="136" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée sur le dos, mains sur le ventre</text></svg>`,position:'Allongée sur le dos, genoux fléchis, mains sur le ventre',etapes:['Inspire lentement par le nez en 4 temps — sens ton ventre se soulever','Retiens 1 seconde','Expire doucement par la bouche en 6 temps','Répète sans forcer'],conseil_endo:'Relâche les tensions du plancher pelvien et aide à réduire les crampes liées à l\'endométriose'},
+    {nom:'Cat-cow — dos de chat',duree:'3 min',duree_s:180,video:'https://www.youtube.com/watch?v=p0HVXDeVO-8',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><line x1="10" y1="102" x2="210" y2="102" stroke="#ffc4c4" stroke-width="1.5"/><path d="M 60 68 Q 110 84 160 68" stroke="#850e35" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="168" cy="61" rx="12" ry="10" fill="#ee6983"/><ellipse cx="177" cy="64" rx="5" ry="4" fill="#ffc4c4"/><path d="M 60 68 Q 45 54 42 40" stroke="#850e35" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="135" y1="72" x2="135" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="118" y1="74" x2="116" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="78" y1="72" x2="78" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="92" y1="74" x2="90" y2="102" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">À quatre pattes — inspire dos creux, expire dos rond</text></svg>`,position:'À quatre pattes, mains sous les épaules, genoux sous les hanches',etapes:['Inspire : creuse le dos, lève la tête et le coccyx (vache)','Expire : arrondis le dos, rentre le menton (chat)','Mouvements très doux, rythme lent'],conseil_endo:'Mobilise doucement le bassin, réduit la pression sur les organes pelviens'},
+    {nom:'Étirement psoas et hanches',duree:'4 min',duree_s:240,video:'https://www.youtube.com/watch?v=gr27TQjHo5M',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><line x1="10" y1="104" x2="210" y2="104" stroke="#ffc4c4" stroke-width="1.5"/><ellipse cx="130" cy="38" rx="13" ry="12" fill="#ee6983"/><line x1="130" y1="50" x2="125" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="125" y1="72" x2="155" y2="104" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="125" y1="72" x2="95" y2="104" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="130" y1="58" x2="155" y2="65" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="130" y1="58" x2="105" y2="65" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Fente basse — genou arrière au sol</text></svg>`,position:'En fente basse, genou arrière au sol (coussin si besoin)',etapes:['Pied gauche devant, genou droit au sol','Avance le bassin vers l\'avant doucement','Inspire, grandis-toi','Expire, laisse descendre','30 secondes, change de côté'],conseil_endo:'L\'endométriose crée des tensions dans le psoas — cet étirement libère cette zone clé'},
+    {nom:'Shavasana — relâchement total',duree:'3 min',duree_s:180,video:'https://www.youtube.com/watch?v=nx-t2ltkAwo',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="40" cy="65" rx="12" ry="11" fill="#ee6983"/><line x1="52" y1="65" x2="95" y2="62" stroke="#850e35" stroke-width="4" stroke-linecap="round"/><line x1="95" y1="62" x2="165" y2="65" stroke="#850e35" stroke-width="4" stroke-linecap="round"/><line x1="115" y1="65" x2="108" y2="100" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="145" y1="65" x2="150" y2="100" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="66" x2="44" y2="86" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="66" x2="68" y2="82" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée, bras relâchés, paumes vers le ciel</text><text x="110" y="100" text-anchor="middle" font-size="10" fill="#8a7070" font-family="sans-serif">Ferme les yeux · relâche tout</text></svg>`,position:'Allongée sur le dos, jambes légèrement écartées, bras relâchés paumes vers le ciel',etapes:['Ferme les yeux','Scanne ton corps de la tête aux pieds','Relâche chaque zone — ne fais absolument rien','Reste là, présente'],conseil_endo:'Active le système parasympathique — anti-inflammatoire naturel pour l\'endométriose'}
   ]},
   foll:{titre:'Séance énergie montante — Phase folliculaire',duree:'22 min',exercices:[
-    {nom:'Pilates mur — squat',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><rect x="185" y="8" width="8" height="100" rx="3" fill="#ffc4c4"/><ellipse cx="155" cy="32" rx="13" ry="12" fill="#ee6983"/><line x1="155" y1="44" x2="155" y2="72" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="72" x2="135" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="72" x2="175" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="56" x2="183" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="155" y1="56" x2="128" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="95" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Dos contre le mur, pieds à 30 cm</text></svg>`,position:'Dos contre un mur, pieds à 30 cm, écartés à la largeur des hanches',etapes:['Glisse jusqu\'à genoux à 90°','Garde le dos plaqué','Tiens 30 secondes en respirant','Remonte en poussant sur les talons','10 répétitions, 3 séries'],conseil_endo:'Renforce sans impact — parfait en phase folliculaire'},
-    {nom:'Tai chi walking',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="26" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="38" x2="110" y2="68" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="88" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="132" y2="98" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="52" x2="80" y2="64" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="52" x2="140" y2="58" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, pieds parallèles, légèrement fléchis</text></svg>`,position:'Debout, pieds parallèles légèrement fléchis, bras relâchés',etapes:['Marche sur place lentement','Transfère le poids avec intention','Laisse les bras suivre naturellement','Respire profondément, yeux mi-clos'],conseil_endo:'Active la circulation lymphatique, réduit l\'inflammation systémique'},
-    {nom:'📳 Plaque vibrante — 5 min',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><rect x="60" y="94" width="100" height="12" rx="4" fill="#ee6983"/><ellipse cx="110" cy="30" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="42" x2="110" y2="70" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="70" x2="90" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="70" x2="130" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="54" x2="84" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="54" x2="136" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Sur la plaque, genoux légèrement fléchis</text></svg>`,position:'Debout sur la plaque vibrante, genoux légèrement fléchis',etapes:['1 min : debout neutre','2 min : genoux fléchis à 30°','2 min : fentes alternées sur la plaque'],conseil_endo:'Uniquement sans douleur pelvienne. Excellent pour la densité osseuse et la tonicité'},
-    {nom:'Haltères — curl biceps',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="24" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="36" x2="110" y2="66" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="66" x2="90" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="66" x2="130" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="48" x2="80" y2="42" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="72" cy="40" rx="8" ry="5" fill="#ffc4c4"/><line x1="110" y1="48" x2="140" y2="42" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="148" cy="40" rx="8" ry="5" fill="#ffc4c4"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, haltères dans chaque main</text></svg>`,position:'Debout, haltères dans chaque main, paumes vers l\'avant',etapes:['Coudes collés au corps','Fléchis pour monter les haltères','Descends lentement en 3 temps','12 répétitions, 3 séries'],conseil_endo:'Augmente ton métabolisme de base — brûle plus au repos'}
+    {nom:'Pilates mur — squat',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=WW8j9rADqk4',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><rect x="185" y="8" width="8" height="100" rx="3" fill="#ffc4c4"/><ellipse cx="155" cy="32" rx="13" ry="12" fill="#ee6983"/><line x1="155" y1="44" x2="155" y2="72" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="72" x2="135" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="72" x2="175" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="155" y1="56" x2="183" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="155" y1="56" x2="128" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="95" y="18" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Dos contre le mur, pieds à 30 cm</text></svg>`,position:'Dos contre un mur, pieds à 30 cm, écartés à la largeur des hanches',etapes:['Glisse jusqu\'à genoux à 90°','Garde le dos plaqué','Tiens 30 secondes en respirant','Remonte en poussant sur les talons','10 répétitions, 3 séries'],conseil_endo:'Renforce sans impact — parfait en phase folliculaire'},
+    {nom:'Tai chi walking',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=MgKWV9k7JGg',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="26" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="38" x2="110" y2="68" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="88" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="68" x2="132" y2="98" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="52" x2="80" y2="64" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="52" x2="140" y2="58" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="14" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, pieds parallèles, légèrement fléchis</text></svg>`,position:'Debout, pieds parallèles légèrement fléchis, bras relâchés',etapes:['Marche sur place lentement','Transfère le poids avec intention','Laisse les bras suivre naturellement','Respire profondément, yeux mi-clos'],conseil_endo:'Active la circulation lymphatique, réduit l\'inflammation systémique'},
+    {nom:'📳 Plaque vibrante — 5 min',duree:'5 min',duree_s:300,video:'https://www.youtube.com/shorts/WHUevrqeKIg',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><rect x="60" y="94" width="100" height="12" rx="4" fill="#ee6983"/><ellipse cx="110" cy="30" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="42" x2="110" y2="70" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="70" x2="90" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="70" x2="130" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="54" x2="84" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="54" x2="136" y2="62" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Sur la plaque, genoux légèrement fléchis</text></svg>`,position:'Debout sur la plaque vibrante, genoux légèrement fléchis',etapes:['1 min : debout neutre','2 min : genoux fléchis à 30°','2 min : fentes alternées sur la plaque'],conseil_endo:'Uniquement sans douleur pelvienne. Excellent pour la densité osseuse et la tonicité'},
+    {nom:'Haltères — curl biceps',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=ykJmrZ5v0Oo',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="24" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="36" x2="110" y2="66" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="66" x2="90" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="66" x2="130" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="48" x2="80" y2="42" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="72" cy="40" rx="8" ry="5" fill="#ffc4c4"/><line x1="110" y1="48" x2="140" y2="42" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="148" cy="40" rx="8" ry="5" fill="#ffc4c4"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Debout, haltères dans chaque main</text></svg>`,position:'Debout, haltères dans chaque main, paumes vers l\'avant',etapes:['Coudes collés au corps','Fléchis pour monter les haltères','Descends lentement en 3 temps','12 répétitions, 3 séries'],conseil_endo:'Augmente ton métabolisme de base — brûle plus au repos'}
   ]},
   ovu:{titre:'Séance pic d\'énergie — Phase ovulatoire',duree:'25 min',exercices:[
-    {nom:'Cardio — jumping jacks',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="18" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="30" x2="110" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="80" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="140" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="44" x2="68" y2="28" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="44" x2="152" y2="28" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="110" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Saute — pieds écartés, bras levés</text></svg>`,position:'Debout, pieds joints, bras le long du corps',etapes:['Saute en écartant les pieds et levant les bras','Reviens d\'un saut','Rythme modéré à vigoureux','Pause 30s si essoufflée','5 séries de 1 minute'],conseil_endo:'Pic hormonal = pic d\'énergie. Les endorphines libérées sont anti-douleur'},
-    {nom:'Squat avec haltères',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="24" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="36" x2="110" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="83" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="137" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="46" x2="82" y2="52" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="74" cy="51" rx="8" ry="5" fill="#ffc4c4"/><line x1="110" y1="46" x2="138" y2="52" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="146" cy="51" rx="8" ry="5" fill="#ffc4c4"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Pieds écartés, haltères tenus devant</text></svg>`,position:'Pieds écartés à la largeur des épaules, haltères tenus devant',etapes:['Descends comme pour t\'asseoir sur une chaise','Genoux dans l\'axe des orteils','Descends jusqu\'à cuisses parallèles au sol','Remonte en poussant sur les talons','10 répétitions, 3 séries'],conseil_endo:'Les grands muscles brûlent le plus de calories'},
-    {nom:'📳 Plaque vibrante + fentes',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><rect x="55" y="94" width="110" height="12" rx="4" fill="#ee6983"/><ellipse cx="110" cy="24" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="36" x2="105" y2="64" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="105" y1="64" x2="80" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="105" y1="64" x2="130" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="48" x2="82" y2="56" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="108" y1="48" x2="135" y2="56" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Fentes sur la plaque vibrante</text></svg>`,position:'Sur la plaque vibrante, position fente',etapes:['1 min : debout neutre','2 min : squat pulsé','2 min : fentes alternées'],conseil_endo:'En phase ovulatoire sans douleur — excellent pour la tonicité'},
-    {nom:'Danse libre',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="20" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="32" x2="112" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="112" y1="62" x2="90" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="112" y1="62" x2="135" y2="96" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="111" y1="44" x2="75" y2="32" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="111" y1="44" x2="148" y2="54" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="110" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Bouge librement — laisse ton corps s\'exprimer</text></svg>`,position:'Debout dans ton espace, musique que tu aimes',etapes:['Mets ta musique préférée','Bouge comme tu le sens','Hanches, bras, épaules — tout est permis','Laisse-toi sourire'],conseil_endo:'Libère dopamine et sérotonine — réduisent la perception de la douleur'}
+    {nom:'Cardio — jumping jacks',duree:'5 min',duree_s:300,video:'https://www.youtube.com/shorts/3v0P9RKFxAE',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="18" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="30" x2="110" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="80" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="140" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="44" x2="68" y2="28" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="44" x2="152" y2="28" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="110" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Saute — pieds écartés, bras levés</text></svg>`,position:'Debout, pieds joints, bras le long du corps',etapes:['Saute en écartant les pieds et levant les bras','Reviens d\'un saut','Rythme modéré à vigoureux','Pause 30s si essoufflée','5 séries de 1 minute'],conseil_endo:'Pic hormonal = pic d\'énergie. Les endorphines libérées sont anti-douleur'},
+    {nom:'Squat avec haltères',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=aclHkVaku9U',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="24" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="36" x2="110" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="83" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="137" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="46" x2="82" y2="52" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="74" cy="51" rx="8" ry="5" fill="#ffc4c4"/><line x1="110" y1="46" x2="138" y2="52" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><ellipse cx="146" cy="51" rx="8" ry="5" fill="#ffc4c4"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Pieds écartés, haltères tenus devant</text></svg>`,position:'Pieds écartés à la largeur des épaules, haltères tenus devant',etapes:['Descends comme pour t\'asseoir sur une chaise','Genoux dans l\'axe des orteils','Descends jusqu\'à cuisses parallèles au sol','Remonte en poussant sur les talons','10 répétitions, 3 séries'],conseil_endo:'Les grands muscles brûlent le plus de calories'},
+    {nom:'📳 Plaque vibrante + fentes',duree:'5 min',duree_s:300,video:'https://www.youtube.com/shorts/WHUevrqeKIg',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><rect x="55" y="94" width="110" height="12" rx="4" fill="#ee6983"/><ellipse cx="110" cy="24" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="36" x2="105" y2="64" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="105" y1="64" x2="80" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="105" y1="64" x2="130" y2="94" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="48" x2="82" y2="56" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="108" y1="48" x2="135" y2="56" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="12" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Fentes sur la plaque vibrante</text></svg>`,position:'Sur la plaque vibrante, position fente',etapes:['1 min : debout neutre','2 min : squat pulsé','2 min : fentes alternées'],conseil_endo:'En phase ovulatoire sans douleur — excellent pour la tonicité'},
+    {nom:'Danse libre',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=FgR4O2JMD7k',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="20" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="32" x2="112" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="112" y1="62" x2="90" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="112" y1="62" x2="135" y2="96" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="111" y1="44" x2="75" y2="32" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="111" y1="44" x2="148" y2="54" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="110" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Bouge librement — laisse ton corps s\'exprimer</text></svg>`,position:'Debout dans ton espace, musique que tu aimes',etapes:['Mets ta musique préférée','Bouge comme tu le sens','Hanches, bras, épaules — tout est permis','Laisse-toi sourire'],conseil_endo:'Libère dopamine et sérotonine — réduisent la perception de la douleur'}
   ]},
   lut:{titre:'Séance ralentissement — Phase lutéale',duree:'18 min',exercices:[
-    {nom:'Pilates sol — pont',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="40" cy="60" rx="12" ry="11" fill="#ee6983"/><line x1="52" y1="60" x2="95" y2="55" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><path d="M 95 55 Q 120 35 150 53" stroke="#850e35" stroke-width="3.5" fill="none" stroke-linecap="round"/><line x1="150" y1="53" x2="165" y2="85" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="165" y1="85" x2="175" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="120" y1="70" x2="128" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="63" x2="45" y2="84" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="63" x2="70" y2="79" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="130" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée — pont, hanches décollées</text></svg>`,position:'Allongée sur le dos, genoux fléchis, pieds à plat',etapes:['Inspire, prépare','Expire : décolle les hanches vertèbre par vertèbre','En haut : serre les fessiers, tiens 3 secondes','Redescends lentement','10 répétitions'],conseil_endo:'Renforce le plancher pelvien en douceur — adapté à la phase lutéale'},
-    {nom:'Stretching dos et colonne',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="38" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="50" x2="110" y2="80" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="80" x2="85" y2="108" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="80" x2="135" y2="108" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="145" y2="48" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="62" x2="82" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Assise — inclinaison latérale douce</text></svg>`,position:'Assise en tailleur sur le tapis, dos droit',etapes:['Main droite au sol à côté','Lève le bras gauche','Incline vers la droite en expirant','Tiens 20 secondes','Change de côté — 3 fois chaque'],conseil_endo:'Soulage les tensions du dos souvent présentes avant les règles'},
-    {nom:'Marche consciente',duree:'5 min',duree_s:300,svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="20" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="32" x2="108" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="62" x2="85" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="62" x2="125" y2="90" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="109" y1="44" x2="82" y2="56" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="109" y1="44" x2="136" y2="36" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><path d="M 40 108 Q 80 104 120 108 Q 160 112 200 108" stroke="#ffc4c4" stroke-width="1.5" fill="none"/><text x="110" y="10" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Marche lente et intentionnelle</text></svg>`,position:'Debout, prête à marcher dans ton espace',etapes:['Marche lentement, sens chaque pas','Inspire 3 pas, expire 3 pas','Regarde autour, sens l\'air','Pas d\'objectif de vitesse','Juste présente dans ton corps'],conseil_endo:'Stimule la circulation pelvienne, réduit les prostaglandines responsables des crampes'}
+    {nom:'Pilates sol — pont',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=OUgsJ8-Vi0E',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="40" cy="60" rx="12" ry="11" fill="#ee6983"/><line x1="52" y1="60" x2="95" y2="55" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><path d="M 95 55 Q 120 35 150 53" stroke="#850e35" stroke-width="3.5" fill="none" stroke-linecap="round"/><line x1="150" y1="53" x2="165" y2="85" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="165" y1="85" x2="175" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="120" y1="70" x2="128" y2="108" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="63" x2="45" y2="84" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="52" y1="63" x2="70" y2="79" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="130" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Allongée — pont, hanches décollées</text></svg>`,position:'Allongée sur le dos, genoux fléchis, pieds à plat',etapes:['Inspire, prépare','Expire : décolle les hanches vertèbre par vertèbre','En haut : serre les fessiers, tiens 3 secondes','Redescends lentement','10 répétitions'],conseil_endo:'Renforce le plancher pelvien en douceur — adapté à la phase lutéale'},
+    {nom:'Stretching dos et colonne',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=FgR4O2JMD7k',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="38" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="50" x2="110" y2="80" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="80" x2="85" y2="108" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="80" x2="135" y2="108" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="110" y1="62" x2="145" y2="48" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="110" y1="62" x2="82" y2="72" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><text x="110" y="16" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Assise — inclinaison latérale douce</text></svg>`,position:'Assise en tailleur sur le tapis, dos droit',etapes:['Main droite au sol à côté','Lève le bras gauche','Incline vers la droite en expirant','Tiens 20 secondes','Change de côté — 3 fois chaque'],conseil_endo:'Soulage les tensions du dos souvent présentes avant les règles'},
+    {nom:'Marche consciente',duree:'5 min',duree_s:300,video:'https://www.youtube.com/watch?v=14jwlvCbL6g',svg:`<svg viewBox="0 0 220 110" width="220" height="110" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="110" rx="10" fill="#fff5e4"/><ellipse cx="110" cy="20" rx="13" ry="12" fill="#ee6983"/><line x1="110" y1="32" x2="108" y2="62" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="62" x2="85" y2="100" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="108" y1="62" x2="125" y2="90" stroke="#850e35" stroke-width="3.5" stroke-linecap="round"/><line x1="109" y1="44" x2="82" y2="56" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><line x1="109" y1="44" x2="136" y2="36" stroke="#850e35" stroke-width="3" stroke-linecap="round"/><path d="M 40 108 Q 80 104 120 108 Q 160 112 200 108" stroke="#ffc4c4" stroke-width="1.5" fill="none"/><text x="110" y="10" text-anchor="middle" font-size="11" fill="#850e35" font-family="sans-serif">Marche lente et intentionnelle</text></svg>`,position:'Debout, prête à marcher dans ton espace',etapes:['Marche lentement, sens chaque pas','Inspire 3 pas, expire 3 pas','Regarde autour, sens l\'air','Pas d\'objectif de vitesse','Juste présente dans ton corps'],conseil_endo:'Stimule la circulation pelvienne, réduit les prostaglandines responsables des crampes'}
   ]}
 };
 
 const ETIREMENTS_SOIR=[
-  {nom:'Cat-cow doux',duree:'3 min',duree_s:180,etapes:['À quatre pattes, mouvements très lents','Inspire : dos creux, tête levée','Expire : dos rond, menton rentré','5 cycles complets'],conseil_endo:'Décompresse la colonne après une journée de travail assise'},
-  {nom:'Posture de l\'enfant',duree:'2 min',duree_s:120,etapes:['À quatre pattes, assieds-toi sur tes talons','Étire les bras devant toi sur le tapis','Laisse le front descendre vers le sol','Respire profondément dans le bas du dos'],conseil_endo:'Relâche les tensions pelviennes accumulées dans la journée'},
-  {nom:'Torsion douce allongée',duree:'3 min',duree_s:180,etapes:['Allongée sur le dos, genoux fléchis','Laisse tomber les genoux à droite','Bras en croix, regarde à gauche','30 secondes, change de côté'],conseil_endo:'Masse doucement les organes abdominaux et détend le bas du ventre'}
+  {nom:'Cat-cow doux',duree:'3 min',duree_s:180,video:'https://www.youtube.com/watch?v=p0HVXDeVO-8',etapes:['À quatre pattes, mouvements très lents','Inspire : dos creux, tête levée','Expire : dos rond, menton rentré','5 cycles complets'],conseil_endo:'Décompresse la colonne après une journée de travail assise'},
+  {nom:'Posture de l\'enfant',duree:'2 min',duree_s:120,video:'https://www.youtube.com/watch?v=MgKWV9k7JGg',etapes:['À quatre pattes, assieds-toi sur tes talons','Étire les bras devant toi sur le tapis','Laisse le front descendre vers le sol','Respire profondément dans le bas du dos'],conseil_endo:'Relâche les tensions pelviennes accumulées dans la journée'},
+  {nom:'Torsion douce allongée',duree:'3 min',duree_s:180,video:'https://www.youtube.com/watch?v=FgR4O2JMD7k',etapes:['Allongée sur le dos, genoux fléchis','Laisse tomber les genoux à droite','Bras en croix, regarde à gauche','30 secondes, change de côté'],conseil_endo:'Masse doucement les organes abdominaux et détend le bas du ventre'}
 ];
 
 function renderSeance(phase){
   const s=SEANCES[phase.court];
   const hier=state.journal[yesterday()]||{};
   const douleur=hier.douleur||0;
+  const energie=hier.energie||3;
   const plaque=phase.court!=='mens'&&douleur<3;
   let exercices=s.exercices;
   if(!plaque)exercices=exercices.filter(e=>!e.nom.includes('vibrante')&&!e.nom.includes('📳'));
+  // Phase lutéale : si épuisée (énergie <= 2), garder uniquement la marche consciente
+  if(phase.court==='lut'&&energie<=2){
+    exercices=exercices.filter(e=>e.nom.includes('Marche'));
+  }
   const reminder=document.getElementById('plaque-reminder');
   if(reminder)reminder.style.display=plaque?'flex':'none';
-  let html=`<p style="font-size:13px;color:var(--gris);margin-bottom:12px;">${s.duree} au total</p>`;
+  const estEpuisee = phase.court==='lut' && energie<=2;
+  let html=estEpuisee
+    ? `<p style="font-size:13px;background:#fff5e4;color:var(--bordeaux);padding:8px 10px;border-radius:8px;margin-bottom:12px;">💤 Séance allégée — tu as noté énergie ${energie}/5 hier. Juste une marche douce aujourd'hui.</p>`
+    : `<p style="font-size:13px;color:var(--gris);margin-bottom:12px;">${s.duree} au total</p>`;
   exercices.forEach((ex,i)=>{
     html+=`<div class="exercise-block">
       <div class="ex-header" onclick="toggleEx(this)">
@@ -948,19 +1024,60 @@ function toggleEx(h){h.nextElementSibling.classList.toggle('open');}
 function toggleEt(h){h.nextElementSibling.classList.toggle('open');}
 
 let timerIntervals={};
+let timerData={}; // stocke startTime + duration pour chaque timer
+
 function startTimer(btn,seconds){
   const display=btn.nextElementSibling;
   const key=btn.dataset.tid||(btn.dataset.tid=Math.random().toString(36).substr(2,9));
-  if(timerIntervals[key]){clearInterval(timerIntervals[key]);delete timerIntervals[key];btn.textContent='▶ Reprendre';display.classList.remove('running');return;}
+
+  // Si timer en cours -> pause
+  if(timerIntervals[key]){
+    clearInterval(timerIntervals[key]);
+    delete timerIntervals[key];
+    // Sauvegarder le temps restant pour reprise
+    if(timerData[key]){
+      const elapsed=Math.floor((Date.now()-timerData[key].startTime)/1000);
+      timerData[key].remaining=Math.max(0,timerData[key].duration-elapsed);
+    }
+    btn.textContent='▶ Reprendre';
+    display.classList.remove('running');
+    return;
+  }
+
+  // Démarrer ou reprendre
+  const remaining = timerData[key]?.remaining ?? seconds;
+  const startTime = Date.now();
+  timerData[key] = {startTime, duration:remaining, remaining};
+
   playTimerStart();
-  let remaining=seconds;
   display.classList.add('running');
   display.textContent=formatTime(remaining);
   btn.textContent='⏸ Pause';
+
   timerIntervals[key]=setInterval(()=>{
-    remaining--;display.textContent=formatTime(remaining);
-    if(remaining<=0){clearInterval(timerIntervals[key]);delete timerIntervals[key];btn.textContent='✓ Terminé';display.textContent='🎉';playTimerEnd();}
-  },1000);
+    const elapsed=Math.floor((Date.now()-timerData[key].startTime)/1000);
+    const left=Math.max(0,timerData[key].duration-elapsed);
+    display.textContent=formatTime(left);
+    if(left<=0){
+      clearInterval(timerIntervals[key]);
+      delete timerIntervals[key];
+      delete timerData[key];
+      btn.textContent='✓ Terminé';
+      display.textContent='🎉';
+      playTimerEnd();
+      // Notification si disponible
+      if(Notification.permission==='granted'){
+        new Notification('MyBody Coach 🌸', {body:'Exercice terminé ! Bravo Kezia 💪', icon:'apple-touch-icon.png'});
+      }
+    }
+  },500); // check toutes les 500ms pour plus de réactivité au réveil
+}
+
+// Demander permission notifications au premier tap
+function requestNotifPermission(){
+  if('Notification' in window && Notification.permission==='default'){
+    Notification.requestPermission();
+  }
 }
 
 function marquerEtirementsTermines(){
@@ -1081,9 +1198,14 @@ function buildJournalHistory(){
   const entries=Object.entries(state.journal||{}).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,30);
   if(!entries.length){container.innerHTML='<p style="font-size:13px;color:var(--gris);">Aucune entrée pour le moment.</p>';return;}
   const moodEmoji={epuisee:'😴',neutre:'😐',bien:'🙂',motivee:'💪',excellente:'✨'};
+  const localiLabel={'aine-droite':'Aine D','aine-gauche':'Aine G','coccyx':'Coccyx','bas-ventre':'Bas-ventre','autre':'Autre'};
+  const medocLabel={'oui':'AINS pris','non':'Sans AINS'};
   container.innerHTML=entries.map(([date,j])=>{
     const d=new Date(date);const label=d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
-    return `<div class="journal-entry"><p class="je-date">${label}</p><div class="je-row"><span class="je-tag">⚡ ${j.energie||'–'}/5</span><span class="je-tag">💜 ${j.douleur||0}/5</span>${j.humeur?`<span class="je-tag">${moodEmoji[j.humeur]||''} ${j.humeur}</span>`:''} ${j.poids?`<span class="je-tag">⚖️ ${j.poids}kg</span>`:''}</div>${j.note?`<p class="je-note">"${j.note}"</p>`:''}</div>`;
+    const locTags=(j.localisation||[]).map(l=>`<span class="je-tag">📍 ${localiLabel[l]||l}</span>`).join('');
+    const medocTag=j.medoc?`<span class="je-tag">💊 ${medocLabel[j.medoc]||j.medoc}${j.soulagement?' →'+j.soulagement+'min':''}</span>`:'';
+    const alimTags=(j.alimentation||[]).map(a=>`<span class="je-tag">🍽 ${a}</span>`).join('');
+    return `<div class="journal-entry"><p class="je-date">${label}</p><div class="je-row"><span class="je-tag">⚡ ${j.energie||'–'}/5</span><span class="je-tag">💜 ${j.douleur||0}/10</span>${j.humeur?`<span class="je-tag">${moodEmoji[j.humeur]||''} ${j.humeur}</span>`:''} ${j.poids?`<span class="je-tag">⚖️ ${j.poids}kg</span>`:''}</div>${locTags||medocTag||alimTags?`<div class="je-row">${locTags}${medocTag}${alimTags}</div>`:''} ${j.note?`<p class="je-note">"${j.note}"</p>`:''}</div>`;
   }).join('');
 }
 
@@ -1105,10 +1227,28 @@ function drawPoids(jours,btn){
 
 function selectMood(btn){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
 
+function toggleDouleurFields(val){
+  const detail=document.getElementById('douleur-detail');
+  detail.style.display=parseInt(val)>0?'block':'none';
+}
+function toggleLocali(btn){btn.classList.toggle('selected');}
+function toggleAlim(btn){btn.classList.toggle('selected');}
+function selectMedoc(btn){
+  document.querySelectorAll('#douleur-detail .mood-btn[data-medoc]').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const sf=document.getElementById('soulagement-field');
+  sf.style.display=btn.dataset.medoc==='oui'?'block':'none';
+}
+
 function saveJournal(){
   const today=todayKey();const mood=document.querySelector('.mood-btn.selected');const poids=parseFloat(document.getElementById('inp-poids').value);const douleurVal=parseInt(document.getElementById('sl-douleur').value);
-  state.journal[today]={energie:parseInt(document.getElementById('sl-energie').value),douleur:douleurVal,humeur:mood?mood.dataset.mood:null,note:document.getElementById('inp-note').value,poids:isNaN(poids)?null:poids};
-  state.douleurs['j'+getCycleDay()]=douleurVal;
+  const localis=[...document.querySelectorAll('#localisation-row .mood-btn.selected')].map(b=>b.dataset.loc);
+  const medocEl=document.querySelector('#douleur-detail .mood-btn[data-medoc].selected');
+  const medoc=medocEl?medocEl.dataset.medoc:null;
+  const soulagement=medoc&&medoc!=='aucun'?parseInt(document.getElementById('sl-soulagement').value):null;
+  const alims=[...document.querySelectorAll('#alim-row .mood-btn.selected')].map(b=>b.dataset.alim);
+  state.journal[today]={energie:parseInt(document.getElementById('sl-energie').value),douleur:douleurVal,humeur:mood?mood.dataset.mood:null,note:document.getElementById('inp-note').value,poids:isNaN(poids)?null:poids,localisation:localis,medoc,soulagement,alimentation:alims};
+  state.douleurs['j'+getCycleDay()]=Math.round(douleurVal/2); // ramener à /5 pour la heatmap existante
   if(!isNaN(poids)){state.poids=state.poids||[];state.poids.push({date:today,val:poids});document.getElementById('prog-poids').textContent=poids;}
   saveState();if(driveAccessToken)saveToDrive();
   document.getElementById('saved-msg').style.display='block';setTimeout(()=>document.getElementById('saved-msg').style.display='none',2000);
@@ -1183,8 +1323,14 @@ function importData(input){const file=input.files[0];if(!file)return;const reade
 function exportPDF(){
   const jour=getCycleDay(),phase=getPhase(jour);
   const entries=Object.entries(state.journal||{}).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,28);
-  let html=`<html><head><meta charset="UTF-8"><title>MyBody Coach — Bilan médical</title><style>body{font-family:sans-serif;max-width:700px;margin:40px auto;color:#2a1a1a;}h1{color:#850e35;}h2{color:#850e35;font-size:16px;margin-top:24px;}table{width:100%;border-collapse:collapse;margin-top:10px;}td,th{padding:8px;border:1px solid #ffc4c4;font-size:13px;}th{background:#ffc4c4;color:#850e35;}.tag{background:#ffc4c4;color:#850e35;padding:2px 8px;border-radius:10px;font-size:12px;margin-right:4px;}</style></head><body><h1>MyBody Coach — Bilan mensuel</h1><p><strong>Patiente :</strong> ${state.prenom||'–'} &nbsp;|&nbsp; <strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR')} &nbsp;|&nbsp; <strong>Cycle :</strong> J${jour} (${phase.nom})</p><h2>Journal des 28 derniers jours</h2><table><tr><th>Date</th><th>Énergie</th><th>Douleur</th><th>Humeur</th><th>Poids</th><th>Note</th></tr>`;
-  entries.forEach(([d,j])=>{html+=`<tr><td>${d}</td><td>${j.energie||'–'}/5</td><td>${j.douleur||0}/5</td><td>${j.humeur||'–'}</td><td>${j.poids||'–'}</td><td>${j.note||''}</td></tr>`;});
+  let html=`<html><head><meta charset="UTF-8"><title>MyBody Coach — Bilan médical</title><style>body{font-family:sans-serif;max-width:700px;margin:40px auto;color:#2a1a1a;}h1{color:#850e35;}h2{color:#850e35;font-size:16px;margin-top:24px;}table{width:100%;border-collapse:collapse;margin-top:10px;}td,th{padding:8px;border:1px solid #ffc4c4;font-size:11px;}th{background:#ffc4c4;color:#850e35;}.tag{background:#ffc4c4;color:#850e35;padding:2px 8px;border-radius:10px;font-size:12px;margin-right:4px;}</style></head><body><h1>MyBody Coach — Bilan mensuel</h1><p><strong>Patiente :</strong> ${state.prenom||'–'} &nbsp;|&nbsp; <strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR')} &nbsp;|&nbsp; <strong>Cycle :</strong> J${jour} (${phase.nom})</p><h2>Journal des 28 derniers jours</h2><table><tr><th>Date</th><th>Énergie</th><th>Douleur/10</th><th>Localisation</th><th>Médicament</th><th>Alimentation</th><th>Humeur</th><th>Poids</th><th>Note</th></tr>`;
+  entries.forEach(([d,j])=>{
+    const loc=(j.localisation||[]).join(', ')||'–';
+    const medoc=j.medoc==='oui'?'AINS pris':j.medoc==='non'?'Sans AINS':j.douleur>0?'non renseigné':'–';
+    const soulagement=j.soulagement?j.soulagement+'min':'–';
+    const alim=(j.alimentation||[]).join(', ')||'–';
+    html+=`<tr><td>${d}</td><td>${j.energie||'–'}/5</td><td>${j.douleur||0}/10</td><td>${loc}</td><td>${medoc}${j.soulagement?' ('+soulagement+')':''}</td><td>${alim}</td><td>${j.humeur||'–'}</td><td>${j.poids||'–'}</td><td>${j.note||''}</td></tr>`;
+  });
   html+=`</table><h2>Douleurs par jour de cycle</h2><p>`;
   for(let i=1;i<=28;i++){const d=state.douleurs?.['j'+i]||0;html+=`<span class="tag">J${i}: ${d}/5</span>`;}
   html+=`</p><p style="margin-top:40px;font-size:12px;color:#8a7070;">Document généré par MyBody Coach</p></body></html>`;
@@ -1207,6 +1353,29 @@ function showPage(id){
 function setActiveTab(id){document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));const el=document.getElementById('btab-'+id);if(el)el.classList.add('active');}
 function toggleMenu(){document.getElementById('dropMenu').classList.toggle('open');}
 
+function openVideoPopup(url){
+  const overlay=document.getElementById('video-popup-overlay');
+  const iframe=document.getElementById('video-popup-iframe');
+  // Convertir URL YouTube en embed
+  let embedUrl=url;
+  if(url.includes('youtube.com/watch?v=')){
+    const videoId=url.split('v=')[1].split('&')[0];
+    embedUrl='https://www.youtube.com/embed/'+videoId+'?autoplay=1';
+  } else if(url.includes('youtube.com/shorts/')){
+    const videoId=url.split('shorts/')[1].split('?')[0];
+    embedUrl='https://www.youtube.com/embed/'+videoId+'?autoplay=1';
+  }
+  iframe.src=embedUrl;
+  overlay.classList.add('open');
+}
+function closeVideoPopup(e){
+  if(e&&e.target!==document.getElementById('video-popup-overlay')&&e.target!==document.querySelector('.video-popup-close'))return;
+  const overlay=document.getElementById('video-popup-overlay');
+  const iframe=document.getElementById('video-popup-iframe');
+  overlay.classList.remove('open');
+  iframe.src=''; // Arrêter la vidéo
+}
+
 window.addEventListener('load',()=>{
   const token=localStorage.getItem('drive_token');
   const fileId=localStorage.getItem('drive_file_id');
@@ -1215,6 +1384,7 @@ window.addEventListener('load',()=>{
 document.addEventListener('touchstart',()=>{
   if(actx.state==='suspended')actx.resume();
   preloadAllAudio();
+  requestNotifPermission();
 },{once:true});
 document.addEventListener('click',()=>{
   if(actx.state==='suspended')actx.resume();
