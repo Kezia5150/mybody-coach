@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23850e35'/><text y='72' x='50' text-anchor='middle' font-size='60'>🌸</text></svg>">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MyBody Coach">
@@ -62,8 +63,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 .card-title { font-size: 12px; font-weight: 500; color: var(--bordeaux); margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.05em; }
 .card-sub { font-size: 12px; color: var(--gris); margin: 0 0 12px; }
 
-.section-label { font-size: 10px; font-weight: 500; color: var(--bordeaux); text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 6px; display: flex; align-items: center; gap: 6px; }
-.section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--rose-pale); }
+.section-label { font-size: 20px; font-weight: 500; color: var(--bordeaux); text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 6px; display: flex; align-items: center; gap: 6px; }
 
 .habit-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--rose-pale); cursor: pointer; }
 .habit-item:last-child { border-bottom: none; }
@@ -217,19 +217,15 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">☰</button>
   </div>
   <div class="dropdown-menu" id="dropMenu">
-    <div class="dropdown-item" onclick="showPage('cycle');toggleMenu()">
-      <div class="dropdown-icon">🗓</div>
-      <div><div class="dropdown-label">Mon cycle</div><div class="dropdown-sub">4 phases · historique douleurs</div></div>
-    </div>
-    <div class="dropdown-item" onclick="renderMonCycle();showPage('moncycle');toggleMenu()">
+    <div class="dropdown-item" onclick="renderMonCycle();showPage('moncycle')">
       <div class="dropdown-icon">📅</div>
-      <div><div class="dropdown-label">Historique cycle</div><div class="dropdown-sub">J1 · durée cycle · durée règles</div></div>
+      <div><div class="dropdown-label">Mes cycles</div><div class="dropdown-sub">J1 · durée cycle · durée règles</div></div>
     </div>
-    <div class="dropdown-item" onclick="showPage('progression');toggleMenu()">
+    <div class="dropdown-item" onclick="showPage('progression')">
       <div class="dropdown-icon">📈</div>
       <div><div class="dropdown-label">Mes stats</div><div class="dropdown-sub">Poids · streak · séances · bilan</div></div>
     </div>
-    <div class="dropdown-item" onclick="showPage('config');toggleMenu()">
+    <div class="dropdown-item" onclick="showPage('config')">
       <div class="dropdown-icon">⚙️</div>
       <div><div class="dropdown-label">Réglages</div><div class="dropdown-sub">Profil · clé API · Google Drive</div></div>
     </div>
@@ -261,7 +257,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
 
     <!-- MATIN -->
-    <div class="section-label">🌅 Matin</div>
+    <div class="section-label">Matin</div>
     <div class="habit-item" onclick="toggleHabit(this,'eau')">
       <div class="hcheck" id="h-eau"></div>
       <span class="habit-label">💧 Eau tiède</span>
@@ -291,7 +287,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
 
     <!-- JOURNÉE -->
-    <div class="section-label">☀️ Dans la journée</div>
+    <div class="section-label">Dans la journée</div>
     <div class="habit-item" onclick="showPage('seance');setActiveTab('seance')">
       <div class="hcheck" id="h-seance"></div>
       <span class="habit-label">🏃 Séance du jour</span>
@@ -304,7 +300,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
 
     <!-- MIDI -->
-    <div class="section-label">🍽 Midi</div>
+    <div class="section-label">Midi</div>
     <div class="habit-item" onclick="toggleHabit(this,'complements_midi')">
       <div class="hcheck" id="h-complements_midi"></div>
       <span class="habit-label">💊 Créatine + Collagène + Zinc</span>
@@ -312,7 +308,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
 
     <!-- SOIR -->
-    <div class="section-label">🌙 Soir</div>
+    <div class="section-label">Soir</div>
     <div class="habit-item" onclick="toggleAccordion('acc-etirements')">
       <div class="hcheck" id="h-etirements" onclick="event.stopPropagation()"></div>
       <span class="habit-label">🧘 Étirements doux</span>
@@ -349,6 +345,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
         <input type="range" min="1" max="5" value="3" id="sl-energie" oninput="document.getElementById('val-energie').textContent=this.value">
         <span style="font-size:11px;color:var(--gris);">Au top</span>
         <span class="slider-val" id="val-energie">3</span>
+      </div>
+    </div>
+    <div class="journal-field">
+      <label class="jlabel">Règles</label>
+      <div class="mood-row">
+        <button class="mood-btn" id="btn-regles-oui" onclick="selectRegles(true)">🔴 J'ai mes règles aujourd'hui</button>
+        <button class="mood-btn" id="btn-regles-non" onclick="selectRegles(false)">Pas de règles</button>
       </div>
     </div>
     <div class="journal-field">
@@ -420,13 +423,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <label class="jlabel">Note libre</label>
       <textarea class="note-textarea" id="inp-note" placeholder="Comment tu te sens ? Quelque chose à signaler ?"></textarea>
     </div>
-    <div class="journal-field">
-      <label class="jlabel">Règles</label>
-      <div class="mood-row">
-        <button class="mood-btn" id="btn-regles-oui" onclick="selectRegles(true)">🔴 J'ai mes règles aujourd'hui</button>
-        <button class="mood-btn" id="btn-regles-non" onclick="selectRegles(false)">Pas de règles</button>
-      </div>
-    </div>
     <button class="save-btn" onclick="saveJournal()">Enregistrer mon journal</button>
     <p class="saved-msg" id="saved-msg">✓ Journal enregistré</p>
   </div>
@@ -470,17 +466,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <p class="card-sub">Basées sur un cycle de 28 jours — adaptées à ton endométriose</p>
     <div id="phase-cards"></div>
   </div>
-  <div class="card">
-    <p class="card-title">Historique douleurs pelviennes</p>
-    <p class="card-sub">Enregistrées depuis ton journal du soir</p>
-    <div class="douleur-grid" id="douleur-grid"></div>
-    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;">
-      <span style="font-size:10px;color:var(--gris);">Légende :</span>
-      <span style="background:#fff;border:0.5px solid var(--rose-pale);color:var(--gris);font-size:10px;padding:2px 6px;border-radius:6px;">0 aucune</span>
-      <span style="background:#ffccd4;color:var(--bordeaux);font-size:10px;padding:2px 6px;border-radius:6px;">2 modérée</span>
-      <span style="background:var(--bordeaux);color:white;font-size:10px;padding:2px 6px;border-radius:6px;">5 intense</span>
-    </div>
-  </div>
 </div>
 
 <!-- MON CYCLE HISTORIQUE -->
@@ -510,6 +495,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     </div>
     <svg id="mc-chart" viewBox="0 0 340 140" width="100%" xmlns="http://www.w3.org/2000/svg"></svg>
     <div id="mc-list" style="margin-top:14px;"></div>
+  </div>
+  <div class="card">
+    <p class="card-title">Historique douleurs pelviennes</p>
+    <p class="card-sub">Enregistrées depuis ton journal du soir</p>
+    <div class="douleur-grid" id="douleur-grid"></div>
+    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+      <span style="font-size:10px;color:var(--gris);">Légende :</span>
+      <span style="background:#fff;border:0.5px solid var(--rose-pale);color:var(--gris);font-size:10px;padding:2px 6px;border-radius:6px;">0 aucune</span>
+      <span style="background:#ffccd4;color:var(--bordeaux);font-size:10px;padding:2px 6px;border-radius:6px;">2 modérée</span>
+      <span style="background:var(--bordeaux);color:white;font-size:10px;padding:2px 6px;border-radius:6px;">5 intense</span>
+    </div>
   </div>
 </div>
 
@@ -998,7 +994,7 @@ function buildDouleurGrid(){
 function buildHeatGrid(){
   const grid=document.getElementById('heat-grid');if(!grid)return;grid.innerHTML='';
   const seanceDates=new Set(state.seances||[]);
-  for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.toISOString().split('T')[0];const div=document.createElement('div');div.className='heat-cell '+(seanceDates.has(k)?'done':'rest');grid.appendChild(div);}
+  for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');const div=document.createElement('div');div.className='heat-cell '+(seanceDates.has(k)?'done':'rest');grid.appendChild(div);}
 }
 
 function buildJournalHistory(){
@@ -1009,7 +1005,7 @@ function buildJournalHistory(){
   const localiLabel={'aine-droite':'Aine D','aine-gauche':'Aine G','coccyx':'Coccyx','bas-ventre':'Bas-ventre','autre':'Autre'};
   const medocLabel={'oui':'AINS pris','non':'Sans AINS'};
   container.innerHTML=entries.map(([date,j])=>{
-    const d=new Date(date);const label=d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+    const d=new Date(date+'T12:00:00');const label=d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
     const locTags=(j.localisation||[]).map(l=>`<span class="je-tag">📍 ${localiLabel[l]||l}</span>`).join('');
     const medocTag=j.medoc?`<span class="je-tag">💊 ${medocLabel[j.medoc]||j.medoc}${j.soulagement?' →'+j.soulagement+'min':''}</span>`:'';
     const alimTags=(j.alimentation||[]).map(a=>`<span class="je-tag">🍽 ${a}</span>`).join('');
@@ -1053,7 +1049,7 @@ function saveJournal(){
   const localis=[...document.querySelectorAll('#localisation-row .mood-btn.selected')].map(b=>b.dataset.loc);
   const medocEl=document.querySelector('#douleur-detail .mood-btn[data-medoc].selected');
   const medoc=medocEl?medocEl.dataset.medoc:null;
-  const soulagement=medoc&&medoc!=='aucun'?parseInt(document.getElementById('sl-soulagement').value):null;
+  const soulagement=medoc==='oui'?parseInt(document.getElementById('sl-soulagement').value):null;
   const alims=[...document.querySelectorAll('#alim-row .mood-btn.selected')].map(b=>b.dataset.alim);
   state.journal[today]={energie:parseInt(document.getElementById('sl-energie').value),douleur:douleurVal,humeur:mood?mood.dataset.mood:null,note:document.getElementById('inp-note').value,poids:isNaN(poids)?null:poids,localisation:localis,medoc,soulagement,alimentation:alims};
   state.douleurs['j'+getCycleDay()]=Math.round(douleurVal/2); // ramener à /5 pour la heatmap existante
@@ -1071,7 +1067,7 @@ function toggleHabit(el,key){
   saveState();if(driveAccessToken)saveToDrive();
 }
 
-function calcStreak(){let s=0,d=new Date();while(true){const k=d.toISOString().split('T')[0];const hab=state.habitudes[k]||{};if(Object.values(hab).filter(Boolean).length>=10){s++;d.setDate(d.getDate()-1);}else break;}state.streak=s;document.getElementById('streak-num').textContent=s;document.getElementById('prog-streak').textContent=s;saveState();}
+function calcStreak(){let s=0,d=new Date();while(true){const k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');const hab=state.habitudes[k]||{};if(Object.values(hab).filter(Boolean).length>=10){s++;d.setDate(d.getDate()-1);}else break;}state.streak=s;document.getElementById('streak-num').textContent=s;document.getElementById('prog-streak').textContent=s;saveState();}
 
 async function callGemini(prompt){
   if(!state.apiKey)return null;
@@ -1114,8 +1110,8 @@ function renderMonCycle(){
   const j1El=document.getElementById('mc-j1');
   const prochainEl=document.getElementById('mc-prochain');
   if(j1Ref){
-    j1El.textContent=new Date(j1Ref).toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
-    const prochainDate=new Date(j1Ref);
+    j1El.textContent=new Date(j1Ref+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+    const prochainDate=new Date(j1Ref+'T12:00:00');
     prochainDate.setDate(prochainDate.getDate()+(state.dureeCycle||28));
     prochainEl.textContent=prochainDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
   } else {
@@ -1151,13 +1147,13 @@ function renderMonCycle(){
     svg+=`<circle cx="${xs[i]}" cy="${yC(c.dureeCycle)}" r="3.5" fill="#850e35"/>`;
     svg+=`<text x="${xs[i]}" y="${yC(c.dureeCycle)-7}" text-anchor="middle" font-size="9" fill="#850e35">${c.dureeCycle}j</text>`;
     svg+=`<circle cx="${xs[i]}" cy="${yR(c.dureeRegles)}" r="3" fill="#ffc4c4" stroke="#ee6983" stroke-width="1"/>`;
-    const mois=new Date(c.j1).toLocaleDateString('fr-FR',{month:'short'});
+    const mois=new Date(c.j1+'T12:00:00').toLocaleDateString('fr-FR',{month:'short'});
     svg+=`<text x="${xs[i]}" y="${H}" text-anchor="middle" font-size="9" fill="#8a7070">${mois}</text>`;
   });
   chart.innerHTML=svg;
   list.innerHTML=cyclesAvecDonnees.slice().reverse().map(c=>{
-    const debut=new Date(c.j1).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
-    const fin=new Date(c.fin).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    const debut=new Date(c.j1+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    const fin=new Date(c.fin+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
     return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--rose-pale);"><span style="font-size:12px;color:var(--gris);">${debut} → ${fin}</span><div style="display:flex;gap:8px;"><span style="background:#fbeaf0;color:#993556;font-size:11px;padding:2px 8px;border-radius:20px;">${c.dureeCycle}j cycle</span><span style="font-size:12px;font-weight:500;color:var(--bordeaux);">${c.dureeRegles}j règles</span></div></div>`;
   }).join('');
 }
@@ -1239,8 +1235,8 @@ function exportPDF(){
   if(cyclesComplets.length>0){
     html+=`<table><tr><th>Période</th><th>J1</th><th>Fin des règles</th><th>Durée cycle</th><th>Durée règles</th></tr>`;
     cyclesComplets.forEach(c=>{
-      const j1f=new Date(c.j1).toLocaleDateString('fr-FR');
-      const finf=new Date(c.fin).toLocaleDateString('fr-FR');
+      const j1f=new Date(c.j1+'T12:00:00').toLocaleDateString('fr-FR');
+      const finf=new Date(c.fin+'T12:00:00').toLocaleDateString('fr-FR');
       html+=`<tr><td>${j1f} → ${finf}</td><td>${j1f}</td><td>${finf}</td><td>${c.dureeCycle} jours</td><td>${c.dureeRegles} jours</td></tr>`;
     });
     html+=`</table>`;
