@@ -952,9 +952,6 @@ function initUI(){
   document.getElementById('prog-poids').textContent=lastPoids;
   document.getElementById('journal-date').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   if(state.prenom)document.getElementById('cfg-prenom').value=state.prenom;
-  if(state.dateRegles)document.getElementById('cfg-date-regles').value=state.dateRegles;
-  if(state.dureeRegles)document.getElementById('cfg-duree-regles').value=state.dureeRegles;
-  if(state.dureeCycle)document.getElementById('cfg-duree-cycle').value=state.dureeCycle;
   if(state.apiKey)document.getElementById('cfg-api-key').value=state.apiKey;
 
   const seanceTitre=document.getElementById('seance-titre'),seanceSub=document.getElementById('seance-sub');
@@ -1194,7 +1191,7 @@ function selectRegles(aRegles){
 }
 function getYesterdayKey(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
-function saveConfig(){state.prenom=document.getElementById('cfg-prenom').value.trim();state.dateRegles=document.getElementById('cfg-date-regles').value;state.dureeRegles=parseInt(document.getElementById('cfg-duree-regles').value)||7;state.dureeCycle=parseInt(document.getElementById('cfg-duree-cycle').value)||28;state.apiKey=document.getElementById('cfg-api-key').value.trim();saveState();document.getElementById('cfg-saved').style.display='block';setTimeout(()=>document.getElementById('cfg-saved').style.display='none',2000);initUI();}
+function saveConfig(){state.prenom=document.getElementById('cfg-prenom').value.trim();state.apiKey=document.getElementById('cfg-api-key').value.trim();saveState();document.getElementById('cfg-saved').style.display='block';setTimeout(()=>document.getElementById('cfg-saved').style.display='none',2000);initUI();}
 function saveState(){localStorage.setItem('mybody_state',JSON.stringify(state));}
 function loadState(){
   const saved=localStorage.getItem('mybody_state');
