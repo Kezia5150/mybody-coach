@@ -221,6 +221,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <div class="dropdown-icon">🗓</div>
       <div><div class="dropdown-label">Mon cycle</div><div class="dropdown-sub">4 phases · historique douleurs</div></div>
     </div>
+    <div class="dropdown-item" onclick="renderMonCycle();showPage('moncycle');toggleMenu()">
+      <div class="dropdown-icon">📅</div>
+      <div><div class="dropdown-label">Historique cycle</div><div class="dropdown-sub">J1 · durée cycle · durée règles</div></div>
+    </div>
     <div class="dropdown-item" onclick="showPage('progression');toggleMenu()">
       <div class="dropdown-icon">📈</div>
       <div><div class="dropdown-label">Mes stats</div><div class="dropdown-sub">Poids · streak · séances · bilan</div></div>
@@ -268,57 +272,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <span class="habit-label">💊 Oméga-3 + Magnésium</span>
       <span class="habit-time">30 s</span>
     </div>
-    <div class="habit-item" onclick="toggleAccordion('acc-respiration')">
-      <div class="hcheck" id="h-respiration" onclick="event.stopPropagation()"></div>
+    <div class="habit-item" onclick="toggleHabit(this,'respiration')">
+      <div class="hcheck" id="h-respiration"></div>
       <span class="habit-label">🌬 Respiration 4-4-4-4</span>
       <span class="habit-time">~5 min</span>
-      <span class="habit-arrow" id="arr-respiration">›</span>
-    </div>
-    <div class="accordion-body" id="acc-respiration">
-      <div class="breath-wrap">
-        <div class="breath-container">
-          <svg class="breath-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-            <defs><clipPath id="cc"><circle cx="80" cy="80" r="72"/></clipPath></defs>
-            <circle cx="80" cy="80" r="72" fill="#fff5e4" stroke="#ffc4c4" stroke-width="1.5"/>
-            <g clip-path="url(#cc)">
-              <path id="wave1" fill="#ffc4c4" opacity="0.6"/>
-              <path id="wave2" fill="#ee6983" opacity="0.4"/>
-              <path id="wave3" fill="#850e35" opacity="0.2"/>
-            </g>
-            <circle cx="80" cy="80" r="72" fill="none" stroke="#ffc4c4" stroke-width="1.5"/>
-            <text id="svg-phase" x="80" y="74" text-anchor="middle" font-size="12" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
-            <text id="svg-count" x="80" y="100" text-anchor="middle" font-size="36" font-weight="500" fill="#850e35" font-family="DM Sans,sans-serif"></text>
-          </svg>
-        </div>
-        <div style="font-size:28px;font-weight:500;color:var(--bordeaux);text-align:center;margin-bottom:12px;" id="breath-countdown">4:48</div>
-        <div class="breath-btns">
-          <button class="action-btn action-btn-primary" id="breath-start" onclick="startBreath()">Démarrer</button>
-          <button class="action-btn action-btn-secondary" id="breath-pause" onclick="pauseBreath()" style="display:none">⏸ Pause</button>
-          <button class="action-btn action-btn-secondary" id="breath-stop" onclick="stopBreath(false)" style="display:none">Arrêter</button>
-        </div>
-      </div>
     </div>
 
-    <div class="habit-item" onclick="toggleAccordion('acc-ecriture')">
-      <div class="hcheck" id="h-ecriture" onclick="event.stopPropagation()"></div>
+    <div class="habit-item" onclick="toggleHabit(this,'ecriture')">
+      <div class="hcheck" id="h-ecriture"></div>
       <span class="habit-label">✍️ Écrire 10 min</span>
       <span class="habit-time">10 min</span>
-      <span class="habit-arrow" id="arr-ecriture">›</span>
-    </div>
-    <div class="accordion-body" id="acc-ecriture">
-      <div class="writing-wrap">
-        <div class="writing-circle" id="writing-circle">
-          <span class="writing-time" id="writing-time">10:00</span>
-          <span class="writing-label" id="writing-label">prête ?</span>
-        </div>
-        <div class="writing-prompt" id="writing-prompt">
-          Prends ta plume. Écris ce qui te traverse — sans filtre, sans jugement. Juste toi et tes mots.
-        </div>
-        <div class="breath-btns">
-          <button class="action-btn action-btn-primary" id="writing-start" onclick="startWriting()">Démarrer la musique + timer</button>
-          <button class="action-btn action-btn-secondary" id="writing-stop" onclick="stopWriting()" style="display:none">Arrêter</button>
-        </div>
-      </div>
     </div>
 
     <div class="habit-item" onclick="toggleHabit(this,'cheveux')">
@@ -431,11 +394,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
       <div class="journal-field">
         <label class="jlabel">Alimentation des dernières heures <span class="jlabel-sub">— plusieurs possibles</span></label>
         <div class="mood-row" id="alim-row">
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="jeune">🕐 Jeûne</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="laitages">🥛 Laitages</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="legumineuses">🫘 Légum.</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="choux">🥦 Choux</button>
-          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="normal">✅ Normal</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="jeune" title="Jeûne">🕐</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="laitages" title="Laitages">🥛</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="legumineuses" title="Légumineuses">🫘</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="choux" title="Choux/brocolis">🥦</button>
+          <button class="mood-btn" onclick="toggleAlim(this)" data-alim="normal" title="Normal">✅</button>
         </div>
       </div>
     </div>
@@ -456,6 +419,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <div class="journal-field">
       <label class="jlabel">Note libre</label>
       <textarea class="note-textarea" id="inp-note" placeholder="Comment tu te sens ? Quelque chose à signaler ?"></textarea>
+    </div>
+    <div class="journal-field">
+      <label class="jlabel">Règles</label>
+      <div class="mood-row">
+        <button class="mood-btn" id="btn-regles-oui" onclick="selectRegles(true)">🔴 J'ai mes règles aujourd'hui</button>
+        <button class="mood-btn" id="btn-regles-non" onclick="selectRegles(false)">Pas de règles</button>
+      </div>
     </div>
     <button class="save-btn" onclick="saveJournal()">Enregistrer mon journal</button>
     <p class="saved-msg" id="saved-msg">✓ Journal enregistré</p>
@@ -513,6 +483,36 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
   </div>
 </div>
 
+<!-- MON CYCLE HISTORIQUE -->
+<div class="page" id="page-moncycle">
+  <div class="card">
+    <p class="card-title">Mon cycle</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+      <div style="background:var(--creme);border-radius:10px;padding:12px;">
+        <div style="font-size:11px;color:var(--gris);margin-bottom:4px;">Dernier J1</div>
+        <div style="font-size:15px;font-weight:500;color:var(--bordeaux);" id="mc-j1">—</div>
+      </div>
+      <div style="background:var(--creme);border-radius:10px;padding:12px;">
+        <div style="font-size:11px;color:var(--gris);margin-bottom:4px;">Prochain J1 estimé</div>
+        <div style="font-size:15px;font-weight:500;color:var(--bordeaux);" id="mc-prochain">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <p class="card-title">Historique des cycles</p>
+    <div style="display:flex;gap:14px;margin:8px 0 12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gris);">
+        <div style="width:8px;height:8px;border-radius:50%;background:#850e35;"></div>Durée cycle
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gris);">
+        <div style="width:8px;height:8px;border-radius:50%;background:#ffc4c4;"></div>Durée règles
+      </div>
+    </div>
+    <svg id="mc-chart" viewBox="0 0 340 140" width="100%" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="mc-list" style="margin-top:14px;"></div>
+  </div>
+</div>
+
 <!-- PROGRESSION -->
 <div class="page" id="page-progression">
   <div class="card">
@@ -552,6 +552,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
     <div class="config-field"><label class="config-label">Mon prénom</label><input type="text" class="config-input" id="cfg-prenom" placeholder="ex: Kezia"></div>
     <div class="config-field"><label class="config-label">Date de début de mes dernières règles</label><input type="date" class="config-input" id="cfg-date-regles"></div>
     <div class="config-field"><label class="config-label">Durée habituelle de mes règles (jours)</label><input type="number" class="config-input" id="cfg-duree-regles" value="7" min="2" max="10"></div>
+    <div class="config-field"><label class="config-label">Durée de mon cycle (jours)</label><input type="number" class="config-input" id="cfg-duree-cycle" value="28" min="21" max="45"></div>
     <div class="config-field">
       <label class="config-label">Clé API Gemini <span style="font-size:11px;color:var(--gris);font-weight:400;">(gratuite — liste demain + bilan)</span></label>
       <input type="password" class="config-input" id="cfg-api-key" placeholder="AIza…">
@@ -614,14 +615,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--creme); color: var(
 </div>
 
 <audio id="audio-seance" loop></audio>
-<audio id="audio-ecriture" loop></audio>
 <audio id="audio-debut-timer" src="debut-timer.MP3"></audio>
 <audio id="audio-fin-timer" src="fin-timer.MP3"></audio>
 
 <script>
 let state = {
-  prenom:'', dateRegles:null, dureeRegles:7, apiKey:'',
-  habitudes:{}, streak:0, journal:{}, poids:[], seances:[], douleurs:{}
+  prenom:'', dateRegles:null, dureeRegles:7, dureeCycle:28, apiKey:'',
+  habitudes:{}, streak:0, journal:{}, poids:[], seances:[], douleurs:{}, cycleHistory:[]
 };
 const GDRIVE_CLIENT_ID='995009252075-n2ubfcu03hclfghhcq7180vkoiu7le6v.apps.googleusercontent.com';
 const GDRIVE_SCOPE='https://www.googleapis.com/auth/drive.appdata';
@@ -632,7 +632,7 @@ let seanceMusicPlaying=false;
 const actx=new (window.AudioContext||window.webkitAudioContext)();
 
 // Buffers audio préchargés
-let bufferDebutTimer=null, bufferFinTimer=null, bufferEcriture=null;
+let bufferDebutTimer=null, bufferFinTimer=null;
 
 async function preloadAudio(url){
   try{
@@ -645,7 +645,6 @@ async function preloadAudio(url){
 async function preloadAllAudio(){
   bufferDebutTimer=await preloadAudio('debut-timer.MP3');
   bufferFinTimer=await preloadAudio('fin-timer.MP3');
-  bufferEcriture=await preloadAudio('0509.MP3');
 }
 
 function playBuffer(buffer, volume=1.5){
@@ -707,9 +706,6 @@ function playTimerEndFallback(){
   });
 }
 
-// Source audio écriture (pour pouvoir l'arrêter)
-let ecritureSource=null;
-
 function toggleSeanceMusic(){
   const a=document.getElementById('audio-seance'),btn=document.getElementById('music-toggle');
   if(!a)return;
@@ -731,200 +727,9 @@ function bowlSound(freq,duration,vol=0.3){
 function inhaleSound(){[220,277,330].forEach(f=>{const osc=actx.createOscillator(),gain=actx.createGain();osc.connect(gain);gain.connect(actx.destination);osc.type='sine';osc.frequency.setValueAtTime(f,actx.currentTime);osc.frequency.linearRampToValueAtTime(f*1.5,actx.currentTime+4);gain.gain.setValueAtTime(0,actx.currentTime);gain.gain.linearRampToValueAtTime(0.07,actx.currentTime+2);gain.gain.linearRampToValueAtTime(0,actx.currentTime+4);osc.start();osc.stop(actx.currentTime+4.1);});}
 function exhaleSound(){[330,277,220].forEach(f=>{const osc=actx.createOscillator(),gain=actx.createGain();osc.connect(gain);gain.connect(actx.destination);osc.type='sine';osc.frequency.setValueAtTime(f*1.5,actx.currentTime);osc.frequency.linearRampToValueAtTime(f,actx.currentTime+4);gain.gain.setValueAtTime(0,actx.currentTime);gain.gain.linearRampToValueAtTime(0.07,actx.currentTime+1);gain.gain.linearRampToValueAtTime(0,actx.currentTime+4);osc.start();osc.stop(actx.currentTime+4.1);});}
 
-let breathRunning=false,breathPaused=false,breathTimers=[],breathCycle=0,waveAnim=null,waveOffset=0,currentLevel=100,targetLevel=100;
-const breathPhases=[
-  {label:'Inspire',sound:'inhale',duration:4,targetLevel:22},
-  {label:'Retiens',sound:'bowl',duration:4,targetLevel:22},
-  {label:'Expire',sound:'exhale',duration:4,targetLevel:100},
-  {label:'Retiens',sound:'bowl',duration:4,targetLevel:100}
-];
 
-function drawWaves(){
-  waveOffset+=1.2;currentLevel+=(targetLevel-currentLevel)*0.015;
-  const makeWave=(off,shift)=>{
-    let d=`M -10 ${currentLevel+shift} `;
-    for(let x=-10;x<=170;x+=5){const y=currentLevel+shift+Math.sin((x+waveOffset+off)*0.05)*7+Math.sin((x+waveOffset*0.7+off)*0.09)*3;d+=`L ${x} ${y} `;}
-    return d+`L 170 160 L -10 160 Z`;
-  };
-  document.getElementById('wave1').setAttribute('d',makeWave(0,0));
-  document.getElementById('wave2').setAttribute('d',makeWave(30,6));
-  document.getElementById('wave3').setAttribute('d',makeWave(60,12));
-  waveAnim=requestAnimationFrame(drawWaves);
-}
 
-function startBreath(){
-  if(breathRunning)return;
-  breathRunning=true;breathCycle=0;currentLevel=100;targetLevel=100;
-  document.getElementById('breath-start').style.display='none';
-  document.getElementById('breath-pause').style.display='block';
-  document.getElementById('breath-stop').style.display='block';
-  breathPaused=false;
-  playTimerStart();
-  drawWaves();runBreathCycle();
-  startBreathCountdown();
-}
-let breathCountdownInterval=null;
-let breathStartTime=null;
-function startBreathCountdown(){
-  breathCountdownRemaining=288;
-  breathStartTime=Date.now();
-  const el=document.getElementById('breath-countdown');
-  if(el)el.textContent=formatTime(breathCountdownRemaining);
-  breathCountdownInterval=setInterval(()=>{
-    const elapsed=Math.floor((Date.now()-breathStartTime)/1000);
-    const left=Math.max(0,288-elapsed);
-    breathCountdownRemaining=left;
-    if(el)el.textContent=formatTime(left);
-    if(left<=0){clearInterval(breathCountdownInterval);}
-  },500);
-}
-function stopBreath(auto=false){
-  breathRunning=false;breathTimers.forEach(clearTimeout);breathTimers=[];
-  if(waveAnim){cancelAnimationFrame(waveAnim);waveAnim=null;}
-  if(breathCountdownInterval){clearInterval(breathCountdownInterval);breathCountdownInterval=null;}
-  targetLevel=100;currentLevel=100;
-  document.getElementById('svg-phase').textContent='';
-  document.getElementById('svg-count').textContent='';
-  const cd=document.getElementById('breath-countdown');
-  if(cd)cd.textContent='4:48';
-  document.getElementById('breath-start').style.display='block';
-  document.getElementById('breath-pause').style.display='none';
-  document.getElementById('breath-stop').style.display='none';
-  breathPaused=false;
-  
-  if(auto){
-    const today=todayKey();
-    if(!state.habitudes[today])state.habitudes[today]={};
-    state.habitudes[today]['respiration']=true;
-    const el=document.getElementById('h-respiration');
-    if(el)el.classList.add('done');
-    updateDoneCount();saveState();if(driveAccessToken)saveToDrive();
-  }
-}
-function pauseBreath(){
-  if(!breathRunning)return;
-  if(!breathPaused){
-    // Mettre en pause
-    breathPaused=true;
-    breathTimers.forEach(clearTimeout);breathTimers=[];
-    if(waveAnim){cancelAnimationFrame(waveAnim);waveAnim=null;}
-    if(breathCountdownInterval){clearInterval(breathCountdownInterval);breathCountdownInterval=null;}
-    document.getElementById('breath-pause').textContent='▶ Reprendre';
-    document.getElementById('svg-phase').textContent='Pause';
-    document.getElementById('svg-count').textContent='';
-  } else {
-    // Reprendre
-    breathPaused=false;
-    document.getElementById('breath-pause').textContent='⏸ Pause';
-    drawWaves();
-    runBreathCycle();
-    resumeBreathCountdown();
-  }
-}
-
-let breathCountdownRemaining=256;
-function resumeBreathCountdown(){
-  breathStartTime=Date.now()-(288-breathCountdownRemaining)*1000;
-  const el=document.getElementById('breath-countdown');
-  breathCountdownInterval=setInterval(()=>{
-    const elapsed=Math.floor((Date.now()-breathStartTime)/1000);
-    const left=Math.max(0,288-elapsed);
-    breathCountdownRemaining=left;
-    if(el)el.textContent=formatTime(left);
-    if(left<=0)clearInterval(breathCountdownInterval);
-  },500);
-}
-
-function runBreathCycle(){
-  if(!breathRunning||breathPaused)return;
-  let idx=0;
-  const next=()=>{
-    if(!breathRunning||idx>=breathPhases.length){
-      if(breathRunning){
-        breathCycle++;
-        if(breathCycle>=18){bowlSound(432,4,0.8);playTimerEnd();const cd=document.getElementById('breath-countdown');if(cd)cd.textContent='✓';breathTimers.push(setTimeout(()=>stopBreath(true),3000));}
-        else breathTimers.push(setTimeout(runBreathCycle,300));
-      }
-      return;
-    }
-    const p=breathPhases[idx++];
-    targetLevel=p.targetLevel;
-    document.getElementById('svg-phase').textContent=p.label;
-    document.getElementById('svg-count').textContent=4;
-    if(p.sound==='inhale')inhaleSound();
-    else if(p.sound==='exhale')exhaleSound();
-    else bowlSound(432,2,0.2);
-    let count=4;
-    const tick=()=>{
-      if(!breathRunning)return;
-      document.getElementById('svg-count').textContent=count;
-      count--;
-      if(count>0){breathTimers.push(setTimeout(tick,1000));}
-      else breathTimers.push(setTimeout(next,1000));
-    };
-    breathTimers.push(setTimeout(tick,1000));
-  };
-  next();
-}
-
-let writingTimer=null,writingRemaining=600;
-const writingPrompts=[
-  'Prends ta plume. Écris ce qui te traverse — sans filtre, sans jugement.',
-  'Comment ton corps se sent-il ce matin ? Décris-le en 3 mots, puis développe.',
-  'Qu\'est-ce qui te pèse en ce moment ? Pose-le sur le papier.',
-  'Qu\'est-ce qui t\'a rendue fière hier, même en tout petit ?',
-  'Si ton corps pouvait te parler ce matin, que te dirait-il ?',
-  'Quel est ton intention pour aujourd\'hui ? Une seule phrase.',
-  'Qu\'est-ce que tu veux lâcher ? Écris-le, puis dessine une flèche vers la sortie.'
-];
-
-function startWriting(){
-  if(actx.state==='suspended')actx.resume();
-  if(bufferEcriture){
-    ecritureSource=playBufferLoop(bufferEcriture);
-  } else {
-    const a=document.getElementById('audio-ecriture');
-    if(a){if(!a.src||a.src===window.location.href)a.src='0509.MP3';a.play().catch(()=>{});}
-  }
-  playTimerStart();
-  writingRemaining=600;
-  document.getElementById('writing-start').style.display='none';
-  document.getElementById('writing-stop').style.display='block';
-  document.getElementById('writing-circle').classList.add('running');
-  const prompt=writingPrompts[Math.floor(Math.random()*writingPrompts.length)];
-  document.getElementById('writing-prompt').textContent=prompt;
-  const writingStartTime=Date.now();
-  const writingDuration=writingRemaining;
-  writingTimer=setInterval(()=>{
-    const elapsed=Math.floor((Date.now()-writingStartTime)/1000);
-    writingRemaining=Math.max(0,writingDuration-elapsed);
-    document.getElementById('writing-time').textContent=formatTime(writingRemaining);
-    if(writingRemaining<=0){stopWriting(true);}
-  },500);
-}
-function stopWriting(auto=false){
-  clearInterval(writingTimer);writingTimer=null;
-  if(ecritureSource){try{ecritureSource.stop();}catch(e){}ecritureSource=null;}
-  const a=document.getElementById('audio-ecriture');
-  if(a){a.pause();a.currentTime=0;}
-  document.getElementById('writing-circle').classList.remove('running');
-  document.getElementById('writing-time').textContent='10:00';
-  document.getElementById('writing-label').textContent='prête ?';
-  document.getElementById('writing-start').style.display='block';
-  document.getElementById('writing-stop').style.display='none';
-  if(auto||writingRemaining<=0){
-    playTimerEnd();
-    const today=todayKey();
-    if(!state.habitudes[today])state.habitudes[today]={};
-    state.habitudes[today]['ecriture']=true;
-    const el=document.getElementById('h-ecriture');
-    if(el)el.classList.add('done');
-    updateDoneCount();saveState();if(driveAccessToken)saveToDrive();
-    playTimerEnd();
-  }
-}
-
-function getCycleDay(){if(!state.dateRegles)return 5;const start=new Date(state.dateRegles),today=new Date();const diff=Math.floor((today-start)/(1000*60*60*24));return((diff%28)+28)%28+1;}
+function getCycleDay(){if(!state.dateRegles)return 5;const cycle=state.dureeCycle||28;const start=new Date(state.dateRegles),today=new Date();const diff=Math.floor((today-start)/(1000*60*60*24));return((diff%cycle)+cycle)%cycle+1;}
 function getPhase(j){if(j<=7)return{nom:'Menstruelle',tag:'Douceur',court:'mens'};if(j<=13)return{nom:'Folliculaire',tag:'Énergie montante',court:'foll'};if(j<=17)return{nom:'Ovulatoire',tag:'Pic d\'énergie',court:'ovu'};return{nom:'Lutéale',tag:'Ralentissement',court:'lut'};}
 function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -1117,7 +922,7 @@ function toggleAccordion(id){
 function updateDoneCount(){
   const today=todayKey();
   const hab=state.habitudes[today]||{};
-  const done=Object.values(hab).filter(Boolean).length;
+  const done=Object.entries(hab).filter(([k,v])=>k!=='etirements_completed'&&Boolean(v)).length;
   const total=10;
   document.getElementById('done-num').textContent=done+'/'+total;
 }
@@ -1156,6 +961,7 @@ function initUI(){
   if(state.prenom)document.getElementById('cfg-prenom').value=state.prenom;
   if(state.dateRegles)document.getElementById('cfg-date-regles').value=state.dateRegles;
   if(state.dureeRegles)document.getElementById('cfg-duree-regles').value=state.dureeRegles;
+  if(state.dureeCycle)document.getElementById('cfg-duree-cycle').value=state.dureeCycle;
   if(state.apiKey)document.getElementById('cfg-api-key').value=state.apiKey;
 
   const seanceTitre=document.getElementById('seance-titre'),seanceSub=document.getElementById('seance-sub');
@@ -1227,7 +1033,7 @@ function drawPoids(jours,btn){
   ctx.fillStyle='#ee6983';entries.forEach((e,i)=>{ctx.beginPath();ctx.arc(toX(i),toY(e.val),4,0,Math.PI*2);ctx.fill();});
 }
 
-function selectMood(btn){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+function selectMood(btn){document.querySelectorAll('.mood-btn[data-mood]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
 
 function toggleDouleurFields(val){
   const detail=document.getElementById('douleur-detail');
@@ -1300,7 +1106,102 @@ async function genererBilan(){
   else container.innerHTML='<p style="font-size:13px;color:var(--gris);">Erreur — vérifie ta clé API.</p>';
 }
 
-function saveConfig(){state.prenom=document.getElementById('cfg-prenom').value.trim();state.dateRegles=document.getElementById('cfg-date-regles').value;state.dureeRegles=parseInt(document.getElementById('cfg-duree-regles').value)||7;state.apiKey=document.getElementById('cfg-api-key').value.trim();saveState();document.getElementById('cfg-saved').style.display='block';setTimeout(()=>document.getElementById('cfg-saved').style.display='none',2000);initUI();}
+function renderMonCycle(){
+  const cycles=(state.cycleHistory||[]).filter(c=>c.j1).sort((a,b)=>a.j1.localeCompare(b.j1));
+  const dernierCycle=cycles.filter(c=>c.fin).slice(-1)[0];
+  const cycleEnCours=cycles.find(c=>!c.fin);
+  const j1Ref=cycleEnCours?cycleEnCours.j1:(dernierCycle?dernierCycle.j1:state.dateRegles);
+  const j1El=document.getElementById('mc-j1');
+  const prochainEl=document.getElementById('mc-prochain');
+  if(j1Ref){
+    j1El.textContent=new Date(j1Ref).toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+    const prochainDate=new Date(j1Ref);
+    prochainDate.setDate(prochainDate.getDate()+(state.dureeCycle||28));
+    prochainEl.textContent=prochainDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+  } else {
+    j1El.textContent='—';prochainEl.textContent='—';
+  }
+  const cyclesAvecDonnees=cycles.filter(c=>c.fin&&c.dureeCycle&&c.dureeRegles).slice(-6);
+  const chart=document.getElementById('mc-chart');
+  const list=document.getElementById('mc-list');
+  if(cyclesAvecDonnees.length<2){
+    chart.innerHTML='<text x="170" y="70" text-anchor="middle" font-size="12" fill="#8a7070">Pas encore assez de données — continue à cocher tes règles chaque soir</text>';
+    list.innerHTML='<p style="font-size:13px;color:var(--gris);text-align:center;">Les cycles apparaîtront ici au fil des mois.</p>';
+    return;
+  }
+  const n=cyclesAvecDonnees.length;
+  const W=340,H=120,padL=30,padR=10,padT=15,padB=20;
+  const plotW=W-padL-padR,plotH=H-padT-padB;
+  const xs=cyclesAvecDonnees.map((_,i)=>padL+i*(plotW/(n-1)));
+  const maxC=Math.max(...cyclesAvecDonnees.map(c=>c.dureeCycle))+3;
+  const minC=Math.max(0,Math.min(...cyclesAvecDonnees.map(c=>c.dureeCycle))-3);
+  const maxR=Math.max(...cyclesAvecDonnees.map(c=>c.dureeRegles))+2;
+  const yC=v=>padT+plotH-(v-minC)/(maxC-minC)*plotH;
+  const yR=v=>padT+plotH-(v/maxR)*plotH*0.4;
+  const ptsCycle=cyclesAvecDonnees.map((c,i)=>`${xs[i]},${yC(c.dureeCycle)}`).join(' ');
+  const ptsRegles=cyclesAvecDonnees.map((c,i)=>`${xs[i]},${yR(c.dureeRegles)}`).join(' ');
+  const aireC=`M${xs[0]},${yC(cyclesAvecDonnees[0].dureeCycle)} `+cyclesAvecDonnees.slice(1).map((c,i)=>`L${xs[i+1]},${yC(c.dureeCycle)}`).join(' ')+` L${xs[n-1]},${padT+plotH} L${xs[0]},${padT+plotH} Z`;
+  let svg=`<defs><linearGradient id="gcycle" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#850e35" stop-opacity="0.12"/><stop offset="100%" stop-color="#850e35" stop-opacity="0"/></linearGradient></defs>`;
+  svg+=`<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+plotH}" stroke="#ffc4c4" stroke-width="0.5"/>`;
+  svg+=`<line x1="${padL}" y1="${padT+plotH}" x2="${W-padR}" y2="${padT+plotH}" stroke="#ffc4c4" stroke-width="0.5"/>`;
+  svg+=`<path d="${aireC}" fill="url(#gcycle)"/>`;
+  svg+=`<polyline points="${ptsCycle}" fill="none" stroke="#850e35" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  svg+=`<polyline points="${ptsRegles}" fill="none" stroke="#ffc4c4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4,3"/>`;
+  cyclesAvecDonnees.forEach((c,i)=>{
+    svg+=`<circle cx="${xs[i]}" cy="${yC(c.dureeCycle)}" r="3.5" fill="#850e35"/>`;
+    svg+=`<text x="${xs[i]}" y="${yC(c.dureeCycle)-7}" text-anchor="middle" font-size="9" fill="#850e35">${c.dureeCycle}j</text>`;
+    svg+=`<circle cx="${xs[i]}" cy="${yR(c.dureeRegles)}" r="3" fill="#ffc4c4" stroke="#ee6983" stroke-width="1"/>`;
+    const mois=new Date(c.j1).toLocaleDateString('fr-FR',{month:'short'});
+    svg+=`<text x="${xs[i]}" y="${H}" text-anchor="middle" font-size="9" fill="#8a7070">${mois}</text>`;
+  });
+  chart.innerHTML=svg;
+  list.innerHTML=cyclesAvecDonnees.slice().reverse().map(c=>{
+    const debut=new Date(c.j1).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    const fin=new Date(c.fin).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--rose-pale);"><span style="font-size:12px;color:var(--gris);">${debut} → ${fin}</span><div style="display:flex;gap:8px;"><span style="background:#fbeaf0;color:#993556;font-size:11px;padding:2px 8px;border-radius:20px;">${c.dureeCycle}j cycle</span><span style="font-size:12px;font-weight:500;color:var(--bordeaux);">${c.dureeRegles}j règles</span></div></div>`;
+  }).join('');
+}
+
+function selectRegles(aRegles){
+  const today=todayKey();
+  if(!state.journal[today])state.journal[today]={};
+  state.journal[today].regles=aRegles;
+  document.getElementById('btn-regles-oui').classList.toggle('selected',aRegles);
+  document.getElementById('btn-regles-non').classList.toggle('selected',!aRegles);
+  if(aRegles){
+    const yesterday=getYesterdayKey();
+    const hierRegles=state.journal[yesterday]&&state.journal[yesterday].regles;
+    if(!hierRegles){
+      // C'est un J1
+      const cycleEnCours=state.cycleHistory.find(c=>!c.fin);
+      if(!cycleEnCours){
+        // Calculer durée du cycle précédent
+        const dernierCycle=state.cycleHistory.filter(c=>c.fin).sort((a,b)=>b.j1.localeCompare(a.j1))[0];
+        if(dernierCycle){
+          const dureeCycle=Math.round((new Date(today)-new Date(dernierCycle.j1))/(1000*60*60*24));
+          dernierCycle.dureeCycle=dureeCycle;
+        }
+        state.cycleHistory.push({j1:today,fin:null,dureeRegles:null,dureeCycle:null});
+        state.dateRegles=today;
+      }
+    }
+  } else {
+    // Fin possible des règles si hier on avait des règles
+    const yesterday=getYesterdayKey();
+    const hierRegles=state.journal[yesterday]&&state.journal[yesterday].regles;
+    if(hierRegles){
+      const cycleEnCours=state.cycleHistory.find(c=>!c.fin);
+      if(cycleEnCours){
+        cycleEnCours.fin=yesterday;
+        cycleEnCours.dureeRegles=Math.round((new Date(yesterday)-new Date(cycleEnCours.j1))/(1000*60*60*24))+1;
+      }
+    }
+  }
+  saveState();
+}
+function getYesterdayKey(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+function saveConfig(){state.prenom=document.getElementById('cfg-prenom').value.trim();state.dateRegles=document.getElementById('cfg-date-regles').value;state.dureeRegles=parseInt(document.getElementById('cfg-duree-regles').value)||7;state.dureeCycle=parseInt(document.getElementById('cfg-duree-cycle').value)||28;state.apiKey=document.getElementById('cfg-api-key').value.trim();saveState();document.getElementById('cfg-saved').style.display='block';setTimeout(()=>document.getElementById('cfg-saved').style.display='none',2000);initUI();}
 function saveState(){localStorage.setItem('mybody_state',JSON.stringify(state));}
 function loadState(){
   const saved=localStorage.getItem('mybody_state');
@@ -1333,7 +1234,20 @@ function exportPDF(){
     const alim=(j.alimentation||[]).join(', ')||'–';
     html+=`<tr><td>${d}</td><td>${j.energie||'–'}/5</td><td>${j.douleur||0}/10</td><td>${loc}</td><td>${medoc}${j.soulagement?' ('+soulagement+')':''}</td><td>${alim}</td><td>${j.humeur||'–'}</td><td>${j.poids||'–'}</td><td>${j.note||''}</td></tr>`;
   });
-  html+=`</table><h2>Douleurs par jour de cycle</h2><p>`;
+  html+=`</table><h2>Cycle menstruel</h2>`;
+  const cyclesComplets=(state.cycleHistory||[]).filter(c=>c.fin&&c.dureeCycle&&c.dureeRegles).sort((a,b)=>b.j1.localeCompare(a.j1)).slice(0,6);
+  if(cyclesComplets.length>0){
+    html+=`<table><tr><th>Période</th><th>J1</th><th>Fin des règles</th><th>Durée cycle</th><th>Durée règles</th></tr>`;
+    cyclesComplets.forEach(c=>{
+      const j1f=new Date(c.j1).toLocaleDateString('fr-FR');
+      const finf=new Date(c.fin).toLocaleDateString('fr-FR');
+      html+=`<tr><td>${j1f} → ${finf}</td><td>${j1f}</td><td>${finf}</td><td>${c.dureeCycle} jours</td><td>${c.dureeRegles} jours</td></tr>`;
+    });
+    html+=`</table>`;
+  } else {
+    html+=`<p>Pas encore de données de cycle enregistrées.</p>`;
+  }
+  html+=`<h2>Douleurs par jour de cycle</h2><p>`;
   for(let i=1;i<=28;i++){const d=state.douleurs?.['j'+i]||0;html+=`<span class="tag">J${i}: ${d}/5</span>`;}
   html+=`</p><p style="margin-top:40px;font-size:12px;color:#8a7070;">Document généré par MyBody Coach</p></body></html>`;
   const win=window.open('','_blank');win.document.write(html);win.document.close();win.print();
